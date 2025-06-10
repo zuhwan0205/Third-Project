@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using VariableInventorySystem;
 using VariableInventorySystem.Sample;
@@ -34,7 +34,7 @@ public class SampleScene : MonoBehaviour
         // var caseItem = new CaseCellData(0);
         // stashData.InsertInventoryItem(stashData.GetInsertableId(caseItem).Value, caseItem);
         // standardStashView.Apply(stashData);
-
+    
         for (var i = 0; i < 20; i++)
         {
             var item = new ItemCellData(i % 6);
