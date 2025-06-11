@@ -29,7 +29,7 @@ public class SampleScene : MonoBehaviour
 
     IEnumerator InsertCoroutine()
     {
-        var stashData = new StandardStashViewData(8, 9);
+        var stashData = new StandardStashViewData(12, 8);
 
         // var caseItem = new CaseCellData(0);
         // stashData.InsertInventoryItem(stashData.GetInsertableId(caseItem).Value, caseItem);
