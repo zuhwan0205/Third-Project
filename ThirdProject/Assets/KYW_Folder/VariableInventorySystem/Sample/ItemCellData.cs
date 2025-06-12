@@ -9,7 +9,7 @@ namespace VariableInventorySystem.Sample
     public class ItemCellData : IVariableInventoryCellData
     {
         // 기본 속성들
-        public int Id => 0;  // 고정 ID 값
+        public int Id { get; private set; }  // 아이템 타입 ID
         public int Width { get; private set; }  // 아이템의 가로 크기
         public int Height { get; private set; } // 아이템의 세로 크기
         public bool IsRotate { get; set; }      // 회전 상태
@@ -21,6 +21,8 @@ namespace VariableInventorySystem.Sample
         /// <param name="sampleSeed">아이템 종류를 결정하는 시드 값</param>
         public ItemCellData(int sampleSeed)
         {
+            Id = sampleSeed;  // 아이템 타입 ID 설정
+
             // 시드 값에 따라 다른 무기 아이템 생성
             switch (sampleSeed)
             {
