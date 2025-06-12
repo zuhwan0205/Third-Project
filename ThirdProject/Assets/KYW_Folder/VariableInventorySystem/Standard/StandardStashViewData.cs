@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using VariableInventorySystem.Sample;
 
 namespace VariableInventorySystem
 {
@@ -162,6 +163,57 @@ namespace VariableInventorySystem
             }
 
             return (cell.IsRotate ? cell.Height : cell.Width, cell.IsRotate ? cell.Width : cell.Height);
+        }
+
+        // 특정 ID의 아이템 삭제
+        public virtual void RemoveItemById(int itemId)
+        {
+            if (itemId < 0 || itemId >= CellData.Length)
+                return;
+
+            CellData[itemId] = null;
+            IsDirty = true;
+            UpdateMask();
+        }
+
+        // 특정 타입의 아이템을 찾아 삭제
+        public virtual bool RemoveItemByType(int itemType)
+        {
+            // 모든 셀을 순회하면서
+            for (int i = 0; i < CellData.Length; i++)
+            {
+                // 해당 셀에 아이템이 있고, 타입이 일치하면
+                if (CellData[i] != null)
+                {
+                    var item = CellData[i] as ItemCellData;
+                    if (item != null && item.Id == itemType)
+                    {
+                        CellData[i] = null;
+                        IsDirty = true;
+                        UpdateMask();
+                        return true;  // 첫 번째로 찾은 아이템만 삭제
+                    }
+                }
+            }
+            return false;  // 삭제 실패 (해당 타입의 아이템을 찾지 못함)
+        }
+
+        // 특정 타입의 아이템 개수 세기
+        public virtual int CountItemsByType(int itemType)
+        {
+            int count = 0;
+            for (int i = 0; i < CellData.Length; i++)
+            {
+                if (CellData[i] != null)
+                {
+                    var item = CellData[i] as ItemCellData;
+                    if (item != null && item.Id == itemType)
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
         }
     }
 }
