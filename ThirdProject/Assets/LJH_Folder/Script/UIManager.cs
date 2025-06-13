@@ -1,12 +1,18 @@
-using Photon.Pun;
+using Fusion;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    private NetworkRunner runner;
     [SerializeField] private GameObject SettingPanel;
+    private bool isShutdownComplete = false;
+    
 
     void OnEnable()
     {
+        runner = NetworkRunnerHandler.Instance.GetRunner();
+        
         Event_MainScene.OnLobbyButtonClicked += LobbyButton;
         Event_MainScene.OnSettingButtonClicked += SettingButton;
         Event_MainScene.OnQuitButtonClicked += QuitButton;
@@ -21,23 +27,23 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnTestButtonClicked += testButton;
     }
 
-    private void LobbyButton()
+    private async void LobbyButton()
     {
-        PhotonNetwork.LoadLevel("KKI_TestScene");
+        SceneManager.LoadScene("LobbyScene");
     }
     
     private void SettingButton()
     {
-        PhotonNetwork.LoadLevel("JDHScene");
+        SceneManager.LoadScene("JDHScene");
     }
     
     private void QuitButton()
     {
-        PhotonNetwork.LoadLevel("LeeScene");
+        SceneManager.LoadScene("KKI_TestScene");
     }
 
     private void testButton()
     {
-        PhotonNetwork.LoadLevel("Inventory");
+        SceneManager.LoadScene("Inventory");
     }
 }

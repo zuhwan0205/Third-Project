@@ -1,21 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
-using Photon.Pun;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Fusion;
 
-public class LoadingScene : MonoBehaviourPunCallbacks
+public class LoadingScene : MonoBehaviour
 {
     [SerializeField] private TMP_Text gameLoadingText;
-    
-    void Start() {
-        StartCoroutine(LoadLobby());
+
+    private NetworkRunner runner;
+
+    void Start()
+    {
+        runner = NetworkRunnerHandler.Instance.GetRunner();
+
+        StartCoroutine(StartHostAndLoadMain());
         StartCoroutine(WaitingTextRoutine());
     }
-    
+
     IEnumerator WaitingTextRoutine()
     {
         string baseText = "Loading";
@@ -29,13 +31,23 @@ public class LoadingScene : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator LoadLobby() {
-        // 네트워크 연결 시도
-        if (!PhotonNetwork.IsConnected) {
-            PhotonNetwork.ConnectUsingSettings();
-        }
+    IEnumerator StartHostAndLoadMain()
+    {
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
 
-        while (!PhotonNetwork.IsConnectedAndReady)
-            yield return null;
+        var startGameTask = runner.StartGame(new StartGameArgs()
+        {
+            GameMode = GameMode.AutoHostOrClient,
+            SessionName = "GlobalLobby",
+            Scene = null,
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+
+        yield return new WaitUntil(() => runner.IsRunning);
+
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("MainScene");
     }
 }
