@@ -89,6 +89,9 @@ public class PlayerController : MonoBehaviour
                 moveSpeed = sprintSpeed;
                 cameraShake?.SetSprinting(true);
                 ShowStaminaUI(true);
+
+                // 애니메이션
+                weaponController.Sprint(true);
             }
             currentStamina -= Time.deltaTime;
             currentStamina = Mathf.Max(currentStamina, 0f);
@@ -117,6 +120,12 @@ public class PlayerController : MonoBehaviour
         if (staminaUICoroutine != null)
             StopCoroutine(staminaUICoroutine);
         staminaUICoroutine = StartCoroutine(HideStaminaUIDelayed(2f));
+
+        // 애니메이션 적용
+        if (weaponController != null)
+        {
+            weaponController.Sprint(false);
+        }
     }
 
     private void HandleMove()
@@ -125,6 +134,12 @@ public class PlayerController : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical");
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         characterController.Move(move.normalized * moveSpeed * Time.deltaTime);
+
+        // 애니메이션 적용
+        if (weaponController != null)
+        {
+            weaponController.Move(move);
+        }
     }
 
     private void HandleJump()
@@ -162,18 +177,18 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region 
+    #region 공격
     private void HandleAttack()
     {   
         bool bAttack = Input.GetKeyDown(KeyCode.Mouse0);
 
-        if (weaponController == null || weaponController.weaponType == WeaponType.None) return;
+        if (weaponController == null) return;
 
         // 왼쪽 키 눌렀을 때 공격
         if (bAttack)
         {
             Debug.Log("공격키 누름");
-            weaponController.weapon.Attack();
+            weaponController.Attack();
         }
     }
     #endregion

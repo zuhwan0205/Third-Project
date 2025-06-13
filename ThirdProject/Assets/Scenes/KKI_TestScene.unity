@@ -788,10 +788,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a47401697369246afae62500c9f44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 0
-  weapon: {fileID: 0}
+  currentWeaponType: 0
+  currentWeapon: {fileID: 0}
   weaponPrefabs:
-  - {fileID: 6780800231368454054, guid: e17623b9e90c06e45951b93a5959c0ca, type: 3}
+  - {fileID: 3853962497513009824, guid: f83b6207dc7ad284da48835f942cef0f, type: 3}
+  - {fileID: 3588183673534355587, guid: 6e3c467b8dc6731408a66148d89411b4, type: 3}
+  - {fileID: 7485940013758463974, guid: 021877eef721b7d409735256ca243074, type: 3}
   weaponPos: {fileID: 267443039}
 --- !u!1001 &628452374
 PrefabInstance:

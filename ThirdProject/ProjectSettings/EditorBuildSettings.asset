@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: f5d63e971f33fc141b8e836c526ddde3
   - enabled: 1
-    path: Assets/Scenes/Inventory.unity
+    path: Assets/Scenes/KYW_Inventory.unity
     guid: c11d0a690f1d7ba4fa61f7e7ab119355
   - enabled: 1
     path: Assets/Scenes/JDHScene.unity
