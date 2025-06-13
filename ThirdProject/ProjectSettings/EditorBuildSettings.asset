@@ -17,6 +17,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: f5d63e971f33fc141b8e836c526ddde3
+  - enabled: 1
+    path: Assets/Scenes/Inventory.unity
+    guid: c11d0a690f1d7ba4fa61f7e7ab119355
+  - enabled: 1
+    path: Assets/Scenes/JDHScene.unity
+    guid: 85c366af9c8fc4d4ea081eb656522f30
+  - enabled: 1
+    path: Assets/Scenes/KKI_TestScene.unity
+    guid: 13d20dd7fd83d8f48a7440aa6bfd496a
+  - enabled: 1
+    path: Assets/Scenes/LeeScene.unity
+    guid: db0f8fc468fd6e14c80ae8a399e6c88f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private CharacterController characterController;
     private CameraShake cameraShake;
+    private WeaponController weaponController;
 
     private Coroutine staminaUICoroutine;
 
@@ -43,11 +44,15 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        if (cameraTransform == null) Debug.LogWarning("카메라 트랜스폼 미할당!");
-        if (Camera.main != null)
+        if (cameraTransform == null) Debug.LogWarning("cameraTransform 미할당!");
+
+        if (Camera.main != null) 
             cameraShake = Camera.main.GetComponent<CameraShake>();
         else
             Debug.LogWarning("Main Camera 없음!");
+
+        weaponController = GetComponent<WeaponController>();
+        if (weaponController == null) Debug.LogWarning("weaponController 미할당!");
     }
 
     private void Start()
@@ -67,6 +72,7 @@ public class PlayerController : MonoBehaviour
         HandleMove();
         HandleJump();
         HandleLook();
+        HandleAttack();
     }
     #endregion
 
@@ -150,9 +156,25 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -70f, 70f);
         if (cameraTransform != null)
             cameraTransform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+    }
+    #endregion
+
+    #region 
+    private void HandleAttack()
+    {   
+        bool bAttack = Input.GetKeyDown(KeyCode.Mouse0);
+
+        if (weaponController == null || weaponController.weaponType == WeaponType.None) return;
+
+        // 왼쪽 키 눌렀을 때 공격
+        if (bAttack)
+        {
+            Debug.Log("공격키 누름");
+            weaponController.weapon.Attack();
+        }
     }
     #endregion
 
