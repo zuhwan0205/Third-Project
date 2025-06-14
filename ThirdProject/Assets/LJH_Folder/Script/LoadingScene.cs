@@ -1,21 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
-using Photon.Pun;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using Fusion;
+using Unity.VisualScripting;
 
-public class LoadingScene : MonoBehaviourPunCallbacks
+public class LoadingScene : MonoBehaviour
 {
     [SerializeField] private TMP_Text gameLoadingText;
+    private int secend = 0;
     
-    void Start() {
-        StartCoroutine(LoadLobby());
+
+    void Start()
+    {
         StartCoroutine(WaitingTextRoutine());
     }
-    
+
     IEnumerator WaitingTextRoutine()
     {
         string baseText = "Loading";
@@ -26,16 +26,9 @@ public class LoadingScene : MonoBehaviourPunCallbacks
             dotCount = (dotCount + 1) % 4;
             gameLoadingText.text = baseText + new string('.', dotCount);
             yield return new WaitForSeconds(0.5f);
+            secend++;
+            if(secend > 1) SceneManager.LoadScene("MainScene");
         }
     }
-
-    IEnumerator LoadLobby() {
-        // 네트워크 연결 시도
-        if (!PhotonNetwork.IsConnected) {
-            PhotonNetwork.ConnectUsingSettings();
-        }
-
-        while (!PhotonNetwork.IsConnectedAndReady)
-            yield return null;
-    }
+    
 }

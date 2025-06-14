@@ -29,19 +29,19 @@ public class Event_MainScene : MonoBehaviour
     
     public void OnClickSetting(){
         LobbyButton.interactable = false;   
-        StartCoroutine(WaitSecond(LobbyButton));
+        StartCoroutine(WaitSecond(SettingButton));
         OnSettingButtonClicked?.Invoke();
     }
     
     public void OnClickQuit(){
         LobbyButton.interactable = false;   
-        StartCoroutine(WaitSecond(LobbyButton));
+        StartCoroutine(WaitSecond(QuitButton));
         OnQuitButtonClicked?.Invoke();
     }
     
     public void OnTest(){
         LobbyButton.interactable = false;   
-        StartCoroutine(WaitSecond(LobbyButton));
+        StartCoroutine(WaitSecond(TestButton));
         OnTestButtonClicked?.Invoke();
     }
     

@@ -1,9 +1,15 @@
-using Photon.Pun;
+using System;
+using Fusion;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
+    private NetworkRunner runner;
     [SerializeField] private GameObject SettingPanel;
+    private bool isShutdownComplete = false;
+    
 
     void OnEnable()
     {
@@ -21,23 +27,53 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnTestButtonClicked += testButton;
     }
 
-    private void LobbyButton()
+    private void Start()
     {
-        PhotonNetwork.LoadLevel("KKI_TestScene");
+        runner = NetworkRunnerHandler.Instance.GetRunner();
+    }
+
+    private async void LobbyButton()
+    {
+        StartCoroutine(StartHostAndLoadLobby());
     }
     
     private void SettingButton()
     {
-        PhotonNetwork.LoadLevel("JDHScene");
+        SceneManager.LoadScene("JDHScene");
     }
     
     private void QuitButton()
     {
-        PhotonNetwork.LoadLevel("LeeScene");
+        SceneManager.LoadScene("KKI_TestScene");
     }
 
     private void testButton()
     {
-        PhotonNetwork.LoadLevel("Inventory");
+        SceneManager.LoadScene("Inventory");
+    }
+    
+    IEnumerator StartHostAndLoadLobby()
+    {
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
+        
+        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/LobbyScene.unity"); // 또는 직접 숫자
+        var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
+        var sceneInfo = new NetworkSceneInfo();
+
+        var startGameTask = runner.StartGame(new StartGameArgs()
+        {
+            GameMode = GameMode.AutoHostOrClient,
+            SessionName = "GameLobby",
+            Scene = scene,
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+        
+
+        yield return new WaitUntil(() => runner.IsRunning);
+
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
+        //SceneManager.LoadScene("LobbyScene");
     }
 }
