@@ -30,11 +30,12 @@ public class Shotgun : RangeWeapon
         }
         else
         {
-            StartReload();
+            Reload();
         }
     }
 
-    public void StartReload()
+    # region 재장전
+    public override void Reload()
     {
         if (!isReloading && currentAmmo < maxAmmo)
             StartCoroutine(ReloadCoroutine());
@@ -62,4 +63,6 @@ public class Shotgun : RangeWeapon
         }
         isReloading = false;
     }
+
+    # endregion
 }

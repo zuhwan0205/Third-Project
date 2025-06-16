@@ -794,6 +794,7 @@ MonoBehaviour:
   - {fileID: 3853962497513009824, guid: f83b6207dc7ad284da48835f942cef0f, type: 3}
   - {fileID: 3588183673534355587, guid: 6e3c467b8dc6731408a66148d89411b4, type: 3}
   - {fileID: 7485940013758463974, guid: 021877eef721b7d409735256ca243074, type: 3}
+  - {fileID: 5364802563188527687, guid: 5a978c72eeb10d148906b037bfbcff7b, type: 3}
   weaponPos: {fileID: 267443039}
 --- !u!1001 &628452374
 PrefabInstance:
