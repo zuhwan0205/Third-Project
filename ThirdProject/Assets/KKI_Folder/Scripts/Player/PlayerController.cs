@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,162 +13,164 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float groundCheckDistance = 3;
     [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float jumpStamina = 3f;
     [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private float maxStamina = 20f;
-    [SerializeField] private float staminaRecoveryRate = 1f;
 
     [Header("카메라")]
     [SerializeField] private Transform cameraTransform;
 
     [Header("UI")]
-    [SerializeField] private Slider staminaSlider;
     [SerializeField] private Text healthText;
 
     private float currentHealth;
-    private float currentStamina;
     private float moveSpeed;
     private float xRotation = 0f;
     private bool isSprinting = false;
+    private bool isJump = false;
     private Vector3 velocity;
-    private bool isGrounded;
+    private float jumpBufferTime = 0.2f, jumpBufferCounter = 0f;
+    private float groundedGraceTime = 0.15f, groundedCounter = 0f;
     private CharacterController characterController;
     private CameraShake cameraShake;
     private WeaponController weaponController;
-
-    private Coroutine staminaUICoroutine;
+    private InputManager input;
 
     public float Health => currentHealth;
-    public float Stamina => currentStamina;
     public bool IsSprinting => isSprinting;
+
 
     #region 유니티 생명주기
     private void Awake()
     {
+        input = GetComponent<InputManager>();
         characterController = GetComponent<CharacterController>();
-        if (cameraTransform == null) Debug.LogWarning("cameraTransform 미할당!");
-
-        if (Camera.main != null) 
-            cameraShake = Camera.main.GetComponent<CameraShake>();
-        else
-            Debug.LogWarning("Main Camera 없음!");
-
+        cameraShake = Camera.main?.GetComponent<CameraShake>();
         weaponController = GetComponent<WeaponController>();
-        if (weaponController == null) Debug.LogWarning("weaponController 미할당!");
     }
 
     private void Start()
     {
         currentHealth = maxHealth;
-        currentStamina = maxStamina;
         moveSpeed = walkSpeed;
 
         UpdateHealthUI();
-        UpdateStaminaUI();
-        ShowStaminaUI(false);
+
+        // 나중에 게임 매니저 혹은 다른 곳으로 옮기기
+        // KeyDown
+        input.BindKeyDownCommand(KeyCode.LeftShift, new SprintStartCommand(this));
+        input.BindKeyDownCommand(KeyCode.Space, new JumpCommand(this));
+        input.BindKeyDownCommand(KeyCode.Mouse0, new AttackCommand(this));
+        input.BindKeyDownCommand(KeyCode.Mouse1, new AimStartCommand(this));
+        input.BindKeyDownCommand(KeyCode.R, new ReloadCommand(this));
+
+        // KeyUp
+        input.BindKeyUpCommand(KeyCode.LeftShift, new SprintEndCommand(this));
+        input.BindKeyUpCommand(KeyCode.Mouse1, new AimStartCommand(this));
+
+        // KeyHold
+        input.BindKeyHoldCommand(KeyCode.A, new MoveLeftCommand(this));
+        input.BindKeyHoldCommand(KeyCode.D, new MoveRightCommand(this));
+        input.BindKeyHoldCommand(KeyCode.W, new MoveForwardCommand(this));
+        input.BindKeyHoldCommand(KeyCode.S, new MoveBackCommand(this));
     }
 
     private void Update()
     {
-        HandleSprint();
-        HandleMove();
-        HandleJump();
+        JumpCheck();
         HandleLook();
-        HandleAttack();
-        HandleReload();
-        HandleAim();
     }
     #endregion
 
+
     #region 이동/스프린트/점프
-    private void HandleSprint()
+
+    public void MoveLeft()    { Move(Vector2.left); }
+    public void MoveRight()   { Move(Vector2.right); }
+    public void MoveForward() { Move(Vector2.up); }
+    public void MoveBack()    { Move(Vector2.down); }
+
+    private void Move(Vector2 direction)
     {
-        bool sprintKey = Input.GetKey(KeyCode.LeftShift);
-
-        if (sprintKey && currentStamina > 0f)
-        {
-            if (!isSprinting)
-            {
-                isSprinting = true;
-                moveSpeed = sprintSpeed;
-                cameraShake?.SetSprinting(true);
-                ShowStaminaUI(true);
-
-                // 애니메이션
-                weaponController.Sprint(true);
-            }
-            currentStamina -= Time.deltaTime;
-            currentStamina = Mathf.Max(currentStamina, 0f);
-            UpdateStaminaUI();
-
-            if (currentStamina <= 0f)
-                StopSprint();
-        }
-        else
-        {
-            if (isSprinting)
-                StopSprint();
-
-            currentStamina += Time.deltaTime * staminaRecoveryRate;
-            currentStamina = Mathf.Min(currentStamina, maxStamina);
-            UpdateStaminaUI();
-        }
-    }
-
-    private void StopSprint()
-    {
-        isSprinting = false;
-        moveSpeed = walkSpeed;
-        cameraShake?.SetSprinting(false);
-        // 코루틴 중복 방지
-        if (staminaUICoroutine != null)
-            StopCoroutine(staminaUICoroutine);
-        staminaUICoroutine = StartCoroutine(HideStaminaUIDelayed(2f));
-
-        // 애니메이션 적용
-        if (weaponController != null)
-        {
-            weaponController.Sprint(false);
-        }
-    }
-
-    private void HandleMove()
-    {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
+        Vector3 move = transform.right * direction.x + transform.forward * direction.y;
         characterController.Move(move.normalized * moveSpeed * Time.deltaTime);
-
-        // 애니메이션 적용
-        if (weaponController != null)
-        {
-            weaponController.Move(move);
-        }
     }
 
-    private void HandleJump()
+
+    public void StartSprint()
     {
-        isGrounded = characterController.isGrounded;
-        if (isGrounded && velocity.y < 0)
+        if (!isSprinting)
+        {
+            isSprinting = true;
+            moveSpeed = sprintSpeed;
+            cameraShake?.SetSprinting(true);
+            weaponController?.Sprint(true);
+        }
+    }
+    
+    public void StopSprint()
+    {
+        if (isSprinting)
+        {
+            isSprinting = false;
+            moveSpeed = walkSpeed;
+            cameraShake?.SetSprinting(false);
+            weaponController?.Sprint(false);
+        }
+    }
+    public void Jump()
+    {
+        jumpBufferCounter = jumpBufferTime;
+    }
+    void JumpCheck()
+    {
+        bool isActuallyGrounded = IsGrounded();
+        if (isActuallyGrounded && velocity.y < 0)
             velocity.y = -2f;
 
-        if (Input.GetButtonDown("Jump") && isGrounded && currentStamina >= jumpStamina)
-        {
-            currentStamina -= jumpStamina;
-            UpdateStaminaUI();
-            ShowStaminaUI(true);
+        if (isActuallyGrounded)
+            groundedCounter = groundedGraceTime;
+        else if (groundedCounter > 0)
+            groundedCounter -= Time.deltaTime;
 
+        if (jumpBufferCounter > 0)
+            jumpBufferCounter -= Time.deltaTime;
+
+        if (groundedCounter > 0f && jumpBufferCounter > 0f)
+        {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            jumpBufferCounter = 0f;
+            groundedCounter = 0f;
         }
 
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
     }
+
+    private bool IsGrounded()
+    {
+        bool isJump = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance);
+        return isJump;
+    } 
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        // Ray의 시작점
+        Vector3 rayOrigin = transform.position;
+        // Ray의 끝점 (아래 방향으로 groundCheckDistance만큼)
+        Vector3 rayEnd = rayOrigin + Vector3.down * groundCheckDistance;
+        // 선으로 표시
+        Gizmos.DrawLine(rayOrigin, rayEnd);
+        // 끝점에 구체(점) 표시
+        Gizmos.DrawWireSphere(rayEnd, 0.03f);
+    }
+
     #endregion
 
+
     #region 카메라/마우스
-    private void HandleLook()
+    public void HandleLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -182,47 +185,14 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region 공격 / 에임 / 재장전
-    private void HandleAttack()
-    {   
-        bool bAttack = Input.GetKeyDown(KeyCode.Mouse0);
+    public void Attack() => weaponController?.Attack();
 
-        if (weaponController == null) return;
+    public void AimStart() => weaponController?.Aim();
 
-        // 왼쪽 마우스 키 눌렀을 때 공격
-        if (bAttack)
-        {
-            Debug.Log("공격키 누름");
-            weaponController.Attack();
-        }
-    }
+    public void AimEnd() => weaponController?.AimCancel();
 
-    private void HandleAim()
-    {
-        bool bAim = Input.GetKey(KeyCode.Mouse1);
+    public void Reload() => weaponController?.Reload();
 
-        if (weaponController == null) return;
-
-        if (bAim)
-        {
-            weaponController.Aim();
-        }
-        else
-        {
-            weaponController.AimCancel();
-        }
-    }
-
-    private void HandleReload()
-    {
-        bool bReload = Input.GetKeyDown(KeyCode.R);
-
-        if (weaponController == null || weaponController.currentWeaponType != WeaponType.Range) return;
-
-        if (bReload)
-        {
-            weaponController.Reload();
-        }
-    }
     #endregion
 
     #region 체력/힐
@@ -249,30 +219,4 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region 스태미나 UI 관리
-    private void UpdateStaminaUI()
-    {
-        if (staminaSlider != null)
-            staminaSlider.value = currentStamina / maxStamina;
-    }
-
-    private void ShowStaminaUI(bool flag)
-    {
-        if (staminaSlider != null && staminaSlider.gameObject.activeSelf != flag)
-            staminaSlider.gameObject.SetActive(flag);
-
-        // 이미 보이고 있는데 또 Show 호출할 때 불필요한 코루틴 실행 방지
-        if (flag && staminaUICoroutine != null)
-        {
-            StopCoroutine(staminaUICoroutine);
-            staminaUICoroutine = null;
-        }
-    }
-
-    private IEnumerator HideStaminaUIDelayed(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ShowStaminaUI(false);
-    }
-    #endregion
 }
