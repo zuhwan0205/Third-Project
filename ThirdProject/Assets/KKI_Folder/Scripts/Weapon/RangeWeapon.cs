@@ -7,12 +7,10 @@ public abstract class RangeWeapon : Weapon
     [SerializeField] protected int currentAmmo;
     [SerializeField] protected float reloadTime;
 
-    // 원거리무기만의 공통 메서드 예시
-    protected void PlayFireAnimation()
-    {
-        animator.Play("Fire");
-    }
-    protected void FireProjectile(GameObject prefab, Transform firePoint)
+    protected virtual void PlayFireAnimation() => animator?.Play(AnimParams.FIRE);
+    protected virtual void PlayReloadAnimation() => animator?.Play(AnimParams.RELOAD);
+
+    protected virtual void FireProjectile(GameObject prefab, Transform firePoint)
     {
         Instantiate(prefab, firePoint.position, firePoint.rotation);
         Debug.Log($"{weaponName} 발사!");

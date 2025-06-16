@@ -4,7 +4,6 @@ public class Bow : RangeWeapon
 {
     [SerializeField] GameObject arrowPrefab;
     [SerializeField] Transform firePoint;
-    [SerializeField] float chargeTime = 1f;
     bool bArrow = false;
     bool bAim = false;
 
@@ -15,8 +14,8 @@ public class Bow : RangeWeapon
     private void OnEnable()
     {
         animator.SetBool("bArrow", bArrow);
-        animator.ResetTrigger("Fire");
-        animator.ResetTrigger("Reload");
+        animator.ResetTrigger(AnimParams.FIRE);
+        animator.ResetTrigger(AnimParams.RELOAD);
     }
 
     public override void Attack()
@@ -24,36 +23,36 @@ public class Bow : RangeWeapon
         if (!bArrow) return;
         Fire();
         bArrow = false;
-        animator.SetBool("bArrow", bArrow);
+        animator.SetBool(AnimParams.B_ARROW, bArrow);
     }
 
     public override void Reload()
     {
         if (bArrow) return;
-        animator.SetTrigger("Reload");
+        animator.SetTrigger(AnimParams.FIRE);
         bArrow = true;
-        animator.SetBool("bArrow", bArrow);
+        animator.SetBool(AnimParams.B_ARROW, bArrow);
     }
 
     public void Aim()
     {
         if (bAim) return;
         bAim = true;
-        animator.SetBool("bAim", true);
+        animator.SetBool(AnimParams.B_AIM, true);
     }
 
     public void CancelAim()
     {
         if (bAim == false) return;
         bAim = false;
-        animator.SetBool("bAim", false);
+        animator.SetBool(AnimParams.B_AIM, false);
     }
 
     public void Fire() {
         if (!bAim || !bArrow) return;
-        animator.SetTrigger("Fire");
+        animator.SetTrigger(AnimParams.FIRE);
         bArrow = false;
-        animator.SetBool("bArrow", false);
+        animator.SetBool(AnimParams.B_ARROW, false);
         bAim = false;
     }
 

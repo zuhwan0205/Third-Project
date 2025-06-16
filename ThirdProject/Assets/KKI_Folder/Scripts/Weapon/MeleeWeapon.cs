@@ -14,7 +14,7 @@ public abstract class MeleeWeapon : Weapon
         Debug.Log($"{weaponName} 휘두르기");
 
         // 애니메이션 넣기
-        animator.Play("Attack");
+        animator.Play(AnimParams.ATTACK);
     }
 
     protected void MeleeHitCheck()
