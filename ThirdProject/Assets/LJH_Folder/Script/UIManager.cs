@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
-        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/LeeScene.unity"); // 또는 직접 숫자
+        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/LobbyScene.unity"); // 또는 직접 숫자
         var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
         var sceneInfo = new NetworkSceneInfo();
 

@@ -98,6 +98,19 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, System.ArraySegment<byte> data) { }
     public void OnInput(NetworkRunner runner, NetworkInput input) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
+
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        if (!runner.IsServer) return;
+        Debug.Log("NetworkRunnerHandelr : OnSceneLoadDone");
+        if (SpawnManager.Instance != null)
+        {
+            SpawnManager.Instance.SpawnAllPlayers(runner);
+        }
+        else
+        {
+            Debug.LogWarning("SpawnManager not found Instance");
+        }
+    }
     public void OnSceneLoadStart(NetworkRunner runner) { }
 }
