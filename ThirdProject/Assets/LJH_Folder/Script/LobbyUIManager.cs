@@ -46,7 +46,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         if (runner.IsServer)
         {
-            runner.LoadScene("GameScene");
+            runner.LoadScene("LeeScene");
         }
     }
 }
