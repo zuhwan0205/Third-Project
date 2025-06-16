@@ -26,33 +26,41 @@ namespace VariableInventorySystem.Sample
             // 시드 값에 따라 다른 무기 아이템 생성
             switch (sampleSeed)
             {
-                case 0: // 권총 1
-                    Width = 2; Height = 1;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/handgun");
-                    break;
-                case 1: // 권총 2
-                    Width = 2; Height = 1;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/handgun2");
-                    break;
-                case 2: // 소총
-                    Width = 4; Height = 2;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/rifle");
-                    break;
-                case 3: // 저격총
-                    Width = 5; Height = 2;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/sniper");
-                    break;
-                case 4: // 기관단총
+                case 0:
                     Width = 2; Height = 2;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/submachinegun");
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/권총");
                     break;
-                case 5: // 권총 1 (중복)
-                    Width = 2; Height = 1;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/handgun");
+                case 1: 
+                    Width = 2; Height = 2;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/샷건");
                     break;
-                case 6: // 권총 2 (중복)
-                    Width = 2; Height = 1;
-                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/handgun2");
+                case 2:
+                    Width = 2; Height = 2;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/칼");
+                    break;
+                case 3: 
+                    Width = 2; Height = 2;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/도끼");
+                    break;
+                case 4:
+                    Width = 2; Height = 2;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/활");
+                    break;
+                case 5:
+                    Width = 1; Height = 1;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/총알");
+                    break;
+                case 6:
+                    Width = 1; Height = 1;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/화살");
+                    break;
+                case 7: 
+                    Width = 1; Height = 1;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/포션");
+                    break;
+                case 8:
+                    Width = 1; Height = 1;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/통조림");
                     break;
             }
         }
