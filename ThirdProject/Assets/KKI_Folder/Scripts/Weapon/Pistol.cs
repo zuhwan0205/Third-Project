@@ -31,7 +31,7 @@ public class Pistol : RangeWeapon
     {
         animator.Play("Reload");
     }
-    public void Reload()
+    public override void Reload()
     {
         // 현재 가지고 있는 탄약이 최대 탄약보다 많으면
         currentAmmo = maxAmmo;

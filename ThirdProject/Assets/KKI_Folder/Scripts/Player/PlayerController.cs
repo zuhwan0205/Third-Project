@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
@@ -73,6 +75,8 @@ public class PlayerController : MonoBehaviour
         HandleJump();
         HandleLook();
         HandleAttack();
+        HandleReload();
+        HandleAim();
     }
     #endregion
 
@@ -177,18 +181,46 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region 공격
+    #region 공격 / 에임 / 재장전
     private void HandleAttack()
     {   
         bool bAttack = Input.GetKeyDown(KeyCode.Mouse0);
 
         if (weaponController == null) return;
 
-        // 왼쪽 키 눌렀을 때 공격
+        // 왼쪽 마우스 키 눌렀을 때 공격
         if (bAttack)
         {
             Debug.Log("공격키 누름");
             weaponController.Attack();
+        }
+    }
+
+    private void HandleAim()
+    {
+        bool bAim = Input.GetKey(KeyCode.Mouse1);
+
+        if (weaponController == null) return;
+
+        if (bAim)
+        {
+            weaponController.Aim();
+        }
+        else
+        {
+            weaponController.AimCancel();
+        }
+    }
+
+    private void HandleReload()
+    {
+        bool bReload = Input.GetKeyDown(KeyCode.R);
+
+        if (weaponController == null || weaponController.currentWeaponType != WeaponType.Range) return;
+
+        if (bReload)
+        {
+            weaponController.Reload();
         }
     }
     #endregion

@@ -18,4 +18,6 @@ public abstract class RangeWeapon : Weapon
         Debug.Log($"{weaponName} 발사!");
     }
 
+    public abstract void Reload();
+
 }

@@ -39,6 +39,13 @@ public class WeaponController : MonoBehaviour
             SetWeapon(weaponObj);
         }   
 
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            Weapon weaponObj = Instantiate(weaponPrefabs[3], weaponPos.transform);
+            weaponObj.transform.localPosition = Vector3.zero;
+            weaponObj.transform.localRotation = Quaternion.identity;
+            SetWeapon(weaponObj);
+        }   
     }
 
     public void SetWeapon(Weapon _weapon)
@@ -60,7 +67,28 @@ public class WeaponController : MonoBehaviour
 
         if (currentWeaponType != WeaponType.Range) return;
 
-        // currentWeapon.Aim();
+        if (currentWeapon is not Bow bow)
+        {
+            Debug.Log("활 다운 캐스팅 실패!");
+            return;
+        }
+
+        bow.Aim();    
+    }
+
+    public void AimCancel()
+    {
+        if (currentWeapon == null) return;
+
+        if (currentWeaponType != WeaponType.Range) return;
+
+        if (currentWeapon is not Bow bow)
+        {
+            Debug.Log("활 다운 캐스팅 실패!");
+            return;
+        }
+
+        bow.CancelAim();    
     }
 
     public void Move(Vector3 move)
@@ -76,5 +104,19 @@ public class WeaponController : MonoBehaviour
         if (currentWeapon == null) return;
 
         currentWeapon.Sprint(flag);
+    }
+
+
+    public void Reload()
+    {
+        if (currentWeapon == null) return;
+        
+        if (currentWeapon is not RangeWeapon rangeWeapon)
+        {
+            Debug.Log("Reload() : 원거리 무기 캐스팅 실패!");
+            return;
+        }
+
+        rangeWeapon.Reload();
     }
 }

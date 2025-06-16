@@ -1473,7 +1473,7 @@ GameObject:
   - component: {fileID: 4151687965660556774}
   - component: {fileID: 5364802563188527687}
   m_Layer: 0
-  m_Name: arc
+  m_Name: Bow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1538,8 +1538,9 @@ MonoBehaviour:
   maxAmmo: 3
   currentAmmo: 3
   reloadTime: 1.15
-  bulletPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
   firePoint: {fileID: 0}
+  chargeTime: 0.167
 --- !u!1 &5273937637725021698
 GameObject:
   m_ObjectHideFlags: 0
