@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
@@ -27,17 +23,19 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed;
     private float xRotation = 0f;
     private bool isSprinting = false;
-    private bool isJump = false;
     private Vector3 velocity;
     private float jumpBufferTime = 0.2f, jumpBufferCounter = 0f;
     private float groundedGraceTime = 0.15f, groundedCounter = 0f;
     private CharacterController characterController;
-    private CameraShake cameraShake;
-    private WeaponController weaponController;
+    public CameraShake cameraShake { get; private set; }
+    public WeaponController weaponController { get; private set; }
     private InputManager input;
 
+    // 프로퍼티
     public float Health => currentHealth;
+    public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
+
 
 
     #region 유니티 생명주기
@@ -66,7 +64,12 @@ public class PlayerController : MonoBehaviour
 
         // KeyUp
         input.BindKeyUpCommand(KeyCode.LeftShift, new SprintEndCommand(this));
-        input.BindKeyUpCommand(KeyCode.Mouse1, new AimStartCommand(this));
+        input.BindKeyUpCommand(KeyCode.Mouse1, new AimEndCommand(this));
+        input.BindKeyUpCommand(KeyCode.W, new StopMoveCommand(this));
+        input.BindKeyUpCommand(KeyCode.A, new StopMoveCommand(this));
+        input.BindKeyUpCommand(KeyCode.S, new StopMoveCommand(this));
+        input.BindKeyUpCommand(KeyCode.D, new StopMoveCommand(this));
+
 
         // KeyHold
         input.BindKeyHoldCommand(KeyCode.A, new MoveLeftCommand(this));
@@ -94,6 +97,12 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 move = transform.right * direction.x + transform.forward * direction.y;
         characterController.Move(move.normalized * moveSpeed * Time.deltaTime);
+        weaponController?.Move(true);
+    }
+
+    public void StopMove()
+    {
+        weaponController?.Move(false);
     }
 
 
@@ -118,6 +127,12 @@ public class PlayerController : MonoBehaviour
             weaponController?.Sprint(false);
         }
     }
+
+    public void SetSpeed(float _speed)
+    {
+        moveSpeed = _speed;
+    }
+
     public void Jump()
     {
         jumpBufferCounter = jumpBufferTime;

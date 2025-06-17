@@ -6,6 +6,17 @@ public abstract class Weapon : MonoBehaviour
     public WeaponType weaponType;
     protected Animator animator;
 
+    [Header("Audio/VFX")]
+    [SerializeField] protected AudioSource audioSource;
+
+    protected virtual void Awake()
+    {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+        if (animator == null)
+            animator = GetComponent<Animator>();
+    }
+    
     public abstract void Attack();
     public virtual void Move(bool isMoving) { animator?.SetBool(AnimParams.WALK, isMoving); }
     public virtual void Sprint(bool isSprinting) { animator?.SetBool(AnimParams.RUN, isSprinting); }

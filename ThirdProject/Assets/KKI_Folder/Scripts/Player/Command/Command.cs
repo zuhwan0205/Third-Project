@@ -30,6 +30,14 @@ public class MoveBackCommand : ICommand
     public MoveBackCommand(PlayerController p) { player = p; }
     public void Execute() { player.MoveBack(); }
 }
+
+public class StopMoveCommand : ICommand
+{
+    private PlayerController player;
+    public StopMoveCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.StopMove();
+}
+
 #endregion
 
 #region 스프린트/점프
