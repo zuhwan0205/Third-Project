@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject SettingPanel;
     private bool isShutdownComplete = false;
     
+    
 
     void OnEnable()
     {
@@ -17,6 +18,7 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnSettingButtonClicked += SettingButton;
         Event_MainScene.OnQuitButtonClicked += QuitButton;
         Event_MainScene.OnTestButtonClicked += testButton;
+        Event_MainScene.OnCloseSettingButtonClicked += CloseSetting;
     }
 
     void OnDisable()
@@ -24,7 +26,8 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnLobbyButtonClicked -= LobbyButton;
         Event_MainScene.OnSettingButtonClicked -= SettingButton;
         Event_MainScene.OnQuitButtonClicked -= QuitButton;
-        Event_MainScene.OnTestButtonClicked += testButton;
+        Event_MainScene.OnTestButtonClicked -= testButton;
+        Event_MainScene.OnCloseSettingButtonClicked -= CloseSetting;
     }
 
     private void Start()
@@ -40,6 +43,7 @@ public class UIManager : MonoBehaviour
     private void SettingButton()
     {
         StartCoroutine(test1());
+        //SettingPanel.SetActive(true);
     }
     
     private void QuitButton()
@@ -50,6 +54,11 @@ public class UIManager : MonoBehaviour
     private void testButton()
     {
         StartCoroutine(test3());
+    }
+
+    private void CloseSetting()
+    {
+        SettingPanel.SetActive(false);
     }
     
     IEnumerator StartHostAndLoadLobby()

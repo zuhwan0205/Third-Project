@@ -10,14 +10,18 @@ public class Event_MainScene : MonoBehaviour
     public static event Action OnQuitButtonClicked;
     public static event Action OnTestButtonClicked;
     
+    public static event Action OnCloseSettingButtonClicked;
+    
     [SerializeField] private Button LobbyButton;
     [SerializeField] private Button SettingButton;
     [SerializeField] private Button QuitButton;
     [SerializeField] private Button TestButton;
+    [SerializeField] private Button CloseSettingButton;
+     
     
     IEnumerator WaitSecond(Button button)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.5f);
         button.interactable = true;
     }
     
@@ -28,13 +32,13 @@ public class Event_MainScene : MonoBehaviour
     }
     
     public void OnClickSetting(){
-        LobbyButton.interactable = false;   
+        SettingButton.interactable = false;   
         StartCoroutine(WaitSecond(SettingButton));
         OnSettingButtonClicked?.Invoke();
     }
     
     public void OnClickQuit(){
-        LobbyButton.interactable = false;   
+        QuitButton.interactable = false;   
         StartCoroutine(WaitSecond(QuitButton));
         OnQuitButtonClicked?.Invoke();
     }
@@ -43,6 +47,13 @@ public class Event_MainScene : MonoBehaviour
         LobbyButton.interactable = false;   
         StartCoroutine(WaitSecond(TestButton));
         OnTestButtonClicked?.Invoke();
+    }
+
+    public void OnClickCloseSetting()
+    {
+        CloseSettingButton.interactable = false;
+        StartCoroutine(WaitSecond(CloseSettingButton));
+        OnCloseSettingButtonClicked?.Invoke();
     }
     
 }
