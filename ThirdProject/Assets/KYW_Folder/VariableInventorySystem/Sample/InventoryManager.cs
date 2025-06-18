@@ -97,7 +97,13 @@ public class InventoryManager : MonoBehaviour
     public void ToggleInventory()
     {
         isInventoryVisible = !isInventoryVisible;
-        standardStashView.gameObject.SetActive(isInventoryVisible);
+        var canvasGroup = standardStashView.GetComponent<CanvasGroup>();
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = isInventoryVisible ? 1f : 0f;
+            canvasGroup.interactable = isInventoryVisible;
+            canvasGroup.blocksRaycasts = isInventoryVisible;
+        }
     }
 
     // 아이템 삭제 함수
@@ -178,6 +184,8 @@ public class InventoryManager : MonoBehaviour
         //     InsertNewItem(itemNames[i % 9]);
             
         // }
+        InsertNewItem("포션");
+        InsertNewItem("통조림");
         yield return null;
     }
 }
