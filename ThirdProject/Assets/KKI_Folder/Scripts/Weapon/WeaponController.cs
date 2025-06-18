@@ -56,11 +56,10 @@ public class WeaponController : MonoBehaviour
             bow.CancelAim();
     }
 
-    public void Move(Vector3 move)
+    public void Move(bool flag)
     {
         if (currentWeapon == null) return;
-        bool isMoving = move.sqrMagnitude > 0.001f;
-        currentWeapon.Move(isMoving);
+        currentWeapon.Move(flag);
     }
 
     public void Sprint(bool flag) => currentWeapon?.Sprint(flag);

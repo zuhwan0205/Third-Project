@@ -7,29 +7,35 @@ public class Bow : RangeWeapon
     bool bArrow = false;
     bool bAim = false;
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
     private void OnEnable()
     {
         animator.SetBool("bArrow", bArrow);
-        animator.ResetTrigger(AnimParams.FIRE);
-        animator.ResetTrigger(AnimParams.RELOAD);
     }
 
     public override void Attack()
     {
-        if (!bArrow) return;
-        Fire();
+        if (!bArrow || !bAim) return;
+
+        if (fireRate > fireTime) return;
+        fireTime = 0f;
+
+        if (isReloading) return;
+
+        PlayFire();
         bArrow = false;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
+        bAim = false;
+        animator.SetBool(AnimParams.B_AIM, false);
     }
 
     public override void Reload()
     {
+        if (reloadRate > reloadTime) return;
+        reloadTime = 0f;
+
         if (bArrow) return;
-        animator.SetTrigger(AnimParams.FIRE);
+        isReloading = true;
+        PlayReload();
         bArrow = true;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
     }
@@ -50,10 +56,7 @@ public class Bow : RangeWeapon
 
     public void Fire() {
         if (!bAim || !bArrow) return;
-        animator.SetTrigger(AnimParams.FIRE);
-        bArrow = false;
-        animator.SetBool(AnimParams.B_ARROW, false);
-        bAim = false;
+        Attack();
     }
 
 }

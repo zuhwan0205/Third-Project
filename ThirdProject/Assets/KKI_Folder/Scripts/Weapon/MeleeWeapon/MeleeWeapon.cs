@@ -6,15 +6,22 @@ public abstract class MeleeWeapon : Weapon
     [SerializeField] protected float attackRate;        // 공격 속도
     [SerializeField] protected float attackRange;       // 판정 구의 반지름
     [SerializeField] protected LayerMask enemyLayer;    // 적 레이어 판정
-    [SerializeField] protected AudioClip swingSound;    // 공격 소리
-    
+    [SerializeField] protected AudioClip swingSfx;    // 공격 소리
+
+    protected float attackTime;
+    void Update()
+    {
+        attackTime += Time.deltaTime;
+    }
 
     protected void PlaySwingAnimation()
     {
-        Debug.Log($"{weaponName} 휘두르기");
-
         // 애니메이션 넣기
         animator.Play(AnimParams.ATTACK);
+
+        // 사운드 재생
+        if (audioSource != null && swingSfx != null)
+            audioSource.PlayOneShot(swingSfx);
     }
 
     protected void MeleeHitCheck()
