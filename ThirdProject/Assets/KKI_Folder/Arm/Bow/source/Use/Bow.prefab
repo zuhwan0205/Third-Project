@@ -1634,13 +1634,13 @@ MonoBehaviour:
   weaponName: "\uD65C"
   weaponType: 2
   audioSource: {fileID: 0}
-  maxAmmo: 3
-  currentAmmo: 3
+  maxAmmo: 1
+  currentAmmo: 0
+  reserveAmmo: 2
   fireRate: 0.583
   reloadRate: 1.15
   fireSfx: {fileID: 8300000, guid: a03ede9ab19937043bfe349323376bad, type: 3}
   reloadSfx: {fileID: 0}
-  arrowPrefab: {fileID: 0}
   firePoint: {fileID: 0}
 --- !u!1 &5273937637725021698
 GameObject:

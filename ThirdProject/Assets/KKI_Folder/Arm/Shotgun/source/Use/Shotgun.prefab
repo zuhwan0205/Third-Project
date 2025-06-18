@@ -1040,15 +1040,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: "\uC0F7\uAC74"
-  weaponType: 2
+  weaponType: 4
   audioSource: {fileID: 0}
   maxAmmo: 2
   currentAmmo: 2
+  reserveAmmo: 0
   fireRate: 1.137
-  reloadRate: 1.185
+  reloadRate: 1.75
   fireSfx: {fileID: 8300000, guid: 5c12f074f392990429382a17928f21ac, type: 3}
   reloadSfx: {fileID: 8300000, guid: 00ddf099e56708e4998a8a2f5c544f2c, type: 3}
-  pelletPrefab: {fileID: 5361812939526406528, guid: d4da0cc246bee0f4e8271e69b4a752f6, type: 3}
   firePoint: {fileID: 8746159272063502246}
   pelletCount: 6
   spreadAngle: 8
