@@ -186,6 +186,7 @@ public class InventoryManager : MonoBehaviour
         // }
         InsertNewItem("포션");
         InsertNewItem("통조림");
+        ToggleInventory();
         yield return null;
     }
 }
