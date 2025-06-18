@@ -1,10 +1,10 @@
+using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Pistol : RangeWeapon
 {
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
-
+    #region 공격
     public override void Attack()
     {
         if (isReloading) return;
@@ -15,25 +15,41 @@ public class Pistol : RangeWeapon
         if (currentAmmo > 0)
         {
             PlayFire();
-            FireProjectile(bulletPrefab, firePoint, Quaternion.identity);
-            currentAmmo--;
+            FireProjectile(firePoint, 1, 0f, PoolKey.Bullet);
+            EndFire();
         }
         else
         {
             Reload();
         }
     }
+    #endregion
 
+    #region 재장전
     public override void Reload()
     {
-        if (isReloading) return;
-        
-        if (reloadRate > reloadTime) return; 
-        reloadTime = 0f;
-
-        currentAmmo = maxAmmo;
-        isReloading = true;
+        if (!CanReloading()) return;
         PlayReload();
+
+        return ;
     }
 
+
+    protected override IEnumerator Reloading()
+    {
+        yield return new WaitForSeconds(reloadRate);
+        EndReload();
+    }
+
+    protected override void EndReload()
+    {
+        int needed = maxAmmo - currentAmmo;
+        int toLoad = Mathf.Min(needed, reserveAmmo);
+
+        currentAmmo += toLoad;
+        reserveAmmo -= toLoad;
+
+        isReloading = false;
+    }
+    #endregion
 }

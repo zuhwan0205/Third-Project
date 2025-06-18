@@ -3,45 +3,77 @@ using UnityEngine;
 
 public class Shotgun : RangeWeapon
 {
-    [SerializeField] private GameObject pelletPrefab;
-    [SerializeField] private Transform firePoint;
+    [Header("샷건 개인 설정")]
     [SerializeField] private int pelletCount = 6;
     [SerializeField] private float spreadAngle = 8f;
-    [SerializeField] private float pelletReloadTime;
 
+    private Coroutine reloadCoroutine;
+
+    #region 공격
     public override void Attack()
     {
         if (fireRate > fireTime) return;
         fireTime = 0f;
 
-        if (isReloading) return;
-
         if (currentAmmo > 0)
         {
-            for (int i = 0; i < pelletCount; i++)
+            // 재장전 중일 때 쏠 수 있음
+            if (isReloading)
             {
-                float angle = Random.Range(-spreadAngle, spreadAngle);
-                Quaternion spreadRot = firePoint.rotation * Quaternion.Euler(0, angle, 0);
-                FireProjectile(pelletPrefab, firePoint, spreadRot); // 퍼짐 로직, projectile 방향 반영하면 더 좋음
+                if (reloadCoroutine != null)
+                {
+                    StopCoroutine(reloadCoroutine);
+                    reloadCoroutine = null;
+                }
+                isReloading = false;
             }
             PlayFire();
-            currentAmmo--;
+            FireProjectile(firePoint, pelletCount, spreadAngle, PoolKey.ShotgunPellet);
+            EndFire();
         }
         else
         {
             Reload();
         }
     }
-
+    #endregion
+    
+    #region 재장전
     public override void Reload()
     {
-        if (isReloading) return;
+        if (!CanReloading()) return;
 
-        if (reloadRate > reloadTime) return; 
-        reloadTime = 0f;
-
-        isReloading = true;
-        currentAmmo++;
         PlayReload();
     }
+
+    protected override void PlayReload()
+    {
+        isReloading = true;
+        reloadCoroutine = StartCoroutine(Reloading());
+    }
+    protected override IEnumerator Reloading()
+    {
+        while (currentAmmo < maxAmmo && reserveAmmo > 0)
+        {
+            // 애니메이션/사운드(한발 장전)
+            animator?.Play(AnimParams.RELOAD);
+            if (audioSource != null && reloadSfx != null)
+                audioSource.PlayOneShot(reloadSfx);
+
+            yield return new WaitForSeconds(reloadRate);
+
+            currentAmmo++;
+            reserveAmmo--;
+        }
+
+        EndReload();
+    }
+
+    protected override void EndReload()
+    {
+        isReloading = false;
+        reloadCoroutine = null;
+    }
+    #endregion
+    
 }

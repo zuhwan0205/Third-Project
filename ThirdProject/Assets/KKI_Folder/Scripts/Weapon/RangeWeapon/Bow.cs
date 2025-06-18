@@ -2,16 +2,20 @@ using System.Collections;
 using UnityEngine;
 public class Bow : RangeWeapon
 {
-    [SerializeField] GameObject arrowPrefab;
-    [SerializeField] Transform firePoint;
-    bool bArrow = false;
-    bool bAim = false;
+    public bool bArrow { get; private set;}
+    public bool bAim {get; private set;}
 
     private void OnEnable()
     {
-        animator.SetBool("bArrow", bArrow);
+        animator.SetBool(AnimParams.B_ARROW, bArrow);
+        animator.SetBool(AnimParams.B_AIM, bAim);
     }
 
+    #region 공격
+    public void Fire() {
+        if (!bAim || !bArrow) return;
+        Attack();
+    }
     public override void Attack()
     {
         if (!bArrow || !bAim) return;
@@ -22,24 +26,45 @@ public class Bow : RangeWeapon
         if (isReloading) return;
 
         PlayFire();
+        // FireProjectile(firePoint, 1, 0f, PoolKey.Arrow);
+        EndFire();
+    }
+
+    protected override void EndFire()
+    {
+        base.EndFire();
         bArrow = false;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
         bAim = false;
         animator.SetBool(AnimParams.B_AIM, false);
     }
+    #endregion
 
+    #region 재장전
     public override void Reload()
     {
-        if (reloadRate > reloadTime) return;
-        reloadTime = 0f;
-
+        if (!CanReloading()) return;
         if (bArrow) return;
-        isReloading = true;
         PlayReload();
+    }
+
+    protected override IEnumerator Reloading()
+    {
+        yield return new WaitForSeconds(reloadRate);
+        EndReload();
+    }
+
+    protected override void EndReload()
+    {
+        isReloading = false;
+        currentAmmo ++;
+        reserveAmmo --;
         bArrow = true;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
     }
+    #endregion
 
+    #region 에임
     public void Aim()
     {
         if (bAim) return;
@@ -49,14 +74,11 @@ public class Bow : RangeWeapon
 
     public void CancelAim()
     {
-        if (bAim == false) return;
+        if (!bAim) return;
         bAim = false;
         animator.SetBool(AnimParams.B_AIM, false);
     }
-
-    public void Fire() {
-        if (!bAim || !bArrow) return;
-        Attack();
-    }
+    #endregion
+    
 
 }
