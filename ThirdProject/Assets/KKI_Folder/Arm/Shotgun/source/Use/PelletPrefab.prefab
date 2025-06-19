@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6288133966598261364}
   - component: {fileID: 4092328155723502563}
   m_Layer: 0
-  m_Name: gauge
+  m_Name: PelletPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

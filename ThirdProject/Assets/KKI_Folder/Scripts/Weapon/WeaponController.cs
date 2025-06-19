@@ -20,6 +20,7 @@ public class WeaponController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Home))     EquipWeaponByIndex(1);
         if (Input.GetKeyDown(KeyCode.End))      EquipWeaponByIndex(2);
         if (Input.GetKeyDown(KeyCode.PageDown)) EquipWeaponByIndex(3);
+        if (Input.GetKeyDown(KeyCode.PageUp))   EquipWeaponByIndex(4);
     }
 
     private void EquipWeaponByIndex(int idx)
@@ -31,7 +32,7 @@ public class WeaponController : MonoBehaviour
             Destroy(currentWeapon.gameObject);
 
         Weapon weaponObj = Instantiate(weaponPrefabs[idx], weaponPos.transform);
-        weaponObj.transform.localPosition = Vector3.zero;
+        weaponObj.transform.localPosition = weaponObj.InitialPosition;
         weaponObj.transform.localRotation = Quaternion.identity;
         SetWeapon(weaponObj);
     }
@@ -39,7 +40,7 @@ public class WeaponController : MonoBehaviour
     public void SetWeapon(Weapon _weapon)
     {
         currentWeapon = _weapon;
-        currentWeaponType = _weapon.weaponType;
+        currentWeaponType = _weapon.WeaponType;
     }
 
     public void Attack() => currentWeapon?.Attack();

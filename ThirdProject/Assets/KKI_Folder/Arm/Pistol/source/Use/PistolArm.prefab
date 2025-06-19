@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7387644704647951883}
   - component: {fileID: 3588183673534355587}
   m_Layer: 0
-  m_Name: Pistol
+  m_Name: PistolArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,15 +176,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\uAD8C\uCD1D"
   weaponType: 2
+  initialPosition: {x: -0.13, y: 0, z: 0.05}
   audioSource: {fileID: 0}
   maxAmmo: 10
   currentAmmo: 10
   reserveAmmo: 0
   fireRate: 0.75
   reloadRate: 2.883
+  firePoint: {fileID: 2599842759509784679}
   fireSfx: {fileID: 8300000, guid: 321bebb0e93862d4fb0c9e761e540777, type: 3}
   reloadSfx: {fileID: 8300000, guid: 6702b8d4b1ff6a140b56faf91ea332c1, type: 3}
-  firePoint: {fileID: 2599842759509784679}
 --- !u!1 &404181658196740091
 GameObject:
   m_ObjectHideFlags: 0
