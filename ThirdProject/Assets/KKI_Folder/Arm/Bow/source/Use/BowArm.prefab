@@ -1474,7 +1474,7 @@ GameObject:
   - component: {fileID: 1849682427110011070}
   - component: {fileID: 5364802563188527687}
   m_Layer: 0
-  m_Name: Bow
+  m_Name: BowArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1633,15 +1633,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\uD65C"
   weaponType: 2
+  initialPosition: {x: -0.23, y: -0.1, z: 0}
   audioSource: {fileID: 0}
   maxAmmo: 1
   currentAmmo: 0
-  reserveAmmo: 2
+  reserveAmmo: 1
   fireRate: 0.583
   reloadRate: 1.15
+  firePoint: {fileID: 0}
   fireSfx: {fileID: 8300000, guid: a03ede9ab19937043bfe349323376bad, type: 3}
   reloadSfx: {fileID: 0}
-  firePoint: {fileID: 0}
 --- !u!1 &5273937637725021698
 GameObject:
   m_ObjectHideFlags: 0

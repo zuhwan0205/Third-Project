@@ -2,12 +2,21 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public string weaponName;
-    public WeaponType weaponType;
-    protected Animator animator;
+    [Header("무기 기본 세팅")]
+    [SerializeField] protected string weaponName;
+    [SerializeField] protected WeaponType weaponType;
+
+    [SerializeField] protected Vector3 initialPosition;
+
 
     [Header("Audio/VFX")]
     [SerializeField] protected AudioSource audioSource;
+
+    protected Animator animator;
+
+    // 프로퍼티
+    public WeaponType WeaponType => weaponType;
+    public Vector3 InitialPosition => initialPosition;
 
     protected virtual void Awake()
     {
