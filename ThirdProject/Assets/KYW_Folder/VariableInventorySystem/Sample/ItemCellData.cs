@@ -14,6 +14,7 @@ namespace VariableInventorySystem.Sample
         public int Height { get; private set; } // 아이템의 세로 크기
         public bool IsRotate { get; set; }      // 회전 상태
         public IVariableInventoryAsset ImageAsset { get; }  // 아이템 이미지
+        public string Name { get; private set; } // 아이템 이름
 
         /// <summary>
         /// 아이템 데이터 생성자
@@ -27,38 +28,47 @@ namespace VariableInventorySystem.Sample
             switch (sampleSeed)
             {
                 case 0:
+                    Name = "권총";
                     Width = 2; Height = 2;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/권총");
                     break;
                 case 1: 
+                    Name = "샷건";
                     Width = 2; Height = 2;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/샷건");
                     break;
                 case 2:
+                    Name = "칼";
                     Width = 2; Height = 2;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/칼");
                     break;
                 case 3: 
+                    Name = "도끼";
                     Width = 2; Height = 2;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/도끼");
                     break;
                 case 4:
+                    Name = "활";
                     Width = 2; Height = 2;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/활");
                     break;
                 case 5:
+                    Name = "총알";
                     Width = 1; Height = 1;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/총알");
                     break;
                 case 6:
+                    Name = "화살";
                     Width = 1; Height = 1;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/화살");
                     break;
                 case 7: 
+                    Name = "포션";
                     Width = 1; Height = 1;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/포션");
                     break;
                 case 8:
+                    Name = "통조림";
                     Width = 1; Height = 1;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/통조림");
                     break;
