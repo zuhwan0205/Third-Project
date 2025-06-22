@@ -40,27 +40,35 @@ public class StopMoveCommand : ICommand
 
 #endregion
 
-#region 스프린트/점프
+#region 스프린트/점프/앉기
 public class SprintStartCommand : ICommand
 {
     private PlayerController player;
     public SprintStartCommand(PlayerController p) {player = p;}
-    public void Execute() {player.StartSprint();}
+    public void Execute() { player.StartSprint(); }
 }
 
 public class SprintEndCommand : ICommand
 {
     private PlayerController player;
     public SprintEndCommand(PlayerController p) {player = p;}
-    public void Execute() {player.StopSprint();}
+    public void Execute() { player.StopSprint(); }
 }
 
 public class JumpCommand : ICommand
 {
     private PlayerController player;
     public JumpCommand(PlayerController p) {player = p;}
-    public void Execute() {player.Jump();}
+    public void Execute() { player.Jump(); }
 }
+
+public class CrouchToggleCommand : ICommand
+{
+    private PlayerController player;
+    public CrouchToggleCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.ToggleCrouch();
+}
+
 #endregion
 
 #region 공격/에임/재장전
@@ -68,27 +76,41 @@ public class AttackCommand : ICommand
 {
     private PlayerController player;
     public AttackCommand(PlayerController p) {player = p;}
-    public void Execute() {player.Attack();}
+    public void Execute() => player.Attack();
 }
 
 public class AimStartCommand : ICommand
 {
     private PlayerController player;
     public AimStartCommand(PlayerController p) {player = p;}
-    public void Execute() {player.AimStart();}
+    public void Execute() => player.AimStart();
 }
 
 public class AimEndCommand : ICommand
 {
     private PlayerController player;
     public AimEndCommand(PlayerController p) {player = p;}
-    public void Execute() {player.AimEnd();}
+    public void Execute() => player.AimEnd();
 }
 
 public class ReloadCommand : ICommand
 {
     private PlayerController player;
     public ReloadCommand(PlayerController p) {player = p;}
-    public void Execute() {player.Reload();}
+    public void Execute() => player.Reload();
 }
 #endregion 
+
+
+#region 상호작용
+
+public class InteractionCommand : ICommand
+{
+    private PlayerController player;
+    public InteractionCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.Interaction();
+}
+
+#endregion
+
+
