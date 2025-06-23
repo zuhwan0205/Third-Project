@@ -1040,8 +1040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: "\uC0F7\uAC74"
-  weaponType: 4
-  initialPosition: {x: 0, y: 0, z: 0}
+  weaponType: 5
+  initialPosition: {x: 0.02, y: 0.03, z: 0}
   audioSource: {fileID: 0}
   maxAmmo: 2
   currentAmmo: 2

@@ -114,3 +114,34 @@ public class InteractionCommand : ICommand
 #endregion
 
 
+#region 아이템 슬롯
+public class QuickSlotOneCommand : ICommand
+{
+    private PlayerController player;
+    public QuickSlotOneCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.SelectItemSlot(1);
+}
+
+public class QuickSlotTwoCommand : ICommand
+{
+    private PlayerController player;
+    public QuickSlotTwoCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.SelectItemSlot(2);
+}
+
+public class QuickSlotThreeCommand : ICommand
+{
+    private PlayerController player;
+    public QuickSlotThreeCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.SelectItemSlot(3);
+}
+
+public class QuickSlotFourCommand : ICommand
+{
+    private PlayerController player;
+    public QuickSlotFourCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.SelectItemSlot(4);
+}
+
+#endregion
+
