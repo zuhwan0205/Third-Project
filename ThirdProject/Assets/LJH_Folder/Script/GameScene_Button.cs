@@ -1,16 +1,24 @@
+using System;
 using UnityEngine;
 
 public class GameScene_Button : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private Animator pushNoBtn;
+    [SerializeField] private Animator pushYesBtn;
+
     void Start()
     {
-        
+        PushNoButton();
+        PushYesButton();
     }
 
-    // Update is called once per frame
-    void Update()
+    void PushNoButton()
     {
-        
+        pushNoBtn.SetTrigger("PushNo");
+    }
+
+    void PushYesButton()
+    {
+        pushYesBtn.SetTrigger("PushYes");
     }
 }
