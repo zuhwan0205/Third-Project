@@ -88,7 +88,7 @@ public class LobbyScene : MonoBehaviour
                 var memberItemComponent = memberItem.GetComponent<MemberItem>();
                 if (memberItemComponent != null)
                 {
-                    memberItemComponent.Setup(player);
+                    memberItemComponent.Setup(runner, player);
                 }
             }
         }
