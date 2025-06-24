@@ -10,7 +10,12 @@ public enum PoolKey
     ShortSword,
     Pistol,
     Shotgun,
-    Bow
+    Bow,
+    AxeArm,
+    ShortSwordArm,
+    PistolArm,
+    ShotgunArm,
+    BowArm,
     // 추가 아이템
 }
 

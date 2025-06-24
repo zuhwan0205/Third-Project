@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
+    // 허기
+    // [SerializeField] private float 
 
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
@@ -80,10 +82,11 @@ public class PlayerController : MonoBehaviour
         input.BindKeyDownCommand(KeyCode.R, new ReloadCommand(this));
         input.BindKeyDownCommand(KeyCode.E, new InteractionCommand(this));
         input.BindKeyDownCommand(KeyCode.LeftControl, new CrouchToggleCommand(this));
-        input.BindKeyDownCommand(KeyCode.Alpha1, new QuickSlotOneCommand(this));
-        input.BindKeyDownCommand(KeyCode.Alpha2, new QuickSlotTwoCommand(this));
-        input.BindKeyDownCommand(KeyCode.Alpha3, new QuickSlotThreeCommand(this));
-        input.BindKeyDownCommand(KeyCode.Alpha4, new QuickSlotFourCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha1, new AxeQuickSlotCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha2, new ShortSwordQuickSlotCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha3, new PistolQuickSlotCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha4, new ShotgunQuickSlotCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha5, new BowQuickSlotCommand(this));
 
         // KeyUp
         input.BindKeyUpCommand(KeyCode.LeftShift, new SprintEndCommand(this));
@@ -302,8 +305,10 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log($"{slotIndex}가 눌려짐");
         // 슬롯에 무기가 있는가?
+        if (weaponController.ownedWeapons[slotIndex] == false) return;
 
         // 무기가 있으면 장착
+        weaponController.EquipWeaponByIndex(slotIndex);
     }
 
     #endregion

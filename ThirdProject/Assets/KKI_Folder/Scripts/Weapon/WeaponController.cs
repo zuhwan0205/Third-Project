@@ -2,45 +2,62 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    public static WeaponController Instance;
     public WeaponType currentWeaponType;
     public Weapon currentWeapon;
 
     public Weapon[] weaponPrefabs;
+    public bool[] ownedWeapons;
     public Transform weaponPos;
+
+    private int currentWeaponIdx;
 
     private void Start()
     {
         currentWeaponType = WeaponType.None;
+
+        ownedWeapons = new bool[5];
+        currentWeaponIdx = -1;
     }
 
-    private void Update()
-    {
-        // 디버그용 테스트
-        if (Input.GetKeyDown(KeyCode.Comma))    EquipWeaponByIndex(0);
-        if (Input.GetKeyDown(KeyCode.Home))     EquipWeaponByIndex(1);
-        if (Input.GetKeyDown(KeyCode.End))      EquipWeaponByIndex(2);
-        if (Input.GetKeyDown(KeyCode.PageDown)) EquipWeaponByIndex(3);
-        if (Input.GetKeyDown(KeyCode.PageUp))   EquipWeaponByIndex(4);
-    }
-
-    private void EquipWeaponByIndex(int idx)
+    public void EquipWeaponByIndex(int idx)
     {
         if (weaponPrefabs == null || weaponPrefabs.Length <= idx || weaponPos == null)
             return;
 
+        // 같은 무기의 번호를 누르면 장비해제
+        if (currentWeaponIdx == idx) 
+        {
+            ReturnToPool();
+            currentWeaponIdx = -1;
+            return;
+        }
+        
+        // 무기 반환
         if (currentWeapon != null)
-            Destroy(currentWeapon.gameObject);
-
-        Weapon weaponObj = Instantiate(weaponPrefabs[idx], weaponPos.transform);
-        weaponObj.transform.localPosition = weaponObj.InitialPosition;
-        weaponObj.transform.localRotation = Quaternion.identity;
-        SetWeapon(weaponObj);
+            ReturnToPool();
+        
+        // 무기 생성
+        PoolKey poolKey = weaponPrefabs[idx].PoolKey;
+        if (ObjectPoolManager.Instance.TryGetObject<Weapon>(poolKey, out var weaponObj))
+        {
+            weaponObj.transform.parent = weaponPos;
+            weaponObj.transform.localPosition = weaponObj.InitialPosition;
+            weaponObj.transform.localRotation = Quaternion.identity;
+            SetWeapon(weaponObj);
+        }
+        currentWeaponIdx = idx;
     }
 
-    public void SetWeapon(Weapon _weapon)
+    private void SetWeapon(Weapon _weapon)
     {
         currentWeapon = _weapon;
         currentWeaponType = _weapon.WeaponType;
+    }
+
+    public void ReturnToPool()
+    {
+        ObjectPoolManager.Instance.ReturnObject(currentWeapon.PoolKey, currentWeapon.gameObject);
     }
 
     public void Attack() => currentWeapon?.Attack();
