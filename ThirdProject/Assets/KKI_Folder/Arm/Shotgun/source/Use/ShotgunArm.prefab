@@ -151,7 +151,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7051596390515958792, guid: 154a11fc181b4f940ae5eaa57be57425, type: 3}
+  - {fileID: 2100000, guid: 05f8392219111fb4cb0e2c772935690d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,7 +343,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7051596390515958792, guid: 154a11fc181b4f940ae5eaa57be57425, type: 3}
+  - {fileID: 2100000, guid: 05f8392219111fb4cb0e2c772935690d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -470,7 +470,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7051596390515958792, guid: 154a11fc181b4f940ae5eaa57be57425, type: 3}
+  - {fileID: 2100000, guid: 05f8392219111fb4cb0e2c772935690d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1040,8 +1040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: "\uC0F7\uAC74"
-  weaponType: 4
-  initialPosition: {x: 0, y: 0, z: 0}
+  weaponType: 5
+  initialPosition: {x: 0.02, y: 0.03, z: 0}
   audioSource: {fileID: 0}
   maxAmmo: 2
   currentAmmo: 2
@@ -1327,7 +1327,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1620758127226173791, guid: 154a11fc181b4f940ae5eaa57be57425, type: 3}
+  - {fileID: 2100000, guid: b66ba10903672904f9464621771413e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1584,7 +1584,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7051596390515958792, guid: 154a11fc181b4f940ae5eaa57be57425, type: 3}
+  - {fileID: 2100000, guid: 05f8392219111fb4cb0e2c772935690d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -14,24 +14,59 @@ public class LobbyManager : NetworkBehaviour
         Instance = this;
     }
 
+    public override void Spawned()
+    {
+        
+        if (Runner != null && Runner.IsServer)
+        {
+            readyStates[Runner.LocalPlayer] = true;
+            CheckAllReady();
+        }
+    }
+    
     [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)]
     public void RPC_SetReady(PlayerRef player)
     {
-        Debug.Log($"[LobbyManager] Ready 받음: {player}");
         readyStates[player] = true;
+        
+        CheckAllReady();
+    }
 
+    private void CheckAllReady()
+    {
         if (AllReady())
         {
-            Debug.Log("[LobbyManager] 모든 플레이어가 Ready 상태");
-            LobbyUIManager.Instance.EnableStartButton(true);
+            if (LobbyUIManager.Instance != null)
+            {
+                LobbyUIManager.Instance.EnableStartButton(true);
+            }
+        }
+        else
+        {
+            Debug.Log($"[LobbyManager] Waiting for more players. Ready: {readyStates.Count(kv => kv.Value)}/{Runner.ActivePlayers.Count()}");
         }
     }
 
     private bool AllReady()
     {
-        if (readyStates.Count != Runner.ActivePlayers.Count()-1)
+        var activePlayers = Runner.ActivePlayers.ToList();
+        
+        if (activePlayers.Count == 0)
             return false;
-
-        return Runner.ActivePlayers.All(p => readyStates.ContainsKey(p) && readyStates[p]);
+        
+        bool allReady = activePlayers.All(player => 
+            readyStates.ContainsKey(player) && readyStates[player]);
+        
+        
+        return allReady;
+    }
+    
+    public void OnPlayerLeft(PlayerRef player)
+    {
+        if (readyStates.ContainsKey(player))
+        {
+            readyStates.Remove(player);
+            CheckAllReady();
+        }
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
@@ -37,9 +36,11 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
     private Vector3 velocity;
 
-
+    // 점프 관련 변수
     private float jumpBufferTime = 0.2f, jumpBufferCounter = 0f;
     private float groundedGraceTime = 0.15f, groundedCounter = 0f;
+
+    
     private CharacterController characterController;
     public CameraShake cameraShake { get; private set; }
     public WeaponController weaponController { get; private set; }
@@ -79,6 +80,10 @@ public class PlayerController : MonoBehaviour
         input.BindKeyDownCommand(KeyCode.R, new ReloadCommand(this));
         input.BindKeyDownCommand(KeyCode.E, new InteractionCommand(this));
         input.BindKeyDownCommand(KeyCode.LeftControl, new CrouchToggleCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha1, new QuickSlotOneCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha2, new QuickSlotTwoCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha3, new QuickSlotThreeCommand(this));
+        input.BindKeyDownCommand(KeyCode.Alpha4, new QuickSlotFourCommand(this));
 
         // KeyUp
         input.BindKeyUpCommand(KeyCode.LeftShift, new SprintEndCommand(this));
@@ -287,6 +292,18 @@ public class PlayerController : MonoBehaviour
     public void Interaction()
     {
         playerInteraction.Interaction();
+    }
+
+    #endregion
+
+
+    #region 아이템 슬롯
+    public void SelectItemSlot(int slotIndex)
+    {
+        Debug.Log($"{slotIndex}가 눌려짐");
+        // 슬롯에 무기가 있는가?
+
+        // 무기가 있으면 장착
     }
 
     #endregion

@@ -1,13 +1,15 @@
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
     [SerializeField] private LayerMask interactMask;    
     [SerializeField] private GameObject cursor;
+    public Text interactionText;
 
     private bool bInteract;
+    private bool bText;
     private IInteractable currentInteractable;
     private Animator cursorAnimator;
 
@@ -28,24 +30,27 @@ public class PlayerInteraction : MonoBehaviour
 
             if (currentInteractable != null)
             {
+                Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
                 bInteract = true;
                 // 애니메이션 작용
                 cursorAnimator.SetBool("bZoom", true);
 
                 // UI에 currentInteractable.GetInteractText() 표시
-
+                InteractionTextSetting(true, currentInteractable.GetInteractText());
             }
             else
             {
                 bInteract = false;
                 cursorAnimator.SetBool("bZoom", false);
+                InteractionTextSetting(false);
             }
         }   
         else 
         {
-            bInteract = true;
-            cursorAnimator.SetBool("bZoom", false);
+            bInteract = false;
             currentInteractable = null;
+            cursorAnimator.SetBool("bZoom", false);
+            InteractionTextSetting(false);
         }
     }
 
@@ -53,8 +58,16 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (currentInteractable == null || bInteract == false) return; 
 
-        currentInteractable.Interact(this);
-        // 상호작용 하면 되는데.... 
+        currentInteractable.Interact();
+    }
+
+    private void InteractionTextSetting(bool flag, string interactionText = null)
+    {
+        if (bText == flag) return;
+        bText = flag;
+        this.interactionText.gameObject.SetActive(flag);
+        if(interactionText != null)
+            this.interactionText.text = interactionText;
     }
 
 
