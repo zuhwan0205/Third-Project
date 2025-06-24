@@ -2,6 +2,12 @@ using System.Collections;
 using UnityEngine;
 
 
+public class WeaponSaveData
+{
+    public int currentAmmo;
+    public int reseverAmmon;
+}
+
 public abstract class RangeWeapon : Weapon
 {
     [SerializeField] protected int maxAmmo;

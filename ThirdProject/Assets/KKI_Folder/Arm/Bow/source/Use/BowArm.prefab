@@ -1631,8 +1631,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d3095bd670a1c47b2f6da07871c8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolKey: 12
   weaponName: "\uD65C"
-  weaponType: 2
+  weaponType: 3
   initialPosition: {x: -0.23, y: -0.1, z: 0}
   audioSource: {fileID: 0}
   maxAmmo: 1
