@@ -3,12 +3,15 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Fusion.Photon.Realtime;
 
 public class UIManager : MonoBehaviour
 {
     private NetworkRunner runner;
     [SerializeField] private GameObject SettingPanel;
-    
+    private bool isShutdownComplete = false;
+    private const string PREF_KEY = "PlayerNickname";
+    public string nickname;
     
 
     void OnEnable()
@@ -32,14 +35,12 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         runner = NetworkRunnerHandler.Instance.GetRunner();
+        
+        nickname = PlayerPrefs.GetString(PREF_KEY, "Player");
     }
 
-    private void LobbyButton()
+    private async void LobbyButton()
     {
-        if (runner != null && runner.IsRunning)
-        {
-            runner.Shutdown();
-        }
         StartCoroutine(StartHostAndLoadLobby());
     }
     
@@ -66,97 +67,102 @@ public class UIManager : MonoBehaviour
     
     IEnumerator StartHostAndLoadLobby()
     {
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
         int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/LobbyScene.unity"); // 또는 직접 숫자
         var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
+        var sceneInfo = new NetworkSceneInfo();
 
-        var startGameArgs = new StartGameArgs()
+        var startGameTask = runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,
             SessionName = "GameLobby",
             Scene = scene,
-            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
-        };
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            AuthValues    = new AuthenticationValues { UserId = nickname }
+        });
         
-        var startGameTask = runner.StartGame(startGameArgs);
 
         yield return new WaitUntil(() => runner.IsRunning);
 
-        yield return new WaitForSeconds(0.5f);
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
         //SceneManager.LoadScene("LobbyScene");
     }
     
     IEnumerator test1()
     {
-        if (runner != null && runner.IsRunning)
-        {
-            runner.Shutdown();
-            yield return new WaitForSeconds(0.5f); // 종료 대기
-        }
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
-        int sceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/JDHScene.unity");
-        var scene = SceneRef.FromIndex(sceneBuildIndex);
+        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/JDHScene.unity"); // 또는 직접 숫자
+        var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
+        var sceneInfo = new NetworkSceneInfo();
 
         var startGameTask = runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,
-            SessionName = "JDH_Test",
+            SessionName = "test1",
             Scene = scene,
-            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? 
-                           runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+        
 
         yield return new WaitUntil(() => runner.IsRunning);
+
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
         //SceneManager.LoadScene("LobbyScene");
     }
     
     IEnumerator test2()
     {
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
-        if (runner != null && runner.IsRunning)
-        {
-            runner.Shutdown();
-            yield return new WaitForSeconds(0.5f); // 종료 대기
-        }
-        
-        int sceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/KKI_TestScene.unity");
-        var scene = SceneRef.FromIndex(sceneBuildIndex);
+        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/KKI_TestScene.unity"); // 또는 직접 숫자
+        var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
+        var sceneInfo = new NetworkSceneInfo();
 
         var startGameTask = runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,
-            SessionName = "KKI_Test",
+            SessionName = "test2",
             Scene = scene,
-            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? 
-                           runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+        
 
         yield return new WaitUntil(() => runner.IsRunning);
+
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
         //SceneManager.LoadScene("LobbyScene");
     }
     
     IEnumerator test3()
     {
+        Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
-        if (runner != null && runner.IsRunning)
-        {
-            runner.Shutdown();
-            yield return new WaitForSeconds(0.5f); // 종료 대기
-        }
-        
-        int sceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/KYW_Inventory.unity");
-        var scene = SceneRef.FromIndex(sceneBuildIndex);
+        int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/KYW_Inventory.unity"); // 또는 직접 숫자
+        var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
+        var sceneInfo = new NetworkSceneInfo();
 
         var startGameTask = runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,
-            SessionName = "KYW_Test",
+            SessionName = "test3",
             Scene = scene,
-            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? 
-                           runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+        
 
         yield return new WaitUntil(() => runner.IsRunning);
+
+        Debug.Log("[LoadingScene] Host started → MainScene 이동");
+
+        yield return new WaitForSeconds(1f);
         //SceneManager.LoadScene("LobbyScene");
     }
 }
