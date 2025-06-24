@@ -12,6 +12,11 @@ public class WeaponController : MonoBehaviour
 
     private int currentWeaponIdx;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         currentWeaponType = WeaponType.None;
