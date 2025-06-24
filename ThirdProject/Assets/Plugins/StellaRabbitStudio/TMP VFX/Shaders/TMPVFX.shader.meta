@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: a25280eec72148346bcb5abf865768ec
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _FaceTex: {instanceID: 0}
+  - _OutlineTex: {instanceID: 0}
+  - _BumpMap: {instanceID: 0}
+  - _Cube: {instanceID: 0}
+  - _MainTex: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 303031
+  packageName: Glitch TMP VFX Pack - TextMeshPro
+  packageVersion: 1.2
+  assetPath: Assets/Plugins/StellaRabbitStudio/TMP VFX/Shaders/TMPVFX.shader
+  uploadId: 724110

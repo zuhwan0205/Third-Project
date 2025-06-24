@@ -113,10 +113,8 @@ public class GameManager : NetworkBehaviour
     
     private void OnGameStarted()
     {
-        // 여기에 게임 시작 로직 추가
-        // - UI 활성화
-        // - 게임 타이머 시작
-        // - 플레이어 입력 활성화 등
+        Debug.Log("GameManager On GameStart");
+        RoomManager.Instance?.StartIntroSequence();
     }
     
     public void OnPlayerLeft(PlayerRef player)
