@@ -18,35 +18,59 @@ public class LobbyUIManager : MonoBehaviour
 
     void Start()
     {
-        runner = FindObjectOfType<NetworkRunner>();
+        runner = FindFirstObjectByType<NetworkRunner>();
+        
+        if (runner == null)
+        {
+            Debug.LogError("[LobbyUIManager] NetworkRunner not found!");
+            return;
+        }
 
         bool isHost = runner.IsServer;
-
-        startButton.gameObject.SetActive(isHost);   // 호스트만 Start 버튼
-        readyButton.gameObject.SetActive(!isHost);  // 클라이언트만 Ready 버튼
+        
+        startButton.gameObject.SetActive(isHost);
+        readyButton.gameObject.SetActive(!isHost);
+        
+        if (isHost)
+        {
+            startButton.interactable = false;
+        }
     }
 
     public void OnReadyClicked()
     {
-        var lobbyManager = FindObjectOfType<LobbyManager>();
+        var lobbyManager = FindFirstObjectByType<LobbyManager>();
+        
         if (lobbyManager != null)
         {
             lobbyManager.RPC_SetReady(runner.LocalPlayer);
             readyButton.interactable = false;
+            readyButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Ready!";
+        }
+        else
+        {
+            Debug.LogError("[LobbyUIManager] LobbyManager not found!");
         }
     }
 
     public void EnableStartButton(bool enable)
     {
-        if (runner.IsServer)
+        if (runner != null && runner.IsServer)
+        {
             startButton.interactable = enable;
+        }
     }
 
     public void OnStartClicked()
     {
-        if (runner.IsServer)
+        if (runner != null && runner.IsServer)
         {
             runner.LoadScene("LeeScene");
+            startButton.interactable = false;
+        }
+        else
+        {
+            Debug.LogError("[LobbyUIManager] Only host can start the game!");
         }
     }
 }
