@@ -26,7 +26,7 @@ public class Bow : RangeWeapon
         if (isReloading) return;
 
         PlayFire();
-        // FireProjectile(firePoint, 1, 0f, PoolKey.Arrow);
+        FireProjectile(firePoint, 1, 0f, PoolKey.Arrow);
         EndFire();
     }
 
