@@ -114,32 +114,39 @@ public class InteractionCommand : ICommand
 #endregion
 
 
-#region 아이템 슬롯
-public class QuickSlotOneCommand : ICommand
+#region 퀵 슬롯
+public class AxeQuickSlotCommand : ICommand
 {
     private PlayerController player;
-    public QuickSlotOneCommand(PlayerController player) { this.player = player; }
+    public AxeQuickSlotCommand(PlayerController player) { this.player = player; }
+    public void Execute() => player.SelectItemSlot(0);
+}
+
+public class ShortSwordQuickSlotCommand : ICommand
+{
+    private PlayerController player;
+    public ShortSwordQuickSlotCommand(PlayerController player) { this.player = player; }
     public void Execute() => player.SelectItemSlot(1);
 }
 
-public class QuickSlotTwoCommand : ICommand
+public class PistolQuickSlotCommand : ICommand
 {
     private PlayerController player;
-    public QuickSlotTwoCommand(PlayerController player) { this.player = player; }
+    public PistolQuickSlotCommand(PlayerController player) { this.player = player; }
     public void Execute() => player.SelectItemSlot(2);
 }
 
-public class QuickSlotThreeCommand : ICommand
+public class ShotgunQuickSlotCommand : ICommand
 {
     private PlayerController player;
-    public QuickSlotThreeCommand(PlayerController player) { this.player = player; }
+    public ShotgunQuickSlotCommand(PlayerController player) { this.player = player; }
     public void Execute() => player.SelectItemSlot(3);
 }
 
-public class QuickSlotFourCommand : ICommand
+public class BowQuickSlotCommand : ICommand
 {
     private PlayerController player;
-    public QuickSlotFourCommand(PlayerController player) { this.player = player; }
+    public BowQuickSlotCommand(PlayerController player) { this.player = player; }
     public void Execute() => player.SelectItemSlot(4);
 }
 

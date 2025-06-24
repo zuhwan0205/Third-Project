@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [Header("무기 기본 세팅")]
+    [SerializeField] protected PoolKey poolKey;
     [SerializeField] protected string weaponName;
     [SerializeField] protected WeaponType weaponType;
 
@@ -15,6 +16,8 @@ public abstract class Weapon : MonoBehaviour
     protected Animator animator;
 
     // 프로퍼티
+    public PoolKey PoolKey => poolKey;
+    public string WeaponName => weaponName;
     public WeaponType WeaponType => weaponType;
     public Vector3 InitialPosition => initialPosition;
 

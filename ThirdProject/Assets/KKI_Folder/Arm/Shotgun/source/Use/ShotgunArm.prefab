@@ -1039,6 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db75924f4640a049b4863e74a3c5bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolKey: 11
   weaponName: "\uC0F7\uAC74"
   weaponType: 5
   initialPosition: {x: 0.02, y: 0.03, z: 0}

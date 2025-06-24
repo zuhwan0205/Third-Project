@@ -552,6 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c0f8770e2b62646a50cf9f09153164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolKey: 8
   weaponName: "\uB3C4\uB07C"
   weaponType: 1
   initialPosition: {x: -0.03, y: 0, z: -0.05}
