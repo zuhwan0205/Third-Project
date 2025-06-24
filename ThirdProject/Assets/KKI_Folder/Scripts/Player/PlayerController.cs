@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
@@ -6,30 +7,44 @@ public class PlayerController : MonoBehaviour
 {
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth;
+
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float groundCheckDistance = 3;
     [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float mouseSensitivity = 2f;
+    [SerializeField] private float crouchHeight = 1.0f;
+    [SerializeField] private float standHeight = 2.0f;
+    [SerializeField] private float crouchSpeed = 2.5f;
 
-    [Header("카메라")]
+    [Header("카메라 / 민감도")]
     [SerializeField] private Transform cameraTransform;
-
+    [SerializeField] private float mouseSensitivity = 2f;
+    
+    [SerializeField] private float cameraCrouchHeight;
+    [SerializeField] private float cameraStandHeight;
     [Header("UI")]
     [SerializeField] private Text healthText;
 
-    private float currentHealth;
+
+    // 캐릭터 스탯
     private float moveSpeed;
-    private float xRotation = 0f;
     private bool isSprinting = false;
+    private bool isCrouching = false;
+
+    // 카메라 회전
+    private float xRotation = 0f;
     private Vector3 velocity;
+
+
     private float jumpBufferTime = 0.2f, jumpBufferCounter = 0f;
     private float groundedGraceTime = 0.15f, groundedCounter = 0f;
     private CharacterController characterController;
     public CameraShake cameraShake { get; private set; }
     public WeaponController weaponController { get; private set; }
     private InputManager input;
+    private PlayerInteraction playerInteraction;
 
     // 프로퍼티
     public float Health => currentHealth;
@@ -42,6 +57,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         input = GetComponent<InputManager>();
+        playerInteraction = GetComponent<PlayerInteraction>();
         characterController = GetComponent<CharacterController>();
         cameraShake = Camera.main?.GetComponent<CameraShake>();
         weaponController = GetComponent<WeaponController>();
@@ -61,6 +77,8 @@ public class PlayerController : MonoBehaviour
         input.BindKeyDownCommand(KeyCode.Mouse0, new AttackCommand(this));
         input.BindKeyDownCommand(KeyCode.Mouse1, new AimStartCommand(this));
         input.BindKeyDownCommand(KeyCode.R, new ReloadCommand(this));
+        input.BindKeyDownCommand(KeyCode.E, new InteractionCommand(this));
+        input.BindKeyDownCommand(KeyCode.LeftControl, new CrouchToggleCommand(this));
 
         // KeyUp
         input.BindKeyUpCommand(KeyCode.LeftShift, new SprintEndCommand(this));
@@ -83,10 +101,11 @@ public class PlayerController : MonoBehaviour
         JumpCheck();
         HandleLook();
     }
+
     #endregion
 
 
-    #region 이동/스프린트/점프
+    #region 이동/스프린트/점프/앉기
 
     public void MoveLeft()    { Move(Vector2.left); }
     public void MoveRight()   { Move(Vector2.right); }
@@ -181,8 +200,37 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(rayEnd, 0.03f);
     }
 
-    #endregion
+    public void ToggleCrouch()
+    {
+        if (isCrouching)
+            StandUp();
+        else 
+            Crouch();
+    }
 
+    private void Crouch()
+    {
+        isCrouching = true;
+        characterController.height = crouchHeight;
+        moveSpeed = crouchSpeed;
+
+        // 카메라도 낮춰 시점이 자연스럽게
+        if (cameraTransform != null)
+            cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, cameraCrouchHeight, cameraTransform.localPosition.z);
+
+    }
+
+    private void StandUp()
+    {
+        isCrouching = false;
+        characterController.height = standHeight;
+        moveSpeed = walkSpeed;
+
+        if (cameraTransform != null)
+            cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, cameraStandHeight, cameraTransform.localPosition.z); // 예시값
+    }
+
+    #endregion
 
     #region 카메라/마우스
     public void HandleLook()
@@ -234,4 +282,12 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 상호작용
+
+    public void Interaction()
+    {
+        playerInteraction.Interaction();
+    }
+
+    #endregion
 }
