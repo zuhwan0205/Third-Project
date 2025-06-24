@@ -77,7 +77,7 @@ public abstract class RangeWeapon : Weapon
                 dir = spreadRot * baseDir;
             }
 
-            if (ObjectPoolManager.Instance.TryGetObject<Bullet>(poolKey, out var projectile))
+            if (ObjectPoolManager.Instance.TryGetObject<Projectile>(poolKey, out var projectile))
             {
                 projectile.OnSpawn(firePoint, dir);
             }
