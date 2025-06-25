@@ -497,7 +497,7 @@ MonoBehaviour:
   crouchHeight: 1.5
   standHeight: 3
   crouchSpeed: 2.5
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 7549821734909135284}
   cameraTransform: {fileID: 4633097178658611543}
   mouseSensitivity: 2
   cameraCrouchHeight: 0
