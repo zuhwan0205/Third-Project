@@ -50,16 +50,12 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.R))
-        // {
-        //     standardCore.SwitchRotate();
-        // }
-
-        // I 키를 눌러 인벤토리 토글
+        //I 키를 눌러 인벤토리 토글
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
         }
+        /*
 
         // 숫자키 1-9를 눌러 해당 타입의 아이템 삭제
         for (int i = 0; i < 9; i++)
@@ -91,6 +87,7 @@ public class InventoryManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.U)) InsertNewItem(itemNames[6]);
         else if (Input.GetKeyDown(KeyCode.P)) InsertNewItem(itemNames[7]);
         else if (Input.GetKeyDown(KeyCode.O)) InsertNewItem(itemNames[8]);
+        */
     }
 
     // 인벤토리 토글 함수
