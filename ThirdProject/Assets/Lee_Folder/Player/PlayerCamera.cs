@@ -54,6 +54,12 @@ public class PlayerCamera : NetworkBehaviour
         }
     }
     
+    public Transform GetCameraTransform()
+    {
+        return playerCam.transform;
+    }
+
+    
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         Cursor.lockState = CursorLockMode.None;

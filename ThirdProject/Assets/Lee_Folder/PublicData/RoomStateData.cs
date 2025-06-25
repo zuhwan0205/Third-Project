@@ -2,5 +2,5 @@
 public class RoomStateData
 {
     public bool hasAnswered = false;
-    public bool isAlive = true;
+    public bool isAlive = false;
 }
