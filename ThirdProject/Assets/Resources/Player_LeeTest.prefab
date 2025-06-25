@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8086967670312863971}
   - component: {fileID: 1632901486430023884}
   - component: {fileID: 6544682899751834163}
+  - component: {fileID: -2427471217603240611}
   m_Layer: 0
   m_Name: Player_LeeTest
   m_TagString: Untagged
@@ -136,6 +137,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8086967670312863971}
   - {fileID: 1632901486430023884}
+  - {fileID: -2427471217603240611}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &8086967670312863971
 MonoBehaviour:
@@ -194,6 +196,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &-2427471217603240611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2932413660185775607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b6ecbf5223b0748b3136c0c1507ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3305746821394650382
 GameObject:
   m_ObjectHideFlags: 0
