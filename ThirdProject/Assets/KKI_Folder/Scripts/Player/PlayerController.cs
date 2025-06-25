@@ -304,6 +304,7 @@ public class PlayerController : MonoBehaviour
     public void SelectItemSlot(int slotIndex)
     {
         Debug.Log($"{slotIndex}가 눌려짐");
+        Debug.Log($"ownedWeapons[{slotIndex}] = {weaponController.ownedWeapons[slotIndex]}");
         // 슬롯에 무기가 있는가?
         if (weaponController.ownedWeapons[slotIndex] == false) return;
 
