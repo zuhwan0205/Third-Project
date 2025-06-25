@@ -124,6 +124,8 @@ public class PlayerController : NetworkBehaviour
 
     private void Update()
     {
+        if (!Object.HasInputAuthority) return;
+
         JumpCheck();
         HandleLook();
     }
@@ -139,8 +141,9 @@ public class PlayerController : NetworkBehaviour
 
     private void Move(Vector2 direction)
     {
+        Debug.Log("Move 함수 실행중");
         Vector3 move = transform.right * direction.x + transform.forward * direction.y;
-        characterController.Move(move.normalized * moveSpeed * Time.deltaTime);
+        characterController.Move(move.normalized * moveSpeed * Runner.DeltaTime);
         weaponController?.Move(true);
     }
 
@@ -329,4 +332,8 @@ public class PlayerController : NetworkBehaviour
     }
 
     #endregion
+
+
+
+
 }

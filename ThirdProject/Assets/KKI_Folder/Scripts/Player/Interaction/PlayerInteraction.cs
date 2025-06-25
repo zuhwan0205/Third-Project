@@ -1,24 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : NetworkBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
     [SerializeField] private LayerMask interactMask;    
-    [SerializeField] private GameObject cursor;
     public Text interactionText;
 
     private bool bInteract;
     private bool bText;
     private IInteractable currentInteractable;
-    private Animator cursorAnimator;
-
-    void Start()
-    {
-        cursorAnimator = cursor.GetComponent<Animator>();
-    }
 
     void Update()
+    {
+        if (!Object.HasInputAuthority) return;
+        
+        CheckForInteractable();
+    }
+
+    private void CheckForInteractable()
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
@@ -33,7 +34,7 @@ public class PlayerInteraction : MonoBehaviour
                 Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
                 bInteract = true;
                 // 애니메이션 작용
-                cursorAnimator.SetBool("bZoom", true);
+                CursorManager.Instance.SetZoom(true);
 
                 // UI에 currentInteractable.GetInteractText() 표시
                 InteractionTextSetting(true, currentInteractable.GetInteractText());
@@ -41,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour
             else
             {
                 bInteract = false;
-                cursorAnimator.SetBool("bZoom", false);
+                CursorManager.Instance.SetZoom(false);
                 InteractionTextSetting(false);
             }
         }   
@@ -49,7 +50,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             bInteract = false;
             currentInteractable = null;
-            cursorAnimator.SetBool("bZoom", false);
+            CursorManager.Instance.SetZoom(false);
             InteractionTextSetting(false);
         }
     }

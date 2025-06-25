@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
 
-public class InputManager : MonoBehaviour
+public class InputManager : NetworkBehaviour
 {
     private Dictionary<KeyCode, ICommand> keyDownCommandMap = new();
     private Dictionary<KeyCode, ICommand> keyUpCommandMap = new();
@@ -15,8 +16,10 @@ public class InputManager : MonoBehaviour
     public void BindKeyHoldCommand(KeyCode key, ICommand command) => keyHoldCommandMap[key] = command;
 
 
-    void Update()
+    public override void FixedUpdateNetwork()
     {
+        if (HasStateAuthority == false) return;
+
         foreach (var pair in keyDownCommandMap)
             if (Input.GetKeyDown(pair.Key)) pair.Value.Execute();
 
@@ -27,4 +30,6 @@ public class InputManager : MonoBehaviour
             if (Input.GetKey(pair.Key)) pair.Value.Execute();
     }
 
+
+    
 }
