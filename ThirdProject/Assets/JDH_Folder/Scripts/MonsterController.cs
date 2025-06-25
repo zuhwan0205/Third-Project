@@ -2,17 +2,28 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    public float moveSpeed = 2f;              // 이동 속도
-    public float stopDistance = 1.2f;         // 멈추는 거리
-    public float attackDistance = 1.2f;       // 공격 거리
-    public float attackCooldown = 2f;         // 공격 쿨타임
+    [Header("Movement")]
+    public float moveSpeed = 2f;
+    public float stopDistance = 1.2f;
+    public float attackDistance = 1.2f;
+    public float attackCooldown = 2f;
 
-    private Transform target;                 // 타겟
-    private Animator animator;                // 애니메이터
-    private float lastAttackTime = 0f;        // 마지막 공격 시간
+    [Header("Health")]
+    public int maxHp = 100;
+    private int currentHp;
+
+    private Transform target;
+    private Animator animator;
+    private float lastAttackTime = 0f;
+
+    private bool isAttacking = false;
+    private bool isHit = false;
+    private bool isDead = false;
 
     void Start()
     {
+        currentHp = maxHp;
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
             target = player.transform;
@@ -22,9 +33,12 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
-        if (target == null) return;
+        if (target == null || isDead || isHit || isAttacking) return;
 
-        float distance = Vector3.Distance(transform.position, target.position);
+        float distance = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
 
         if (distance > stopDistance)
         {
@@ -48,34 +62,79 @@ public class MonsterController : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
 
-        if (animator != null)
-        {
-            animator.SetBool("isWalking", true);
-        }
+        animator?.SetBool("isWalking", true);
     }
 
     void StopMoving()
     {
-        if (animator != null)
-        {
-            animator.SetBool("isWalking", false);
-        }
+        animator?.SetBool("isWalking", false);
     }
 
     void Attack()
     {
-        StopMoving(); // 정지 상태에서만 공격
+        StopMoving();
 
         if (Time.time - lastAttackTime >= attackCooldown)
         {
-            if (animator != null)
-            {
-                animator.SetTrigger("Attack"); // 트리거 한 번만 발동
-            }
-
+            animator?.SetTrigger("Attack");
+            isAttacking = true;
             lastAttackTime = Time.time;
-
-            // 데미지는 애니메이션 이벤트에서 처리 추천
         }
+    }
+
+    public void DealDamage()
+    {
+        if (target == null) return;
+
+        float dist = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
+
+        if (dist <= attackDistance)
+        {
+            PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(10); // 원하는 데미지 수치
+            }
+        }
+    }
+
+    public void EndAttack()
+    {
+        isAttacking = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (isDead) return;
+
+        currentHp -= damage;
+        animator?.SetTrigger("Hit");
+        isHit = true;
+
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void EndHit()
+    {
+        isHit = false;
+    }
+
+    void Die()
+    {
+        isDead = true;
+        StopMoving();
+        animator?.SetTrigger("Die");
+        Destroy(gameObject, 2f);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHp;
     }
 }
