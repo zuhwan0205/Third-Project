@@ -275,8 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c56fa8e837c3c4ea0aceb06c8e3d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  readyButton: {fileID: 0}
+  startButton: {fileID: 3968727364207776374}
+  readyButton: {fileID: 5058026134460840119}
 --- !u!114 &359678744
 MonoBehaviour:
   m_ObjectHideFlags: 0
