@@ -3078,8 +3078,8 @@ GameObject:
   - component: {fileID: 3352195099768848272}
   - component: {fileID: 63342938169483252}
   - component: {fileID: 1549966535487160581}
-  - component: {fileID: 1282876876884634826}
   - component: {fileID: 8715597770657226572}
+  - component: {fileID: 6080784910907803212}
   m_Layer: 20
   m_Name: FridgeItem
   m_TagString: Untagged
@@ -3160,8 +3160,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1282876876884634826
-MeshCollider:
+--- !u!114 &8715597770657226572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631990375606020994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d591294a924954595c5902ebb4771c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: "\uB0C9\uC7A5\uACE0"
+--- !u!65 &6080784910907803212
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3178,23 +3191,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3380468233735203785, guid: 2a83511a782a6aa4dafed1f5a2bd3803, type: 3}
---- !u!114 &8715597770657226572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7631990375606020994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d591294a924954595c5902ebb4771c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: ddd
+  serializedVersion: 3
+  m_Size: {x: 0.91647136, y: 2.4555905, z: 1.0926335}
+  m_Center: {x: 0.004851982, y: 1.2708145, z: -0.0000013411045}
 --- !u!1 &7884097482308787367
 GameObject:
   m_ObjectHideFlags: 0
