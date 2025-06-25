@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private PoolKey poolKey;
     
     [Header("투사체 기본 세팅")]
-    [SerializeField] protected float damage = 25f;
+    [SerializeField] protected int damage = 25;
     [SerializeField] protected float speed = 20f;
     [SerializeField] protected float lifeTime = 5f;
 
@@ -45,7 +45,16 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision other)
     {
-        Debug.Log("ReturnToPool!");
+        var target = other.collider.GetComponent<MonsterController>();
+        if (target != null)
+        {
+            // 데미지 처리
+            target.TakeDamage(damage);
+            Debug.Log("몬스터 데미지 처리!");
+        }
+        else
+            Debug.Log("몬스터 안 맞음!");
+    
         ReturnToPool();
     }
 

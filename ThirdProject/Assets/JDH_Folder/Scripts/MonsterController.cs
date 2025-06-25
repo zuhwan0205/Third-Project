@@ -2,20 +2,23 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    public float moveSpeed = 2f;              // 이동 속도
-    public float stopDistance = 1.2f;         // 멈추는 거리
-    public float attackDistance = 1.2f;       // 공격 거리
-    public float attackCooldown = 2f;         // 공격 쿨타임
+    [Header("Movement")]
+    public float moveSpeed = 2f;
+    public float stopDistance = 1.2f;
+    public float attackDistance = 1.2f;
+    public float attackCooldown = 2f;
 
-    public int maxHp = 100;                   // 최대 체력
-    private int currentHp;                    // 현재 체력
+    [Header("Health")]
+    public int maxHp = 100;
+    private int currentHp;
 
-    private Transform target;                 // 타겟 (플레이어)
-    private Animator animator;                // 애니메이터
-    private float lastAttackTime = 0f;        // 마지막 공격 시간
-    private bool isAttacking = false;         // 공격 중 여부
-    private bool isHit = false;               // 맞는 중 여부
-    private bool isDead = false;              // 죽었는지 여부
+    private Transform target;
+    private Animator animator;
+    private float lastAttackTime = 0f;
+
+    private bool isAttacking = false;
+    private bool isHit = false;
+    private bool isDead = false;
 
     void Start()
     {
@@ -30,10 +33,12 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
-        // 죽었거나, 타겟 없거나, 피격 중이거나 공격 중이면 행동 금지
-        if (target == null || isAttacking || isHit || isDead) return;
+        if (target == null || isDead || isHit || isAttacking) return;
 
-        float distance = Vector3.Distance(transform.position, target.position);
+        float distance = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
 
         if (distance > stopDistance)
         {
@@ -77,54 +82,59 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    // 애니메이션 이벤트에서 호출: 공격 끝
+    public void DealDamage()
+    {
+        if (target == null) return;
+
+        float dist = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
+
+        if (dist <= attackDistance)
+        {
+            PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(10); // 원하는 데미지 수치
+            }
+        }
+    }
+
     public void EndAttack()
     {
         isAttacking = false;
     }
 
-    // 외부에서 데미지 입힘
     public void TakeDamage(int damage)
     {
         if (isDead) return;
 
         currentHp -= damage;
+        animator?.SetTrigger("Hit");
+        isHit = true;
 
-        if (currentHp > 0)
-        {
-            animator?.SetTrigger("Hit");
-            isHit = true;
-        }
-        else
+        if (currentHp <= 0)
         {
             Die();
         }
     }
 
-    // 현재 체력 반환 (UI용)
-    public int GetCurrentHealth() => currentHp;
-
-    void Die()
-    {
-        if (isDead) return;
-
-        StopMoving();
-        isDead = true;
-        animator?.SetTrigger("Die");
-
-        // 죽음 애니메이션 마지막 프레임에 이벤트로 DestroySelf() 호출 가능
-        Destroy(gameObject, 2f); // 예비 처리
-    }
-
-    // 애니메이션 이벤트에서 호출
-    public void DestroySelf()
-    {
-        Destroy(gameObject);
-    }
-
-    // 애니메이션 이벤트에서 호출
     public void EndHit()
     {
         isHit = false;
+    }
+
+    void Die()
+    {
+        isDead = true;
+        StopMoving();
+        animator?.SetTrigger("Die");
+        Destroy(gameObject, 2f);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHp;
     }
 }
