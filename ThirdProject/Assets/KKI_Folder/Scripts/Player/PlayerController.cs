@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchSpeed = 2.5f;
 
     [Header("카메라 / 민감도")]
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 2f;
     
@@ -54,6 +56,24 @@ public class PlayerController : MonoBehaviour
     public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
 
+
+    public override void Spawned()
+    {
+        base.Spawned();
+
+        // 내 플레이어면
+        if (Object.HasInputAuthority)
+        {
+            // MainCamera 태그 할당
+            playerCamera.tag = "MainCamera";
+            playerCamera.enabled = true;
+        }
+        else
+        {
+            // 남의 플레이어 카메라 비활성화
+            playerCamera.enabled = false;
+        }
+    }
 
 
     #region 유니티 생명주기
@@ -299,7 +319,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
     #region 아이템 슬롯
     public void SelectItemSlot(int slotIndex)
     {
@@ -312,4 +331,9 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+
+
+
+
 }
