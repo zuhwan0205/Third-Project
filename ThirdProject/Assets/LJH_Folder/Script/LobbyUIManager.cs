@@ -65,7 +65,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         if (runner != null && runner.IsServer)
         {
-            runner.LoadScene("LeeScene");
+            runner.LoadScene("GameScene");
             startButton.interactable = false;
         }
         else
