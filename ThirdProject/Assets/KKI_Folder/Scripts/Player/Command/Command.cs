@@ -101,9 +101,7 @@ public class ReloadCommand : ICommand
 }
 #endregion 
 
-
 #region 상호작용
-
 public class InteractionCommand : ICommand
 {
     private PlayerController player;
@@ -112,7 +110,6 @@ public class InteractionCommand : ICommand
 }
 
 #endregion
-
 
 #region 퀵 슬롯
 public class AxeQuickSlotCommand : ICommand
