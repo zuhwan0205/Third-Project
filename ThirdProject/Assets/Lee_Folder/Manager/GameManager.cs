@@ -112,6 +112,14 @@ public class GameManager : NetworkBehaviour
         LoadedPlayers = PlayerLoadedStates.Count(kvp => kvp.Value);
     }
     
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)]
+    public void RPC_MarkRoomAlive(int roomIndex)
+    {
+        Debug.Log($"[GameManager] ▶ Room {roomIndex}의 플레이어 생존 처리");
+        RoomManager.Instance?.SetRoomAlive(roomIndex, true);
+    }
+    
+    
     private void OnGameStarted()
     {
         RoomManager.Instance?.StartIntroSequence();

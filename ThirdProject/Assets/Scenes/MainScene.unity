@@ -642,6 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SettingPanel: {fileID: 1714486604}
+  nickname: 
 --- !u!1 &1350957381
 GameObject:
   m_ObjectHideFlags: 0
