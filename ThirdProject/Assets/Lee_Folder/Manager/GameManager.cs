@@ -15,6 +15,7 @@ public enum GameState
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
+    public bool IsInputAllowed { get; private set; } = false;
     
     [Header("Game State")]
     [Networked] public GameState CurrentState { get; set; } = GameState.WaitingForPlayers;
@@ -113,8 +114,12 @@ public class GameManager : NetworkBehaviour
     
     private void OnGameStarted()
     {
-        Debug.Log("GameManager On GameStart");
         RoomManager.Instance?.StartIntroSequence();
+    }
+    
+    public void OnGameIntroComplete()
+    {
+        IsInputAllowed = true;
     }
     
     public void OnPlayerLeft(PlayerRef player)

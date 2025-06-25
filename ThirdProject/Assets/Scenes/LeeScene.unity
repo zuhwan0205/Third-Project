@@ -380,6 +380,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room3(Screen)
+      objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1384,6 +1388,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room1(Screen)
+      objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1925,6 +1933,10 @@ PrefabInstance:
     - target: {fileID: 3458497694452099422, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room6(Screen)
       objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
@@ -3543,7 +3555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33ba08d71dc790345acc731c54d04612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questionBank: {fileID: 11400000, guid: 6e07abba60583ac4ebb454c64c910f86, type: 2}
   rooms:
   - view: {fileID: 374138362}
     state:
@@ -3569,8 +3580,7 @@ MonoBehaviour:
     state:
       hasAnswered: 0
       isAlive: 0
-  typingSpeed: 0.07
-  delayBetweenQuestions: 2
+  introTextBank: {fileID: 11400000, guid: 6e07abba60583ac4ebb454c64c910f86, type: 2}
 --- !u!1 &999741550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,6 +3967,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room2(Screen)
+      objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4302,6 +4316,10 @@ PrefabInstance:
     - target: {fileID: 3458497694452099422, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room5(Screen)
       objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
@@ -5148,6 +5166,10 @@ PrefabInstance:
     - target: {fileID: 3458497694452099422, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586078122482461048, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      propertyPath: m_Name
+      value: Room4(Screen)
       objectReference: {fileID: 0}
     - target: {fileID: 3586555665386277564, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       propertyPath: m_Mesh
