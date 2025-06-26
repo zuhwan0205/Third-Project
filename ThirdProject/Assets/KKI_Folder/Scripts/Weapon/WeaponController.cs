@@ -35,6 +35,7 @@ public class WeaponController : MonoBehaviour
         {
             ReturnToPool();
             currentWeaponIdx = -1;
+            CharacterUIManager.Instance.CurrentWeaponIndex = -1;//
             return;
         }
         
@@ -50,8 +51,10 @@ public class WeaponController : MonoBehaviour
             weaponObj.transform.localPosition = weaponObj.InitialPosition;
             weaponObj.transform.localRotation = Quaternion.identity;
             SetWeapon(weaponObj);
+            CharacterUIManager.Instance.CurrentWeaponIndex = idx;//
         }
         currentWeaponIdx = idx;
+
     }
 
     private void SetWeapon(Weapon _weapon)
@@ -65,7 +68,15 @@ public class WeaponController : MonoBehaviour
         ObjectPoolManager.Instance.ReturnObject(currentWeapon.PoolKey, currentWeapon.gameObject);
     }
 
-    public void Attack() => currentWeapon?.Attack();
+    public void Attack()
+    {
+        currentWeapon?.Attack();
+        if (currentWeaponType == WeaponType.Shotgun || currentWeaponType == WeaponType.Pistol)
+            InventoryManager.Instance.RemoveItem("총알");
+        else if (currentWeaponType == WeaponType.Bow)
+            InventoryManager.Instance.RemoveItem("화살");
+        // UI 갱신 필요시 CharacterUIManager.Instance.UpdateWeaponUI();
+    }
 
     public void Aim()
     {

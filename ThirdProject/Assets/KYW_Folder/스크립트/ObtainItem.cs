@@ -61,9 +61,11 @@ public class InteractableItem : MonoBehaviour, IInteractable
             yield return null;
         }
         CharacterUIManager.Instance.SetInteractionBarFill(0f); // 바 초기화
-        CharacterUIManager.Instance.AddHealth(healAmount);
-        float healthFill = CharacterUIManager.Instance.CurrentHealth / CharacterUIManager.Instance.MaxHealth;
-        CharacterUIManager.Instance.SetHBbarFill(healthFill);
+
+
+        //힐로직
+
+
         isInteracting = false;
         // 상호작용바 끄기
         if (CharacterUIManager.Instance != null && CharacterUIManager.Instance.interactionBar != null)

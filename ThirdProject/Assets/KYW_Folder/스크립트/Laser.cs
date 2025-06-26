@@ -11,10 +11,9 @@ public class Laser : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // 체력 감소
-            CharacterUIManager.Instance.AddHealth(-damage);
+
             // 체력 fill 업데이트
-            float fill = CharacterUIManager.Instance.CurrentHealth / CharacterUIManager.Instance.MaxHealth;
-            CharacterUIManager.Instance.SetHBbarFill(fill);
+
         }
     }
 } 
