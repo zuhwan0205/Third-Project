@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
         foreach (var player in runner.ActivePlayers)
         {
             Vector3 pos = GetSpawnPosition(player);
-            runner.Spawn(playerPrefab, pos, Quaternion.identity, player);
+            runner.Spawn(playerPrefab, pos, Quaternion.identity, inputAuthority: player);
         }
     }
 
