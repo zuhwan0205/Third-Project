@@ -13,7 +13,19 @@ MonoBehaviour:
   m_Name: NaturalQuestions
   m_EditorClassIdentifier: 
   naturalQuestions:
-  - questionText: 
+  - questionText: "\uC774 \uBAA8\uB4E0\uAC74 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E41"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+  - questionText: "\uC774 \uBAA8\uB4E0\uAC74 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E42"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+  - questionText: "\uC774 \uBAA8\uB4E0\uAC74 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E43"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+  - questionText: "\uC774 \uBAA8\uB4E0\uAC74 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E44"
     type: 0
     positiveRewards: []
     monsterList: []
