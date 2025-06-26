@@ -18,7 +18,7 @@ public class InputManager : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (HasStateAuthority == false) return;
+        if (HasInputAuthority == false) return;
 
         foreach (var pair in keyDownCommandMap)
             if (Input.GetKeyDown(pair.Key)) pair.Value.Execute();
@@ -29,7 +29,4 @@ public class InputManager : NetworkBehaviour
         foreach (var pair in keyHoldCommandMap)
             if (Input.GetKey(pair.Key)) pair.Value.Execute();
     }
-
-
-    
 }
