@@ -2320,6 +2320,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster2
       objectReference: {fileID: 0}
+    - target: {fileID: 1313181730666559671, guid: 75dde5ef00805ca4fb4656d28015261d, type: 3}
+      propertyPath: m_Height
+      value: 0.00001
+      objectReference: {fileID: 0}
     - target: {fileID: 1319342522169128797, guid: 75dde5ef00805ca4fb4656d28015261d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -2417,6 +2421,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7495285496577739141, guid: 8c7959eea42496a4da598cc9cb651188, type: 3}
+      propertyPath: m_Height
+      value: 0.00001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2430,6 +2438,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2787635388617246221, guid: a2c00176a1414e24598f0774c578fb52, type: 3}
+      propertyPath: m_Height
+      value: 0.00001
+      objectReference: {fileID: 0}
     - target: {fileID: 5714658911202679944, guid: a2c00176a1414e24598f0774c578fb52, type: 3}
       propertyPath: m_Name
       value: Monster3
