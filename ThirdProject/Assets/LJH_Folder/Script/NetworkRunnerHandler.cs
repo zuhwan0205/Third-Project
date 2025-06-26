@@ -43,14 +43,28 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInput(NetworkRunner runner, NetworkInput input) 
     { 
-        var data = new NetworkInputData();
-        data.MovementInput.x = Input.GetAxis("Horizontal");
-        data.MovementInput.y = Input.GetAxis("Vertical");
-        
+        NetworkInputData data = new NetworkInputData();
+
+        data.MovementInput.x = Input.GetAxisRaw("Horizontal");
+        data.MovementInput.y = Input.GetAxisRaw("Vertical");
+
         data.IsJumping = Input.GetKey(KeyCode.Space);
-        
+        data.IsSprinting = Input.GetKey(KeyCode.LeftShift);
+        data.IsCrouching = Input.GetKey(KeyCode.LeftControl);
+        data.IsAttacking = Input.GetMouseButton(0);
+        data.IsAiming = Input.GetMouseButton(1);
+        data.IsReloading = Input.GetKey(KeyCode.R);
+        data.IsInteracting = Input.GetKey(KeyCode.E);
+
+        // 퀵슬롯 선택(1~5키)
+        data.QuickSlotIndex = -1;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) data.QuickSlotIndex = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) data.QuickSlotIndex = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) data.QuickSlotIndex = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) data.QuickSlotIndex = 3;
+        if (Input.GetKeyDown(KeyCode.Alpha5)) data.QuickSlotIndex = 4;
+
         input.Set(data);
-        
     }
     
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -134,5 +148,11 @@ public struct NetworkInputData : INetworkInput
 {
     public Vector2 MovementInput;
     public bool IsJumping;
-    public NetworkButtons Buttons;
+    public bool IsSprinting;
+    public bool IsCrouching;
+    public bool IsAttacking;
+    public bool IsAiming;
+    public bool IsReloading;
+    public int QuickSlotIndex; // -1: 안씀, 0~4: 슬롯 선택
+    public bool IsInteracting;
 }
