@@ -43,7 +43,7 @@ public class PlayerController : NetworkBehaviour
     private float jumpBufferTime = 0.2f, jumpBufferCounter = 0f;
     private float groundedGraceTime = 0.15f, groundedCounter = 0f;
 
-    
+    private NetworkCharacterController _ncc;
     private CharacterController characterController;
     public CameraShake cameraShake { get; private set; }
     public WeaponController weaponController { get; private set; }
@@ -71,6 +71,77 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    public override void FixedUpdateNetwork()
+    {
+        if (!Object.HasStateAuthority) return;
+
+        if (GetInput(out NetworkInputData inputData))
+        {
+            // 이동
+            float moveSpeed = inputData.IsSprinting ? sprintSpeed : (inputData.IsCrouching ? crouchSpeed : walkSpeed);
+            //Vector3 move = transform.right * inputData.MovementInput.x + transform.forward * inputData.MovementInput.y;
+            Vector3 move = new Vector3(inputData.MovementInput.x, 0, inputData.MovementInput.y);
+            _ncc.Move(move.normalized, moveSpeed);
+
+            // 점프
+            if (inputData.IsJumping && _ncc.Grounded)
+            {
+                _ncc.Jump();
+            }
+
+            // 앉기 토글(여기선 누르고 있을 때 crouch)
+            if (inputData.IsCrouching && !isCrouching)
+            {
+                isCrouching = true;
+                // 필요시 캐릭터 높이, 카메라 위치 등 조정
+                characterController.height = 1.0f;
+                if (cameraTransform != null)
+                    cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, 1.0f, cameraTransform.localPosition.z);
+            }
+            else if (!inputData.IsCrouching && isCrouching)
+            {
+                isCrouching = false;
+                characterController.height = 2.0f;
+                if (cameraTransform != null)
+                    cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, 1.8f, cameraTransform.localPosition.z);
+            }
+
+            // 공격
+            if (inputData.IsAttacking)
+            {
+                Attack();
+            }
+
+            // 에임
+            if (inputData.IsAiming)
+            {
+                AimStart();
+            }
+            else
+            {
+                AimEnd();
+            }
+
+            // 재장전
+            if (inputData.IsReloading)
+            {
+                Reload();
+            }
+
+            // 상호작용
+            if (inputData.IsInteracting)
+            {
+                Interaction();
+            }
+
+            // 퀵슬롯
+            if (inputData.QuickSlotIndex >= 0)
+            {
+                SelectItemSlot(inputData.QuickSlotIndex);
+            }
+        }
+    }
+
     #endregion
 
 
@@ -79,9 +150,10 @@ public class PlayerController : NetworkBehaviour
     {
         input = GetComponent<InputManager>();
         playerInteraction = GetComponent<PlayerInteraction>();
-        characterController = GetComponent<CharacterController>();
         cameraShake = Camera.main?.GetComponent<CameraShake>();
         weaponController = GetComponent<WeaponController>();
+        _ncc = GetComponent<NetworkCharacterController>();
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
@@ -142,7 +214,7 @@ public class PlayerController : NetworkBehaviour
     private void Move(Vector2 direction)
     {
         Vector3 move = transform.right * direction.x + transform.forward * direction.y;
-        characterController.Move(move.normalized * moveSpeed * Runner.DeltaTime);
+        // characterController.Move(move.normalized * moveSpeed * Runner.DeltaTime);
         weaponController?.Move(true);
     }
 
@@ -205,7 +277,7 @@ public class PlayerController : NetworkBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
-        characterController.Move(velocity * Time.deltaTime);
+        // characterController.Move(velocity * Time.deltaTime);
     }
 
     private bool IsGrounded()
@@ -268,7 +340,7 @@ public class PlayerController : NetworkBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -70f, 70f);
+        xRotation = Mathf.Clamp(xRotation, -65f, 70f);
         if (cameraTransform != null)
             cameraTransform.localRotation = Quaternion.Euler(xRotation, 0, 0);
     }
