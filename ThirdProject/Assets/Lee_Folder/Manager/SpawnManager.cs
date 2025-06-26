@@ -1,6 +1,5 @@
 using UnityEngine;
 using Fusion;
-using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -8,9 +7,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Transform[] spawnPoints;
-
-    private List<int> usedIndices = new List<int>();
-
+    
     private void Awake()
     {
         Instance = this;
