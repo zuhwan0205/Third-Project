@@ -189,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 2074035016256731656}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.15, z: 0.06}
+  m_LocalPosition: {x: 0, y: 2.15, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -489,21 +489,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
   walkSpeed: 5
   sprintSpeed: 10
-  jumpHeight: 1.3
-  groundCheckDistance: 0.8
-  gravity: -9.81
+  crouchSpeed: 2.5
   crouchHeight: 1.5
   standHeight: 3
-  crouchSpeed: 2.5
   playerCamera: {fileID: 7549821734909135284}
   cameraTransform: {fileID: 4633097178658611543}
   mouseSensitivity: 2
-  cameraCrouchHeight: 0
-  cameraStandHeight: 0
+  cameraCrouchHeight: 1.3
+  cameraStandHeight: 2.15
   healthText: {fileID: 0}
+  ui: {fileID: 0}
 --- !u!114 &5519065253379545307
 MonoBehaviour:
   m_ObjectHideFlags: 0
