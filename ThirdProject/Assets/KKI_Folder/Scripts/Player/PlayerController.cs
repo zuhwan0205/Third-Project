@@ -7,9 +7,8 @@ public class PlayerController : NetworkBehaviour
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    // 허기
-    // [SerializeField] private float 
-
+    [SerializeField] private float maxHungry;
+    [SerializeField] private float currentHungry;
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float jumpHeight = 2f;
@@ -52,6 +51,7 @@ public class PlayerController : NetworkBehaviour
 
     // 프로퍼티
     public float Health => currentHealth;
+    public float Hungry => currentHungry;
     public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
 
