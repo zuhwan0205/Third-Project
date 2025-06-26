@@ -1,6 +1,7 @@
 using UnityEngine;
+using Fusion;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : NetworkBehaviour
 {
     [Header("무기 기본 세팅")]
     [SerializeField] protected PoolKey poolKey;
