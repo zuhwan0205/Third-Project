@@ -6,35 +6,27 @@ public class PlayerController : NetworkBehaviour
 {
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float currentHealth;
-    [SerializeField] private float maxHungry = 100f;
-    [SerializeField] private float currentHungry;
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
-    [SerializeField] private float jumpHeight = 2f;
-    [SerializeField] private float groundCheckDistance = 3;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float crouchSpeed = 2.5f;
     [SerializeField] private float crouchHeight = 1.0f;
     [SerializeField] private float standHeight = 2.0f;
-    [SerializeField] private float crouchSpeed = 2.5f;
 
     [Header("카메라 / 민감도")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private float cameraCrouchHeight;
-    [SerializeField] private float cameraStandHeight;
+
+    [Header("카메라 위치 (연출)")]
+    [SerializeField] private float cameraCrouchHeight = 1.0f;
+    [SerializeField] private float cameraStandHeight = 1.8f;
 
     [Header("UI")]
     [SerializeField] private Text healthText;
-    
     [SerializeField] private GameScene_PlayerUI ui;
 
-    private float moveSpeed;
-    private bool isSprinting = false;
-    private bool isCrouching = false;     
-    private bool prevCrouch = false;      
-
+    private float currentHealth;
+    private float currentHungry;
     private float xRotation = 0f;
 
     private NetworkCharacterController _ncc;
@@ -47,14 +39,18 @@ public class PlayerController : NetworkBehaviour
     public float Health => currentHealth;
     public float Hungry => currentHungry;
     public float SprintSpeed => sprintSpeed;
-    public bool IsSprinting => isSprinting;
 
+    #region 네트워크 콜백 함수
     public override void Spawned()
     {
         if (Object.HasInputAuthority)
         {
             playerCamera.tag = "MainCamera";
             playerCamera.enabled = true;
+
+            cameraShake = Camera.main?.GetComponent<CameraShake>();
+            if (cameraShake != null) 
+                cameraShake.SetCrouchAndStandHeight(cameraCrouchHeight, cameraStandHeight);
             
             ui = FindObjectOfType<GameScene_PlayerUI>();
             if (ui == null)
@@ -65,68 +61,51 @@ public class PlayerController : NetworkBehaviour
 
             
             ui.gameObject.SetActive(true);
-            ui.Initialize(maxHealth, maxHungry, this);
+            ui.Initialize(maxHealth, 100f, this);
         }
         else
         {
             playerCamera.enabled = false;
-            ui.gameObject.SetActive(false);
+            if (ui != null) ui.gameObject.SetActive(false);
         }
     }
 
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority) return;
+        if (!GetInput(out NetworkInputData inputData)) return;
 
-        if (GetInput(out NetworkInputData inputData))
-        {
-            // 이동
-            float moveSpeed = inputData.IsSprinting ? sprintSpeed : (inputData.IsCrouching ? crouchSpeed : walkSpeed);
-            Vector3 move = new Vector3(inputData.MovementInput.x, 0, inputData.MovementInput.y);
-            _ncc.Move(move.normalized, moveSpeed);
+        // 이동 및 논리 상태
+        float moveSpeed = inputData.IsSprinting ? sprintSpeed : (inputData.IsCrouching ? crouchSpeed : walkSpeed);
+        Vector3 move = new Vector3(inputData.MovementInput.x, 0, inputData.MovementInput.y);
+        _ncc.Move(move.normalized, moveSpeed);
 
-            // 마우스 좌/우(요) 회전
-            float mouseX = inputData.MouseX * mouseSensitivity;
-            transform.Rotate(Vector3.up * mouseX);
+        // 회전
+        float mouseX = inputData.MouseX * mouseSensitivity;
+        transform.Rotate(Vector3.up * mouseX);
 
-            // 점프
-            if (inputData.IsJumping && _ncc.Grounded)
-            {
-                _ncc.Jump();
-            }
-            
-            // 앉기 상태에 따라 캡슐 높이만 조정 (카메라 연출은 Update에서만)
-            characterController.height = inputData.IsCrouching ? crouchHeight : standHeight;
+        // 점프
+        if (inputData.IsJumping && _ncc.Grounded)
+            _ncc.Jump();
 
-            // 공격
-            if (inputData.IsAttacking)
-                Attack();
+        // 논리상 캡슐 높이
+        characterController.height = inputData.IsCrouching ? crouchHeight : standHeight;
 
-            // 에임
-            if (inputData.IsAiming)
-                AimStart();
-            else
-                AimEnd();
-
-            // 재장전
-            if (inputData.IsReloading)
-                Reload();
-
-            // 상호작용
-            if (inputData.IsInteracting)
-                Interaction();
-
-            // 퀵슬롯
-            if (inputData.QuickSlotIndex >= 0)
-                SelectItemSlot(inputData.QuickSlotIndex);
-        }
+        // (공격/에임/재장전 등 기타 논리 처리)
+        if (inputData.IsAttacking) Attack();
+        if (inputData.IsAiming)   AimStart(); else AimEnd();
+        if (inputData.IsReloading) Reload();
+        if (inputData.IsInteracting) Interaction();
+        if (inputData.QuickSlotIndex >= 0) SelectItemSlot(inputData.QuickSlotIndex);
     }
 
+    #endregion
+
+    #region 유니티 생명주기 함수
     private void Awake()
     {
         input = GetComponent<InputManager>();
         playerInteraction = GetComponent<PlayerInteraction>();
-        cameraShake = Camera.main?.GetComponent<CameraShake>();
         weaponController = GetComponent<WeaponController>();
         _ncc = GetComponent<NetworkCharacterController>();
         characterController = GetComponent<CharacterController>();
@@ -135,8 +114,6 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-        moveSpeed = walkSpeed;
-
         var buffer = input.inputBuffer;
 
         // 커맨드 바인딩 (모두 PlayerInputBuffer에만 값 변경!)
@@ -170,23 +147,22 @@ public class PlayerController : NetworkBehaviour
 
     private void Update()
     {
-        if (!Object.HasInputAuthority) return;
-        ui.SetHealth( currentHealth );
-        ui.SetHunger( currentHungry );
+      if (!Object.HasInputAuthority) return;
 
-        MouseHandle();
-        CameraCrouchHandle();
+        if (ui != null)
+        {
+            ui.SetHealth(currentHealth);
+            ui.SetHunger(currentHungry);
+        }
+
+        HandleMouseLook();
+        SyncCameraShake();
     }
 
-    #region 공격 / 에임 / 재장전
-    public void Attack() => weaponController?.Attack();
-    public void AimStart() => weaponController?.Aim();
-    public void AimEnd() => weaponController?.AimCancel();
-    public void Reload() => weaponController?.Reload();
     #endregion
 
     #region 움직임 제어
-    void MouseHandle()
+    void HandleMouseLook()
     {
         // 카메라 피치(xRotation)는 InputAuthority에서만 로컬 처리!
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -197,22 +173,19 @@ public class PlayerController : NetworkBehaviour
             cameraTransform.localRotation = Quaternion.Euler(xRotation, 0, 0);
     }
 
-    void CameraCrouchHandle()
+    void SyncCameraShake()
     {
-// 카메라 위치 "연출"은 내 입력 버퍼만 참고!
-        bool isCrouching = input.inputBuffer.IsCrouching;
-        float targetY = isCrouching ? cameraCrouchHeight : cameraStandHeight;
-        if (cameraTransform != null)
-        {
-            // 부드럽게(Lerp)
-            cameraTransform.localPosition = Vector3.Lerp(
-                cameraTransform.localPosition,
-                new Vector3(cameraTransform.localPosition.x, targetY, cameraTransform.localPosition.z),
-                Time.deltaTime * 15f // 8~20 추천, 빠를수록 더 "딱" 붙음
-            );
-        }
+        if (cameraShake == null) return;
+        cameraShake.SetCrouchAndSprint( input.inputBuffer.IsCrouching, input.inputBuffer.IsSprinting);
     }
 
+    #endregion
+
+    #region 공격 / 에임 / 재장전
+    public void Attack() => weaponController?.Attack();
+    public void AimStart() => weaponController?.Aim();
+    public void AimEnd() => weaponController?.AimCancel();
+    public void Reload() => weaponController?.Reload();
     #endregion
 
     #region 체력/힐
