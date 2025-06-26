@@ -48,27 +48,41 @@ public class ObjectPoolManager : MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject); // 씬 전환에서도 유지
+
         InitPool();    
     }
 
     private void InitPool()
     {
         foreach(var setting in poolSettingsList)
+            CreatePool(setting.key, setting.prefab, setting.initialSize, setting.maxSize, setting.autoExpand);
+    }
+
+    /// <summary>
+    /// 새로운 풀 동적 등록 (런타임 확장성)
+    /// </summary>
+    public void CreatePool(PoolKey key, GameObject prefab, int initialSize = 5, int maxSize = 30, bool autoExpand = true)
+    {
+        if (pools.ContainsKey(key)) return; // 이미 생성된 경우 무시
+
+        var setting = new PoolSettings { key = key, prefab = prefab, initialSize = initialSize, maxSize = maxSize, autoExpand = autoExpand };
+        poolSettingsDict[key] = setting;
+
+        var pool = new Queue<GameObject>();
+        pools[key] = pool;
+        activeObjects[key] = new HashSet<GameObject>();
+
+        for (int i = 0; i < initialSize; i++)
         {
-            var pool = new Queue<GameObject>();
-            pools[setting.key] = pool;
-            poolSettingsDict[setting.key] = setting;
-            activeObjects[setting.key] = new HashSet<GameObject>();
-            
-            for (int i = 0; i < setting.initialSize; i ++) // 처음 생성 크기만큼 생성하기.
-            {
-                GameObject obj = Instantiate(setting.prefab, transform); // 자식으로 생성 
-                obj.SetActive(false); 
-                pool.Enqueue(obj);
-            }
+            var obj = Instantiate(prefab, transform);
+            obj.SetActive(false);
+            pool.Enqueue(obj);
         }
     }
 
+    /// <summary>
+    /// 풀에서 오브젝트 가져오기 (타입별 반환)
+    /// </summary>
     public bool TryGetObject<T>(PoolKey key, out T component) where T : Component
     {
         component = null;
@@ -90,7 +104,7 @@ public class ObjectPoolManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Pool({key}) : 비어있고, 더 이상 확장이 되지 않음!");
+                Debug.LogWarning($"Pool({key}) : 풀 소진 및 maxSize 도달");
                 return false;
             }
         }
@@ -99,10 +113,16 @@ public class ObjectPoolManager : MonoBehaviour
         activeObjects[key].Add(obj);
         component = obj.GetComponent<T>();
 
+        if (component == null)
+            Debug.LogWarning($"풀 오브젝트({key})에서 타입({typeof(T)})을 찾을 수 없음");
+
         return true;
     }
-
     
+
+    /// <summary>
+    /// 풀 반환 (비활성화 후 풀에 등록)
+    /// </summary>
     public void ReturnObject(PoolKey key, GameObject obj)
     {
         if (!pools.ContainsKey(key))
@@ -115,6 +135,17 @@ public class ObjectPoolManager : MonoBehaviour
         obj.SetActive(false);
         pools[key].Enqueue(obj);
         activeObjects[key].Remove(obj);
+    }
+
+    // 런타임 프리팹 반환 (NetworkRunner 등에서 참조시)
+    public GameObject GetPrefab(PoolKey key)
+    {
+        if (!poolSettingsDict.TryGetValue(key, out var setting))
+        {
+            Debug.LogError($"프리팹 미등록: {key}");
+            return null;
+        }
+        return setting.prefab;
     }
 
 
@@ -160,4 +191,5 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
     #endregion
+
 }

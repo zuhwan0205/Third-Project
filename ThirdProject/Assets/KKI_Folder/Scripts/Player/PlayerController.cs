@@ -215,7 +215,13 @@ public class PlayerController : NetworkBehaviour
     public void SelectItemSlot(int slotIndex)
     {
         if (weaponController.ownedWeapons[slotIndex] == false) return;
-        weaponController.EquipWeaponByIndex(slotIndex);
+        RpcRequestEquipWeapon(slotIndex);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RpcRequestEquipWeapon(int idx)
+    {
+        weaponController.EquipWeaponByIndex(idx);
     }
     #endregion
 }
