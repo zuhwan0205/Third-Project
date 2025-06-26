@@ -13,7 +13,19 @@ MonoBehaviour:
   m_Name: MonsterQuestions
   m_EditorClassIdentifier: 
   monsterQuestions:
-  - questionText: 
+  - questionText: "\uC774 \uBAAC\uC2A4\uD130 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E41"
+    type: 2
+    positiveRewards: []
+    monsterList:
+    - monsterPrefab: {fileID: 0}
+      spawnChance: 0
+  - questionText: "\uC774 \uBAAC\uC2A4\uD130 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E42"
+    type: 2
+    positiveRewards: []
+    monsterList:
+    - monsterPrefab: {fileID: 0}
+      spawnChance: 0
+  - questionText: "\uC774 \uBAAC\uC2A4\uD130 \uD14C\uC2A4\uD2B8\uC6A9\uB3C4\uC785\uB2C8\uB2E43"
     type: 2
     positiveRewards: []
     monsterList:
