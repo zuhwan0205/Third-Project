@@ -7,7 +7,7 @@ public class PlayerController : NetworkBehaviour
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    [SerializeField] private float maxHungry;
+    [SerializeField] private float maxHungry = 100f;
     [SerializeField] private float currentHungry;
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
@@ -27,6 +27,8 @@ public class PlayerController : NetworkBehaviour
 
     [Header("UI")]
     [SerializeField] private Text healthText;
+    
+    [SerializeField] private GameScene_PlayerUI ui;
 
     private float moveSpeed;
     private bool isSprinting = false;
@@ -53,10 +55,22 @@ public class PlayerController : NetworkBehaviour
         {
             playerCamera.tag = "MainCamera";
             playerCamera.enabled = true;
+            
+            ui = FindObjectOfType<GameScene_PlayerUI>();
+            if (ui == null)
+            {
+                Debug.LogError("[PlayerController] GameScene_PlayerUI를 찾을 수 없습니다!");
+                return;
+            }
+
+            
+            ui.gameObject.SetActive(true);
+            ui.Initialize(maxHealth, maxHungry, this);
         }
         else
         {
             playerCamera.enabled = false;
+            ui.gameObject.SetActive(false);
         }
     }
 
@@ -157,6 +171,8 @@ public class PlayerController : NetworkBehaviour
     private void Update()
     {
         if (!Object.HasInputAuthority) return;
+        ui.SetHealth( currentHealth );
+        ui.SetHunger( currentHungry );
 
         MouseHandle();
         CameraCrouchHandle();
