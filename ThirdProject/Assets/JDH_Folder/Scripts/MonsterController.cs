@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
 {
     [Header("Movement")]
+    public float moveSpeed = 2f;
     public float stopDistance = 1.2f;
     public float attackDistance = 1.2f;
     public float attackCooldown = 2f;
@@ -14,7 +14,6 @@ public class MonsterController : MonoBehaviour
 
     private Transform target;
     private Animator animator;
-    private NavMeshAgent agent;
     private float lastAttackTime = 0f;
 
     private bool isAttacking = false;
@@ -30,20 +29,20 @@ public class MonsterController : MonoBehaviour
             target = player.transform;
 
         animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
     {
-        if (target == null || isDead || isHit) return;
+        if (target == null || isDead || isHit || isAttacking) return;
 
-        float distance = Vector3.Distance(transform.position, target.position);
+        float distance = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
 
-        if (!isAttacking && distance > stopDistance)
+        if (distance > stopDistance)
         {
-            agent.isStopped = false;
-            agent.SetDestination(target.position);
-            animator?.SetBool("isWalking", true);
+            MoveToTarget();
         }
         else if (distance <= attackDistance)
         {
@@ -55,9 +54,19 @@ public class MonsterController : MonoBehaviour
         }
     }
 
+    void MoveToTarget()
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        transform.position += direction * moveSpeed * Time.deltaTime;
+
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+        animator?.SetBool("isWalking", true);
+    }
+
     void StopMoving()
     {
-        agent.isStopped = true;
         animator?.SetBool("isWalking", false);
     }
 
@@ -70,11 +79,6 @@ public class MonsterController : MonoBehaviour
             animator?.SetTrigger("Attack");
             isAttacking = true;
             lastAttackTime = Time.time;
-
-            // 회전해서 바라보게
-            Vector3 dir = (target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
     }
 
@@ -82,14 +86,17 @@ public class MonsterController : MonoBehaviour
     {
         if (target == null) return;
 
-        float dist = Vector3.Distance(transform.position, target.position);
+        float dist = Vector3.Distance(
+            new Vector3(transform.position.x, 0, transform.position.z),
+            new Vector3(target.position.x, 0, target.position.z)
+        );
 
         if (dist <= attackDistance)
         {
             PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(10);
+                playerHealth.TakeDamage(10); // 원하는 데미지 수치
             }
         }
     }

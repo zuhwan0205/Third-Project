@@ -49,8 +49,6 @@ public class LoadingScene : MonoBehaviour
         PlayerPrefs.SetString(PREF_KEY, nick);
         PlayerPrefs.Save();
         
-        SessionData.Nickname = nick;
-        
         StartCoroutine(WaitingTextRoutine());
     }
     

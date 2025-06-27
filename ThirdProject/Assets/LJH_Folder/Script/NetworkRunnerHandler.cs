@@ -93,7 +93,6 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
         this.runner = null;
-        Debug.LogWarning($"Disconnected! Reason: {shutdownReason}");
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -102,12 +101,10 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnDisconnectedFromServer(NetworkRunner runner)
     {
-        
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
     {
-        Debug.LogWarning($"Disconnected! Reason: {reason}");
     }
 
     // 나머지 콜백들 (빈 구현)
@@ -124,11 +121,6 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, System.ArraySegment<byte> data) { }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnSceneLoadStart(NetworkRunner runner) { }
-
-    public void OnDisconnected(NetworkRunner runner, ShutdownReason reason)
-    {
-        Debug.LogWarning($"[Fusion2] OnDisconnected: {reason}");
-    }
 }
 public struct NetworkInputData : INetworkInput
 {

@@ -35,11 +35,12 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         runner = NetworkRunnerHandler.Instance.GetRunner();
+        
+        nickname = PlayerPrefs.GetString(PREF_KEY, "Player");
     }
 
     private async void LobbyButton()
     {
-        nickname = PlayerPrefs.GetString(PREF_KEY, "Player");
         StartCoroutine(StartHostAndLoadLobby());
     }
     
@@ -66,32 +67,26 @@ public class UIManager : MonoBehaviour
     
     IEnumerator StartHostAndLoadLobby()
     {
-        string userId = SessionData.Nickname;
-        if (string.IsNullOrEmpty(userId))
-            userId = "Player"; 
-        
-        yield return new WaitForSeconds(1f);
         Debug.Log("[LoadingScene] Starting as Host → Create + Join GlobalLobby.");
         
         int lobbySceneBuildIndex = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/LobbyScene.unity"); // 또는 직접 숫자
         var scene = SceneRef.FromIndex(lobbySceneBuildIndex);
         var sceneInfo = new NetworkSceneInfo();
-    
+
         var startGameTask = runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,
             SessionName = "GameLobby",
-            PlayerCount  = 8,
             Scene = scene,
             SceneManager = runner.gameObject.GetComponent<NetworkSceneManagerDefault>() ?? runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            AuthValues    = new AuthenticationValues { UserId = userId  }
+            AuthValues    = new AuthenticationValues { UserId = nickname }
         });
         
-    
+
         yield return new WaitUntil(() => runner.IsRunning);
-    
+
         Debug.Log("[LoadingScene] Host started → MainScene 이동");
-    
+
         yield return new WaitForSeconds(1f);
         //SceneManager.LoadScene("LobbyScene");
     }
