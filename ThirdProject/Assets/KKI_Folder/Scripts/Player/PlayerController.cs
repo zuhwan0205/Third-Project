@@ -123,11 +123,6 @@ public class PlayerController : MonoBehaviour
     {
         JumpCheck();
         HandleLook();
-
-        Input.GetKeyDown(KeyCode.Alpha9);
-        {
-            Heal(10);
-        }
     }
 
     #endregion
@@ -299,7 +294,7 @@ public class PlayerController : MonoBehaviour
 
     public void Heal(float amount)
     {
-        currentHealth -= amount;
+        currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
         UpdateHealthUI();
         Debug.Log("heal");
@@ -331,7 +326,7 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(10f); // 10초 대기
+            yield return new WaitForSeconds(10f);
 
             currentHangry -= 1f;
             currentHangry = Mathf.Max(currentHangry, 0f);
@@ -339,6 +334,16 @@ public class PlayerController : MonoBehaviour
             UpdateHungerUI();
             Debug.Log("허기 -1 감소");
         }
+    }
+
+    private void IncreaseHunger(float amount)           //이후 빵이나 통조림 먹으면 상승하는데 사용할 코드입니다!
+    {
+        
+        currentHangry += amount;
+        currentHangry = Mathf.Min(currentHangry, 100);
+        Debug.Log("허기 상승");
+        currentHangry += 30;
+        UpdateHungerUI();
     }
     #endregion
 
