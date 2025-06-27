@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 {
     private NetworkRunner runner;
     [SerializeField] private GameObject SettingPanel;
+    [SerializeField] private GameObject StartPanel;
+    [SerializeField] GameObject AudioManager;
     private bool isShutdownComplete = false;
     
 
@@ -20,6 +22,7 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnTestButtonClicked += testButton;
         Event_MainScene.OnCloseSettingButtonClicked += CloseSetting;
         Event_MainScene.OnNormalButtonClicked += NormalMode;
+        Event_MainScene.OnHardButtonClicked += HardMode;
     }
 
     void OnDisable()
@@ -29,11 +32,13 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnQuitButtonClicked -= QuitButton;
         Event_MainScene.OnTestButtonClicked -= testButton;
         Event_MainScene.OnCloseSettingButtonClicked -= CloseSetting;
+        Event_MainScene.OnNormalButtonClicked -= NormalMode;
+        Event_MainScene.OnHardButtonClicked -= HardMode;
     }
 
-    private async void LobbyButton()
+    private void LobbyButton()
     {
-        
+        StartPanel.SetActive(true);
     }
     
     private void SettingButton()
@@ -43,7 +48,11 @@ public class UIManager : MonoBehaviour
     
     private void QuitButton()
     {
-        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
     }
 
     private void testButton()
@@ -58,7 +67,20 @@ public class UIManager : MonoBehaviour
 
     private void NormalMode()
     {
-        
+        if (AudioManager != null)
+        {
+            Destroy(AudioManager_Main.instance.gameObject);
+        }
+        SceneManager.LoadScene("GameScene");
+    }
+
+    private void HardMode()
+    {
+        if (AudioManager != null)
+        {
+            Destroy(AudioManager_Main.instance.gameObject);
+        }
+        SceneManager.LoadScene("GameScene");
     }
     
     
