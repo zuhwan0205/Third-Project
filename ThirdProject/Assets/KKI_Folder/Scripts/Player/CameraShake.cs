@@ -34,7 +34,6 @@ public class CameraShake : MonoBehaviour
     void Update()
     {
         Vector3 targetPos = GetTargetPos();
-        Debug.Log($"isCrouching = {isCrouching}, isSprinting = {isSprinting}");
         if (isSprinting)
         {
             shakeTimer += Time.deltaTime * shakeFrequency;
