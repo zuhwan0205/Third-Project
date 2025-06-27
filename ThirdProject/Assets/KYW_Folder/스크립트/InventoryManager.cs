@@ -68,9 +68,12 @@ public class InventoryManager : MonoBehaviour
     {
         stashData = new StandardStashViewData(12, 12);
 
-        // InsertNewItem("포션");
-        // InsertNewItem("통조림");
+        InsertNewItem("포션");
+        InsertNewItem("통조림");
+        // InsertNewItem("총알");
+        // InsertNewItem("화살");
         ToggleInventory();
+
         yield return null;
     }
     //i누르면 인벤토리 토글
@@ -84,17 +87,17 @@ public class InventoryManager : MonoBehaviour
 
         // === 디버깅용 키 입력 ===
         
-        // // 1키: 포션 추가
-        // if (Input.GetKeyDown(KeyCode.Alpha1))
-        // {
-        //     InsertNewItem("포션");
-        // }
+        // 1키: 포션 추가
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            InsertNewItem("총알");
+        }
 
-        // // 2키: 통조림 추가  
-        // if (Input.GetKeyDown(KeyCode.Alpha2))
-        // {
-        //     InsertNewItem("총알");
-        // }
+        // 2키: 통조림 추가  
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            InsertNewItem("화살");
+        }
 
         // // 3키: 권총 추가
         // if (Input.GetKeyDown(KeyCode.Alpha3))
