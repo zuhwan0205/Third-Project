@@ -2,8 +2,7 @@ using UnityEngine;
 
 public abstract class MeleeWeapon : Weapon
 {
-    [Header("근전 무기 필드 값 세팅")]
-    [SerializeField] protected int damage;            // 데미지
+    [SerializeField] protected float damage;            // 데미지
     [SerializeField] protected float attackRate;        // 공격 속도
     [SerializeField] protected float attackRange;       // 판정 구의 반지름
     [SerializeField] protected LayerMask enemyLayer;    // 적 레이어 판정
@@ -36,12 +35,6 @@ public abstract class MeleeWeapon : Weapon
             Debug.Log(enemy.name + "에게 공격");
 
             // 적 공격 처리
-            // 적이 NetworkObject라면
-            var target = enemy.GetComponent<MonsterController>();
-            if (target != null)
-            {
-                target.TakeDamage(damage); // 이 TakeDamage도 서버에서만 실행되어야!
-            }
         }
 
         DebugDrawHitArea(hitOrigin);
