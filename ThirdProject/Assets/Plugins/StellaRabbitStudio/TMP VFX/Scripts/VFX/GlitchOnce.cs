@@ -37,7 +37,7 @@ namespace StellaRabbitStudio
         [Space(10)][Range(0, 10)] public float playTime = 0.5f;
 
         private Material instanceTextMat;
-        private TextMeshProUGUI selfText;
+        private TMP_Text selfText;
 
         private Coroutine curGlitch;
         private bool isGlitching = false;
@@ -49,7 +49,7 @@ namespace StellaRabbitStudio
 
         void Awake()
         {
-            selfText = GetComponent<TextMeshProUGUI>();
+            selfText = GetComponent<TMP_Text>();
             if (selfText == null)
             {
                 Debug.LogError($"TextMeshProUGUI component not found on {gameObject.name}");
