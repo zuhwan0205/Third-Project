@@ -1042,7 +1042,8 @@ GameObject:
   - component: {fileID: 2084314318086988680}
   - component: {fileID: 3394728727881103258}
   - component: {fileID: 2413873051750425263}
-  m_Layer: 0
+  - component: {fileID: 2318255025963223672}
+  m_Layer: 20
   m_Name: YesBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1723,6 +1724,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2318255025963223672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3226686125814530949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c458a4b3c2d4d1c4f8d8ff1bbcbb5aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomView: {fileID: 5528170790253704212}
 --- !u!1 &4300950113043624847
 GameObject:
   m_ObjectHideFlags: 0
@@ -3115,6 +3129,7 @@ GameObject:
   - component: {fileID: 363273863372518145}
   - component: {fileID: 1429041707175650972}
   - component: {fileID: 8283858280788956914}
+  - component: {fileID: 3469248847273508737}
   m_Layer: 0
   m_Name: NoBtn
   m_TagString: Untagged
@@ -3796,6 +3811,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3469248847273508737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6083883424191235241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c458a4b3c2d4d1c4f8d8ff1bbcbb5aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomView: {fileID: 0}
 --- !u!1 &8391129597012918840
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,7 +7050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenText: {fileID: 2165232298242980446}
-  roomIndex: 0
+  answerCube: {fileID: 2318255025963223672}
 --- !u!1001 &6557291238503700122
 PrefabInstance:
   m_ObjectHideFlags: 0
