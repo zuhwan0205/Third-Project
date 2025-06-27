@@ -489,18 +489,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
   walkSpeed: 5
   sprintSpeed: 10
-  crouchSpeed: 2.5
+  jumpHeight: 2
+  groundCheckDistance: 3
+  gravity: -9.81
   crouchHeight: 1.5
   standHeight: 3
+  crouchSpeed: 2.5
   playerCamera: {fileID: 7549821734909135284}
   cameraTransform: {fileID: 4633097178658611543}
   mouseSensitivity: 2
   cameraCrouchHeight: 1.3
   cameraStandHeight: 2.15
   healthText: {fileID: 0}
-  ui: {fileID: 0}
 --- !u!114 &5519065253379545307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +574,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4639411244518813097}
   - {fileID: 5519065253379545307}
-  - {fileID: 2030528848918648691}
   - {fileID: 2907125957987819319}
   - {fileID: 1689865719721632076}
   ForceRemoteRenderTimeframe: 0
