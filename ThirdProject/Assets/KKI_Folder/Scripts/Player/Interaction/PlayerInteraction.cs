@@ -30,7 +30,6 @@ public class PlayerInteraction : MonoBehaviour
 
             if (currentInteractable != null)
             {
-                Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
                 bInteract = true;
                 // 애니메이션 작용
                 cursorAnimator.SetBool("bZoom", true);
@@ -49,7 +48,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             bInteract = false;
             currentInteractable = null;
-            cursorAnimator.SetBool("bZoom", false);
+            //cursorAnimator.SetBool("bZoom", false);
             InteractionTextSetting(false);
         }
     }

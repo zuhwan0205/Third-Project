@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 2423787418694319627}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -518,7 +518,7 @@ MonoBehaviour:
   interactDistance: 3
   interactMask:
     serializedVersion: 2
-    m_Bits: 1048576
+    m_Bits: 1048640
   cursor: {fileID: 0}
   interactionText: {fileID: 0}
 --- !u!114 &2030528848918648691
