@@ -6,7 +6,10 @@ public class Axe : MeleeWeapon
     {
         if (attackRate > attackTime) return;
         attackTime = 0;
-        PlaySwingAnimation();
-        MeleeHitCheck();
+        if (Object.HasInputAuthority)  // 연출은 클라이언트
+            PlaySwingAnimation(); 
+
+        if (Object.HasStateAuthority)  // 판정/데미지는 서버에서만
+            MeleeHitCheck();
     }
 }
