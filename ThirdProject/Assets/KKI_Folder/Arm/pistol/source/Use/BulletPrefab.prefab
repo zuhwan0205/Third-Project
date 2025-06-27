@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 4125637015678235356}
   - component: {fileID: 4296565273086577294}
   - component: {fileID: 2115039804304430916}
-  - component: {fileID: 6002628274679048358}
-  - component: {fileID: -8844136447956741733}
   m_Layer: 0
   m_Name: BulletPrefab
   m_TagString: Untagged
@@ -155,40 +153,3 @@ MonoBehaviour:
   damage: 25
   speed: 1000
   lifeTime: 5
---- !u!114 &6002628274679048358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179664729705046419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
---- !u!114 &-8844136447956741733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179664729705046419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3439188560
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 2115039804304430916}
-  - {fileID: 6002628274679048358}
-  ForceRemoteRenderTimeframe: 0

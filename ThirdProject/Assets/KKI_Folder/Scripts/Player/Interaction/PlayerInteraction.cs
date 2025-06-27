@@ -1,25 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Fusion;
 
-public class PlayerInteraction : NetworkBehaviour
+public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
     [SerializeField] private LayerMask interactMask;    
+    [SerializeField] private GameObject cursor;
     public Text interactionText;
 
     private bool bInteract;
     private bool bText;
     private IInteractable currentInteractable;
+    private Animator cursorAnimator;
 
-    void Update()
+    void Start()
     {
-        if (!Object.HasInputAuthority) return;
-        
-        CheckForInteractable();
+        cursorAnimator = cursor.GetComponent<Animator>();
     }
 
-    private void CheckForInteractable()
+    void Update()
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
@@ -27,13 +26,14 @@ public class PlayerInteraction : NetworkBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance, interactMask))
         {   
             currentInteractable = hit.collider.GetComponent<IInteractable>();
+            Debug.Log("오브젝트 : " + hit.collider.gameObject.name);
 
             if (currentInteractable != null)
             {
-                //Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
+                Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
                 bInteract = true;
                 // 애니메이션 작용
-                CursorManager.Instance.SetZoom(true);
+                cursorAnimator.SetBool("bZoom", true);
 
                 // UI에 currentInteractable.GetInteractText() 표시
                 InteractionTextSetting(true, currentInteractable.GetInteractText());
@@ -41,7 +41,7 @@ public class PlayerInteraction : NetworkBehaviour
             else
             {
                 bInteract = false;
-                CursorManager.Instance.SetZoom(false);
+                cursorAnimator.SetBool("bZoom", false);
                 InteractionTextSetting(false);
             }
         }   
@@ -49,7 +49,7 @@ public class PlayerInteraction : NetworkBehaviour
         {
             bInteract = false;
             currentInteractable = null;
-            CursorManager.Instance.SetZoom(false);
+            cursorAnimator.SetBool("bZoom", false);
             InteractionTextSetting(false);
         }
     }
@@ -63,13 +63,10 @@ public class PlayerInteraction : NetworkBehaviour
 
     private void InteractionTextSetting(bool flag, string interactionText = null)
     {
-        if (this.interactionText == null) return;
-    
         if (bText == flag) return;
         bText = flag;
-    
         this.interactionText.gameObject.SetActive(flag);
-        if (interactionText != null)
+        if(interactionText != null)
             this.interactionText.text = interactionText;
     }
 

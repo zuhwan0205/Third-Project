@@ -1,50 +1,42 @@
 using UnityEngine;
-using Fusion;
 
-public class WeaponController : NetworkBehaviour
+public class WeaponController : MonoBehaviour
 {
     public static WeaponController Instance;
     public WeaponType currentWeaponType;
     public Weapon currentWeapon;
 
-    [SerializeField] private Weapon[] weaponPrefabs;
+    public Weapon[] weaponPrefabs;
     public bool[] ownedWeapons;
     public Transform weaponPos;
 
-    [Networked] private int equippedWeaponIdx { get; set; }  // 서버 기준 무기 인덱스
-
-    private void Awake()
-    {
-        if (Instance != null && Instance == this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
+    private int currentWeaponIdx;
 
     private void Start()
     {
+        Instance = this;
         currentWeaponType = WeaponType.None;
+
         ownedWeapons = new bool[5];
-        equippedWeaponIdx = -1;
+        currentWeaponIdx = -1;
     }
 
     public void EquipWeaponByIndex(int idx)
     {
-        // 서버에서만 실제 장착 로직
-        if (!Object.HasStateAuthority) return;
-
         if (weaponPrefabs == null || weaponPrefabs.Length <= idx || weaponPos == null)
             return;
 
         // 같은 무기의 번호를 누르면 장비해제
-        if (equippedWeaponIdx == idx) 
+        if (currentWeaponIdx == idx) 
         {
             ReturnToPool();
-            equippedWeaponIdx = -1;
+            currentWeaponIdx = -1;
+            currentWeaponType = WeaponType.None;
+            
+            // UI 업데이트 - 무기 없음 KYW2줄추가
+            if (WeaponUIManager.Instance != null)
+                WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.None);
+            
             return;
         }
         
@@ -60,9 +52,12 @@ public class WeaponController : NetworkBehaviour
             weaponObj.transform.localPosition = weaponObj.InitialPosition;
             weaponObj.transform.localRotation = Quaternion.identity;
             SetWeapon(weaponObj);
+            
+            // UI 업데이트 - 새로운 무기 KYW2줄추가
+            if (WeaponUIManager.Instance != null)
+                WeaponUIManager.Instance.UpdateWeaponUI(currentWeaponType);
         }
-        equippedWeaponIdx = idx;
-        currentWeaponType = weaponPrefabs[idx].WeaponType;
+        currentWeaponIdx = idx;
     }
 
     private void SetWeapon(Weapon _weapon)
@@ -73,13 +68,22 @@ public class WeaponController : NetworkBehaviour
 
     public void ReturnToPool()
     {
-        if (currentWeapon == null) return;
         ObjectPoolManager.Instance.ReturnObject(currentWeapon.PoolKey, currentWeapon.gameObject);
-        currentWeapon = null;
-        currentWeaponType = WeaponType.None;
     }
 
-    public void Attack() => currentWeapon?.Attack();
+    //KYW 수정 탄약감소 추가
+    public void Attack()
+    {
+        currentWeapon?.Attack();
+        if (currentWeapon.WeaponType == WeaponType.Pistol)
+        {
+            InventoryManager.Instance.RemoveItem("총알");
+        }
+        else if (currentWeapon.WeaponType == WeaponType.Bow)
+        {
+            InventoryManager.Instance.RemoveItem("화살");
+        }
+    }
 
     public void Aim()
     {

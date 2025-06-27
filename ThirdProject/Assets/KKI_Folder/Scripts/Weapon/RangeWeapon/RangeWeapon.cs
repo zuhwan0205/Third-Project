@@ -1,9 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
+
+public class WeaponSaveData
+{
+    public int currentAmmo;
+    public int reseverAmmon;
+}
+
 public abstract class RangeWeapon : Weapon
 {
-    [Header("원거리 무기 필드 값 세팅")]
     [SerializeField] protected int maxAmmo;
     [SerializeField] protected int currentAmmo;
     [SerializeField] protected int reserveAmmo;
@@ -33,7 +39,6 @@ public abstract class RangeWeapon : Weapon
         if (audioSource != null && fireSfx != null)
             audioSource.PlayOneShot(fireSfx);
     }
-
     protected void FireProjectile(Transform firePoint, int projectileCount, float spreadAngle, PoolKey poolKey)
     {
         Camera cam = Camera.main;
@@ -72,30 +77,16 @@ public abstract class RangeWeapon : Weapon
                 dir = spreadRot * baseDir;
             }
 
-            // 싱글플레이어용 오브젝트 생성 (풀에서 가져오기)
-            if (ObjectPoolManager.Instance.TryGetObject<Projectile>(poolKey, out Projectile projectile))
+            if (ObjectPoolManager.Instance.TryGetObject<Projectile>(poolKey, out var projectile))
             {
-                projectile.transform.position = firePoint.position;
-                projectile.transform.rotation = Quaternion.LookRotation(dir);
-                projectile.Init(dir);
-            }
-            else
-            {
-                // 풀에서 오브젝트를 가져올 수 없는 경우 직접 생성
-                GameObject prefab = ObjectPoolManager.Instance.GetPrefab(poolKey);
-                if (prefab != null)
-                {
-                    GameObject projectileObj = Instantiate(prefab, firePoint.position, Quaternion.LookRotation(dir));
-                    var projectileComponent = projectileObj.GetComponent<Projectile>();
-                    projectileComponent?.Init(dir);
-                }
+                projectile.OnSpawn(firePoint, dir);
             }
         }
     }
 
     protected virtual void EndFire()
     {
-        currentAmmo--;
+        currentAmmo --;
     }
     #endregion
 
@@ -111,7 +102,6 @@ public abstract class RangeWeapon : Weapon
 
         return true;
     }
-
     protected virtual void PlayReload() 
     {
         reloadTime = 0f;
