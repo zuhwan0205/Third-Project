@@ -17,9 +17,9 @@ MonoBehaviour:
     type: 2
     positiveRewards: []
     monsterList:
-    - monsterPrefab: {fileID: 4164734482874354975, guid: ab3c47872a2efdc48bb04e86681bad39, type: 3}
+    - monsterPrefab: {fileID: 4164734482874354975, guid: c1b268cb5f38cb44eb1ceacf6561bd45, type: 3}
       spawnChance: 0.4
-    - monsterPrefab: {fileID: 751073748970685381, guid: 392526683140c0e41bcd5060fe252b5f, type: 3}
+    - monsterPrefab: {fileID: 751073748970685381, guid: 1076c09ccd41f2e4ab06df5a5c532127, type: 3}
       spawnChance: 0.3
-    - monsterPrefab: {fileID: 5714658911202679944, guid: 1f603350f29b0ec499e825e21ab4ebc0, type: 3}
+    - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
       spawnChance: 0.3
