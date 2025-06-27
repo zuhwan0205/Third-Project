@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fusion;
+using System.Collections.Generic;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -7,7 +8,9 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Transform[] spawnPoints;
-    
+
+    private List<int> usedIndices = new List<int>();
+
     private void Awake()
     {
         Instance = this;
@@ -20,7 +23,7 @@ public class SpawnManager : MonoBehaviour
         foreach (var player in runner.ActivePlayers)
         {
             Vector3 pos = GetSpawnPosition(player);
-            runner.Spawn(playerPrefab, pos, Quaternion.identity, inputAuthority: player);
+            runner.Spawn(playerPrefab, pos, Quaternion.identity, player);
         }
     }
 

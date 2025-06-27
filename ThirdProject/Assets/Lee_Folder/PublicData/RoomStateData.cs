@@ -1,9 +1,6 @@
-using Fusion;
-
 [System.Serializable]
-public class RoomStateData : INetworkStruct
+public class RoomStateData
 {
-    public int roomIndex;
     public bool hasAnswered = false;
     public bool isAlive = false;
 }
