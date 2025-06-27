@@ -25,7 +25,10 @@ public class Arrow : Projectile
             AudioSource.PlayClipAtPoint(hitSound, transform.position);
         }
 
-        //  부모 반환 처리
+        // 2. 데미지 주기 및 추가로 화살에만 적용되는 효과(예: 몬스터에 꽂힌다든가)
+        // MonsterController target = other.collider.GetComponent<MonsterController>();
+
+        // 3. 부모의 반환 처리
         base.OnCollisionEnter(other);
     }
 }

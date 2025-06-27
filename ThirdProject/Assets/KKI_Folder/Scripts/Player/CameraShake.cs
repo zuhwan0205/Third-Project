@@ -17,11 +17,6 @@ public class CameraShake : MonoBehaviour
 
     void Update()
     {
-        UpdateCameraShake();
-    }
-
-    private void UpdateCameraShake()
-    {
         // 스프린트 중이면
         if (isSprinting)
         {
