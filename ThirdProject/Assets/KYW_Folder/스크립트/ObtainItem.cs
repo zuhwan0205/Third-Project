@@ -12,38 +12,59 @@ public class InteractableItem : MonoBehaviour, IInteractable
     // 상호작용 시 InventoryManager를 통해 아이템 획득
     public void Interact()
     {
-        if (!string.IsNullOrEmpty(itemName))
+        // 무기일 경우에만 WeaponController의 ownedWeapons 배열 값 true로 변경
+        if ((itemName == "도끼" || itemName == "칼" || itemName == "권총" 
+            || itemName == "샷건" || itemName == "활"))
         {
-            // 무기일 경우에만 WeaponController의 ownedWeapons 배열 값 true로 변경
-            if ((itemName == "도끼" || itemName == "칼" || itemName == "권총" 
-                || itemName == "샷건" || itemName == "활"))
+            InventoryManager.Instance.InsertNewItem(itemName);
+            int idx = -1;
+            switch (itemName)
             {
-                InventoryManager.Instance?.InsertNewItem(itemName);
-                int idx = -1;
-                switch (itemName)
-                {
-                    case "도끼": idx = 0; break;
-                    case "칼": idx = 1; break;
-                    case "권총": idx = 2; break;
-                    case "샷건": idx = 3; break;
-                    case "활": idx = 4; break;
-                }
-                if (idx >= 0 && idx < WeaponController.Instance.ownedWeapons.Length)
-                    WeaponController.Instance.ownedWeapons[idx] = true;
-
-                Destroy(gameObject);
-                return;
+                case "도끼": idx = 0; break;
+                case "칼": idx = 1; break;
+                case "권총": idx = 2; break;
+                case "샷건": idx = 3; break;
+                case "활": idx = 4; break;
             }
-            // 큰침대, 작은침대 상호작용: 상호작용바 채우고 체력 회복
-            if ((itemName == "큰침대" || itemName == "작은침대") && !isInteracting)
-            {
-                //인터렉션 코루틴 호출
-                StartCoroutine(InteractionCoroutine(2f));
+            if (idx >= 0 && idx < WeaponController.Instance.ownedWeapons.Length)
+                WeaponController.Instance.ownedWeapons[idx] = true;
 
-                // 상호작용 완료 후 체력 회복
-                return;
-            }
+            Destroy(gameObject);
+            return;
         }
+        if ((itemName == "포션" || itemName == "통조림") && !isInteracting)
+        {
+            InventoryManager.Instance.InsertNewItem(itemName);
+            Destroy(gameObject);
+            return;
+        }
+
+
+
+
+
+
+        
+        // 큰침대, 작은침대 상호작용: 상호작용바 채우고 체력 회복
+        if ((itemName == "큰침대" || itemName == "작은침대") && !isInteracting)
+        {
+            //인터렉션 코루틴 호출
+            StartCoroutine(InteractionCoroutine(2f));
+
+            // 상호작용 완료 후 체력 회복
+            return;
+        }
+
+        if ((itemName == "냉장고") && !isInteracting)
+        {
+            //인터렉션 코루틴 호출
+            StartCoroutine(InteractionCoroutine(2f));
+
+            // 상호작용 완료 후 허기 회복
+            return;
+        }
+
+        
     }
     //여기에 인터렉션 코루틴 추가
     IEnumerator InteractionCoroutine(float second)

@@ -1663,11 +1663,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992602036031772454, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992602036031772454, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992602036031772454, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchorMin.y
@@ -3190,7 +3190,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1190983184
 Transform:
   m_ObjectHideFlags: 0
@@ -3490,7 +3490,6 @@ Transform:
   m_Children:
   - {fileID: 767603632}
   - {fileID: 1690084980}
-  - {fileID: 1735976625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1228163938
@@ -4776,15 +4775,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735976624}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.736188, y: -0.5860841, z: -9.113931}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1403336723}
   - {fileID: 130442732}
   - {fileID: 366378873}
-  m_Father: {fileID: 1226400274}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1737956431 stripped
 GameObject:
@@ -5531,4 +5530,5 @@ SceneRoots:
   - {fileID: 1197518806}
   - {fileID: 138908389}
   - {fileID: 735055593}
+  - {fileID: 1735976625}
   - {fileID: 1226400274}
