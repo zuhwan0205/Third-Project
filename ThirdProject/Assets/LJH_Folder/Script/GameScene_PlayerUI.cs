@@ -27,24 +27,13 @@ public class GameScene_PlayerUI : MonoBehaviour
     public void SetHealth(float hp) {
         healthSlider.value = hp;
     }
+    
     public void SetHunger(float hungry) {
         hungerSlider.value = hungry;
     }
-    
-    // public void Setup(NetworkRunner runner, PlayerRef player)
-    // {
-    //     _runner = runner;
-    //     _player = player;
-    //     
-    //
-    //     // PlayerRef로부터 UserID(=닉네임) 가져오기
-    //     string userId = _runner.GetPlayerUserId(_player);
-    //     playerNameText.text = userId;
-    // }
 
     private void Start()
     {
-        //Setup(_runner, _player);
         playerNameText.text = SessionData.Nickname;
     }
 }
