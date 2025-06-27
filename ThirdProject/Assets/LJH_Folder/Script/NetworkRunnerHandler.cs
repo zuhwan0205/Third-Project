@@ -41,34 +41,18 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
         runner = newRunner;
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
-    {
-        foreach (var player in FindObjectsByType<PlayerController>(FindObjectsSortMode.None))
-        {
-            if (player.Object.HasInputAuthority)
-            {
-                var buffer = player.input.inputBuffer;
-                NetworkInputData data = new NetworkInputData();
-
-                data.MovementInput   = buffer.MovementInput;
-                data.MouseX          = buffer.MouseX;
-                data.MouseY          = buffer.MouseY;
-                data.IsJumping       = buffer.IsJumping;
-                data.IsSprinting     = buffer.IsSprinting;
-                data.IsCrouching     = buffer.IsCrouching;
-                data.IsAttacking     = buffer.IsAttacking;
-                data.IsAiming        = buffer.IsAiming;
-                data.IsReloading     = buffer.IsReloading;
-                data.QuickSlotIndex  = buffer.QuickSlotIndex;
-                data.IsInteracting   = buffer.IsInteracting;
-
-                input.Set(data);
-                buffer.Reset();
-                break; // 내 플레이어만 처리
-            }
-        }
+    public void OnInput(NetworkRunner runner, NetworkInput input) 
+    { 
+        var data = new NetworkInputData();
+        data.MovementInput.x = Input.GetAxis("Horizontal");
+        data.MovementInput.y = Input.GetAxis("Vertical");
+        
+        data.IsJumping = Input.GetKey(KeyCode.Space);
+        
+        input.Set(data);
+        
     }
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         OnLobbyPlayerJoined?.Invoke(player);
@@ -149,14 +133,6 @@ public class NetworkRunnerHandler : MonoBehaviour, INetworkRunnerCallbacks
 public struct NetworkInputData : INetworkInput
 {
     public Vector2 MovementInput;
-    public float MouseX;
-    public float MouseY;
     public bool IsJumping;
-    public bool IsSprinting;
-    public bool IsCrouching;
-    public bool IsAttacking;
-    public bool IsAiming;
-    public bool IsReloading;
-    public int QuickSlotIndex; // -1: 안씀, 0~4: 슬롯 선택
-    public bool IsInteracting;
+    public NetworkButtons Buttons;
 }

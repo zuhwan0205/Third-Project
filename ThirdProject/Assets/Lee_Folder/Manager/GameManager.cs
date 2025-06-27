@@ -22,7 +22,7 @@ public class GameManager : NetworkBehaviour
     [Networked] public int ExpectedPlayers { get; set; } = 0;
     [Networked] public int LoadedPlayers { get; set; } = 0;
     
-    [Networked, Capacity(9)]
+    [Networked, Capacity(6)]
     public NetworkDictionary<PlayerRef, bool> PlayerLoadedStates => default;
     
     private void Awake()
@@ -30,17 +30,10 @@ public class GameManager : NetworkBehaviour
         Instance = this;
     }
     
-    private void OnDestroy()
-    {
-        if (Instance == this)
-        {
-            Instance = null;
-        }
-    }
-    
     public override void Spawned()
     {
         if (!Runner.IsServer) return;
+        
         StartCoroutine(WaitForAllPlayersToLoad());
     }
     
@@ -112,6 +105,21 @@ public class GameManager : NetworkBehaviour
         OnGameStarted();
     }
     
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)]
+    public void RPC_PlayerLoadedIntoScene(PlayerRef player)
+    {
+        PlayerLoadedStates.Set(player, true);
+        LoadedPlayers = PlayerLoadedStates.Count(kvp => kvp.Value);
+    }
+    
+    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)]
+    public void RPC_MarkRoomAlive(int roomIndex)
+    {
+        Debug.Log($"[GameManager] ▶ Room {roomIndex}의 플레이어 생존 처리");
+        RoomManager.Instance?.SetRoomAlive(roomIndex, true);
+    }
+    
+    
     private void OnGameStarted()
     {
         RoomManager.Instance?.StartIntroSequence();
@@ -120,115 +128,26 @@ public class GameManager : NetworkBehaviour
     public void OnGameIntroComplete()
     {
         IsInputAllowed = true;
+    }
+    
+    public void OnPlayerLeft(PlayerRef player)
+    {
+        if (!Runner.IsServer) return;
         
-        for (int i = 0; i < RoomManager.Instance.RoomCount; i++)
+        if (PlayerLoadedStates.ContainsKey(player))
         {
-            RoomManager.Instance.SetRoomAlive(i, true);
-        }
-        
-        if (Object.HasStateAuthority)
-        {
-            RoomManager.Instance?.StartSurvivalTest();
+            PlayerLoadedStates.Remove(player);
+            LoadedPlayers = PlayerLoadedStates.Count(kvp => kvp.Value);
+            ExpectedPlayers = Runner.ActivePlayers.Count();
+            
         }
     }
     
-    public void CheckNextQuestionTrigger()
+    private void OnDestroy()
     {
-        if (!Runner.IsServer)
+        if (Instance == this)
         {
-            return;
-        }
-
-        int aliveCount = 0;
-        int answeredCount = 0;
-
-        for (int i = 0; i < RoomManager.Instance.RoomCount; i++)
-        {
-            var room = RoomManager.Instance.GetRoom(i);
-            if (room == null) continue;
-
-            if (!room.state.isAlive)
-            {
-                Debug.Log($"Room {i} isDead → Skip");
-                continue;
-            }
-
-            aliveCount++;
-            Debug.Log($"Room {i} - hasAnswered: {room.state.hasAnswered}");
-
-            if (room.state.hasAnswered)
-            {
-                answeredCount++;
-            }
-            else
-            {
-                return;
-            }
-        }
-        
-        Debug.Log($"AlivePlayers ({answeredCount}/{aliveCount}) → StartNextQuestion");
-        RoomManager.Instance?.StartNextQuestion();
-    }
-
-    public void OnQuestionPhaseComplete(RoomStateData[] roomStates)
-    {
-        if (!Object.HasStateAuthority) return;
-        
-        int[] roomIndices = new int[roomStates.Length];
-        bool[] aliveStates = new bool[roomStates.Length];
-        bool[] answeredStates = new bool[roomStates.Length];
-        
-        for (int i = 0; i < roomStates.Length; i++)
-        {
-            roomIndices[i] = roomStates[i].roomIndex;
-            aliveStates[i] = roomStates[i].isAlive;
-            answeredStates[i] = roomStates[i].hasAnswered;
-        }
-    
-        RPC_SyncAllRoomStates(roomIndices, aliveStates, answeredStates);
-        CheckNextQuestionTrigger();
-    }
-    
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_SyncAllRoomStates(int[] roomIndices, bool[] aliveStates, bool[] answeredStates)
-    {
-    
-        for (int i = 0; i < roomIndices.Length; i++)
-        {
-            RoomManager.Instance?.SetRoomAlive(roomIndices[i], aliveStates[i]);
-            var room = RoomManager.Instance?.GetRoom(roomIndices[i]);
-            if (room != null)
-            {
-                room.state.hasAnswered = answeredStates[i];
-            }
+            Instance = null;
         }
     }
-    
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)]
-    public void RPC_PlayerLoadedIntoScene(PlayerRef player)
-    {
-        PlayerLoadedStates.Set(player, true);
-        LoadedPlayers = PlayerLoadedStates.Count(kvp => kvp.Value);
-    }
-    
-    
-    // 지금은 아직 못씀
-    /*public void HandleQuestionEffect(RoomQuestion question)
-    {
-        switch (question.type)
-        {
-            case QuestionType.Positive:
-                //TrySpawnRewardItems(question.positiveRewards);
-                break;
-
-            case QuestionType.Negative:
-                //TrySpawnMonsters(question.monsterList);
-                break;
-
-            case QuestionType.Neutral:
-            default:
-                break;
-        }
-    }*/
-    
 }

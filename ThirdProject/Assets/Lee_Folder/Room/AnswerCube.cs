@@ -1,31 +1,22 @@
 using UnityEngine;
 
-public class AnswerCube : MonoBehaviour, IInteractable
+public class AnswerCube : MonoBehaviour
 {
-    [SerializeField] private RoomView roomView;
     private bool hasAnswered = false;
-
-    public void Interact() => OnHit();
-
-    public string GetInteractText() => "Press [E] to Answer";
 
     public void OnHit()
     {
         if (hasAnswered) return;
         hasAnswered = true;
-
-        Debug.Log("[AnswerCube] OnHit called");
-
-        if (roomView != null)
+        
+        RoomView view = transform.parent.GetComponentInChildren<RoomView>();
+        if (view != null)
         {
-            Debug.Log("[AnswerCube] roomView found, calling SetAliveState(true)");
-            roomView.SetAliveState(true);
+            view.SetAliveState(true);
         }
         else
         {
-            Debug.LogWarning("[AnswerCube] RoomView not assigned.");
+            Debug.LogWarning("[AnswerCube] RoomView not found on sibling");
         }
     }
-
-    public void ResetAnswer() => hasAnswered = false;
 }
