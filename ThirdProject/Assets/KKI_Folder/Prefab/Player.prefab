@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 2423787418694319627}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -425,7 +425,6 @@ GameObject:
   - component: {fileID: 5519065253379545307}
   - component: {fileID: 2030528848918648691}
   - component: {fileID: 2907125957987819319}
-  - component: {fileID: 3737532165376794753}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -515,10 +514,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99190fb779b4cbc45925bd614cdf2bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactDistance: 3
+  interactDistance: 8
   interactMask:
     serializedVersion: 2
-    m_Bits: 1048576
+    m_Bits: 1048640
   cursor: {fileID: 0}
   interactionText: {fileID: 0}
 --- !u!114 &2030528848918648691
@@ -555,25 +554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0ad21161338244fb3596866de0b695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3737532165376794753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2722088221876512396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2652505405
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 4639411244518813097}
-  ForceRemoteRenderTimeframe: 0
 --- !u!1 &2857207413091561367
 GameObject:
   m_ObjectHideFlags: 0
