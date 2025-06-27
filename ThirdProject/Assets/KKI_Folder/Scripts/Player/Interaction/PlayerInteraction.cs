@@ -27,11 +27,10 @@ public class PlayerInteraction : NetworkBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance, interactMask))
         {   
             currentInteractable = hit.collider.GetComponent<IInteractable>();
-            Debug.Log("오브젝트 : " + hit.collider.gameObject.name);
 
             if (currentInteractable != null)
             {
-                Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
+                //Debug.Log("오브젝트 Interactable : " + hit.collider.gameObject.name);
                 bInteract = true;
                 // 애니메이션 작용
                 CursorManager.Instance.SetZoom(true);
@@ -64,10 +63,13 @@ public class PlayerInteraction : NetworkBehaviour
 
     private void InteractionTextSetting(bool flag, string interactionText = null)
     {
+        if (this.interactionText == null) return;
+    
         if (bText == flag) return;
         bText = flag;
+    
         this.interactionText.gameObject.SetActive(flag);
-        if(interactionText != null)
+        if (interactionText != null)
             this.interactionText.text = interactionText;
     }
 
