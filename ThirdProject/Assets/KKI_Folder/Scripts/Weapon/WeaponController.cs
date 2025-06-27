@@ -33,7 +33,7 @@ public class WeaponController : MonoBehaviour
             currentWeaponIdx = -1;
             currentWeaponType = WeaponType.None;
             
-            // UI 업데이트 - 무기 없음
+            // UI 업데이트 - 무기 없음 KYW2줄추가
             if (WeaponUIManager.Instance != null)
                 WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.None);
             
@@ -53,7 +53,7 @@ public class WeaponController : MonoBehaviour
             weaponObj.transform.localRotation = Quaternion.identity;
             SetWeapon(weaponObj);
             
-            // UI 업데이트 - 새로운 무기
+            // UI 업데이트 - 새로운 무기 KYW2줄추가
             if (WeaponUIManager.Instance != null)
                 WeaponUIManager.Instance.UpdateWeaponUI(currentWeaponType);
         }
@@ -71,7 +71,19 @@ public class WeaponController : MonoBehaviour
         ObjectPoolManager.Instance.ReturnObject(currentWeapon.PoolKey, currentWeapon.gameObject);
     }
 
-    public void Attack() => currentWeapon?.Attack();
+    //KYW 수정 탄약감소 추가
+    public void Attack()
+    {
+        currentWeapon?.Attack();
+        if (currentWeapon.WeaponType == WeaponType.Pistol)
+        {
+            InventoryManager.Instance.RemoveItem("총알");
+        }
+        else if (currentWeapon.WeaponType == WeaponType.Bow)
+        {
+            InventoryManager.Instance.RemoveItem("화살");
+        }
+    }
 
     public void Aim()
     {

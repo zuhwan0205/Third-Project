@@ -63,6 +63,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    //초기 인벤토리 세팅 코루틴
     IEnumerator InsertCoroutine()
     {
         stashData = new StandardStashViewData(12, 12);
@@ -72,6 +73,7 @@ public class InventoryManager : MonoBehaviour
         ToggleInventory();
         yield return null;
     }
+    //i누르면 인벤토리 토글
     void Update()
     {
         // I 키를 눌러 인벤토리 토글
@@ -82,54 +84,54 @@ public class InventoryManager : MonoBehaviour
 
         // === 디버깅용 키 입력 ===
         
-        // 1키: 포션 추가
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            InsertNewItem("포션");
-        }
+        // // 1키: 포션 추가
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     InsertNewItem("포션");
+        // }
 
-        // 2키: 통조림 추가  
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            InsertNewItem("통조림");
-        }
+        // // 2키: 통조림 추가  
+        // if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     InsertNewItem("총알");
+        // }
 
-        // 3키: 권총 추가
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            InsertNewItem("권총");
-        }
+        // // 3키: 권총 추가
+        // if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     InsertNewItem("권총");
+        // }
 
-        // Q키: 포션 삭제
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            RemoveItem("포션");
-        }
+        // // Q키: 포션 삭제
+        // if (Input.GetKeyDown(KeyCode.Q))
+        // {
+        //     RemoveItem("포션");
+        // }
 
-        // W키: 통조림 삭제
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            RemoveItem("통조림");
-        }
+        // // W키: 통조림 삭제
+        // if (Input.GetKeyDown(KeyCode.W))
+        // {
+        //     RemoveItem("총알");
+        // }
 
-        // E키: 권총 삭제
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            RemoveItem("권총");
-        }
+        // // E키: 권총 삭제
+        // if (Input.GetKeyDown(KeyCode.E))
+        // {
+        //     RemoveItem("권총");
+        // }
 
-        // P키: 모든 아이템 개수 출력
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            PrintAllItemCounts();
-        }
+        // // P키: 모든 아이템 개수 출력
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     PrintAllItemCounts();
+        // }
 
-        // C키: 특정 아이템 개수 확인 (포션 예시)
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            int count = CheckItemCount("포션");
-            Debug.Log($"포션 개수: {count}개");
-        }
+        // // C키: 특정 아이템 개수 확인 (포션 예시)
+        // if (Input.GetKeyDown(KeyCode.C))
+        // {
+        //     int count = CheckItemCount("포션");
+        //     Debug.Log($"포션 개수: {count}개");
+        // }
     }
 
     // 인벤토리 토글 함수

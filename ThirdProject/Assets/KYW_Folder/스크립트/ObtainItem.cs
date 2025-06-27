@@ -8,8 +8,6 @@ public class InteractableItem : MonoBehaviour, IInteractable
     [SerializeField] private string itemName;
 
     private bool isInteracting = false; // 중복 방지
-    private const float interactionTime = 2f; // x초 (예시: 2초)
-    private const float healAmount = 30f; // y만큼 체력 회복 (예시: 30)
 
     // 상호작용 시 InventoryManager를 통해 아이템 획득
     public void Interact()
@@ -39,16 +37,26 @@ public class InteractableItem : MonoBehaviour, IInteractable
             // 큰침대, 작은침대 상호작용: 상호작용바 채우고 체력 회복
             if ((itemName == "큰침대" || itemName == "작은침대") && !isInteracting)
             {
-                StartCoroutine(InteractionBarAndHealCoroutine());
+                //인터렉션 코루틴 호출
+                StartCoroutine(InteractionCoroutine(2f));
+
+                // 상호작용 완료 후 체력 회복
                 return;
             }
         }
     }
-
-    private IEnumerator InteractionBarAndHealCoroutine()
+    //여기에 인터렉션 코루틴 추가
+    IEnumerator InteractionCoroutine(float second)
     {
         isInteracting = true;
-        yield return null;
+        
+        //상호작용바가 2초동안 차오르는 함수 호출
+        InteractionBar.Instance.StartInteractionBar(second);
+        
+        //위함수가 끝날때까지 대기
+        yield return new WaitWhile(() => InteractionBar.Instance.IsInteracting());
+        
+        isInteracting = false;
     }
 
     // UI에 표시할 상호작용 문구 반환
