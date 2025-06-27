@@ -1,15 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    // 허기
-    // [SerializeField] private float 
-
+    [SerializeField] private float currentHangry;
+    
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float jumpHeight = 2f;
@@ -18,17 +17,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float crouchHeight = 1.0f;
     [SerializeField] private float standHeight = 2.0f;
     [SerializeField] private float crouchSpeed = 2.5f;
-
+    
     [Header("카메라 / 민감도")]
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 2f;
     
     [SerializeField] private float cameraCrouchHeight;
     [SerializeField] private float cameraStandHeight;
     [Header("UI")]
-    [SerializeField] private Text healthText;
-
-
+    private GameScene_PlayerUI playerUI;
+    
     // 캐릭터 스탯
     private float moveSpeed;
     private bool isSprinting = false;
@@ -48,11 +47,15 @@ public class PlayerController : MonoBehaviour
     public WeaponController weaponController { get; private set; }
     private InputManager input;
     private PlayerInteraction playerInteraction;
+    private float hungerDecreaseInterval = 10f;
+    private float hungerTimer = 0f;
 
     // 프로퍼티
     public float Health => currentHealth;
+    public float Hungry => currentHangry;
     public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
+
 
 
 
@@ -69,9 +72,21 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+        currentHangry = 100f; 
         moveSpeed = walkSpeed;
 
         UpdateHealthUI();
+        
+        GameScene_PlayerUI ui = FindObjectOfType<GameScene_PlayerUI>();
+        if (ui != null)
+        {
+            SetPlayerUI(ui);
+            Debug.Log("찾음");
+        }
+        else
+            Debug.LogWarning("GameScene_PlayerUI를 찾지 못함");
+        
+        StartCoroutine(DecreaseHungerRoutine());
 
         // 나중에 게임 매니저 혹은 다른 곳으로 옮기기
         // KeyDown
@@ -111,7 +126,6 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
-
 
     #region 이동/스프린트/점프/앉기
 
@@ -272,6 +286,8 @@ public class PlayerController : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Max(currentHealth, 0f);
         UpdateHealthUI();
+        if (playerUI != null)
+            playerUI.SetHealth(currentHealth);
         if (currentHealth <= 0f)
             Debug.Log("게임 오버!");
     }
@@ -281,12 +297,53 @@ public class PlayerController : MonoBehaviour
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, maxHealth);
         UpdateHealthUI();
+        Debug.Log("heal");
     }
 
     private void UpdateHealthUI()
     {
-        if (healthText != null)
-            healthText.text = currentHealth.ToString("F0");
+        if (playerUI != null)
+            playerUI.SetHealth(currentHealth);
+        Debug.Log("updateHealthUI");
+    }
+    
+    private void UpdateHungerUI()
+    {
+        if (playerUI != null)
+            playerUI.SetHunger(currentHangry);
+        Debug.Log("updateHungerUI");
+    }
+    
+    public void SetPlayerUI(GameScene_PlayerUI ui)
+    {
+        playerUI = ui;
+        playerUI.Initialize(maxHealth, 100f, this);
+        playerUI.SetHealth(currentHealth);
+        playerUI.SetHunger(currentHangry);
+    }
+    
+    private IEnumerator DecreaseHungerRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+
+            currentHangry -= 1f;
+            currentHangry = Mathf.Max(currentHangry, 0f);
+
+            UpdateHungerUI();
+            Debug.Log("허기 -1 감소");
+        }
+    }
+
+    private void IncreaseHunger(float amount)           //이후 빵이나 통조림 먹으면 상승하는데 사용할 코드입니다!
+    {
+        
+        currentHangry += amount;
+        currentHangry = Mathf.Min(currentHangry, 100);
+        Debug.Log("허기 상승");
+        currentHangry += 30;
+        UpdateHungerUI();
     }
     #endregion
 
@@ -299,11 +356,11 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
     #region 아이템 슬롯
     public void SelectItemSlot(int slotIndex)
     {
         Debug.Log($"{slotIndex}가 눌려짐");
+        Debug.Log($"ownedWeapons[{slotIndex}] = {weaponController.ownedWeapons[slotIndex]}");
         // 슬롯에 무기가 있는가?
         if (weaponController.ownedWeapons[slotIndex] == false) return;
 
