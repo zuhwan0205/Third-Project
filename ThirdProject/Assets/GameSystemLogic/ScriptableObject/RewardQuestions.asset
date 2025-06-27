@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a4f0935a9f3734eb30454e13b10107, type: 3}
+  m_Name: RewardQuestions
+  m_EditorClassIdentifier: 
+  rewardQuestions:
+  - questionText: "\uB79C\uB364\uD55C \uBC29\uC5D0 \uD3EC\uC158\uC744 \uC9C0\uAE09\uD569\uB2C8\uAE4C?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 1733717513692727421, guid: db42887bcea0b2a4db0debffb0cd0faa, type: 3}
+      dropChance: 1
+    monsterList: []
+  - questionText: "\uB79C\uB364\uD55C \uBC29\uC5D0 \uD1B5\uC870\uB9BC\uC744 \uC9C0\uAE09\uD569\uB2C8\uAE4C?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 7338294496797462623, guid: f7dab6e67770d1f4f975ee71f5475e18, type: 3}
+      dropChance: 1
+    monsterList: []
+  - questionText: "\uB79C\uB364\uD55C \uBC29\uC5D0 \uB79C\uB364\uD55C \uBB34\uAE30\uB97C
+      \uC9C0\uAE09\uD569\uB2C8\uAE4C?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 7612267239219174168, guid: b4aa036ccc17b8f4b8192ccb1afb72fd, type: 3}
+      dropChance: 0.2
+    - itemPrefab: {fileID: 4253202926210777093, guid: 67bb4e8fccb6da740865758faaf50c5b, type: 3}
+      dropChance: 0.2
+    - itemPrefab: {fileID: 4826686898653038103, guid: d3908ab22a52ba248a46fd1e97d45dac, type: 3}
+      dropChance: 0.2
+    - itemPrefab: {fileID: 1808726057580534027, guid: c6d4083fd170a834396860c22dd1f472, type: 3}
+      dropChance: 0.2
+    - itemPrefab: {fileID: 629012407128370664, guid: b9e53945d2391ca44b5c429485faee5f, type: 3}
+      dropChance: 0.2
+    monsterList: []
+  - questionText: "\uB79C\uB364\uD55C \uBC29\uC5D0 \uAE0D\uC815\uC801\uC778 \uBB34\uC5C7\uC778\uAC00\uB97C
+      \uC90D\uB2C8\uAE4C?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 6622889290998844933, guid: 775de98f8c068444a860d839f70089a3, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 4253202926210777093, guid: 67bb4e8fccb6da740865758faaf50c5b, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 4826686898653038103, guid: d3908ab22a52ba248a46fd1e97d45dac, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 7612267239219174168, guid: b4aa036ccc17b8f4b8192ccb1afb72fd, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 629012407128370664, guid: b9e53945d2391ca44b5c429485faee5f, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 1808726057580534027, guid: c6d4083fd170a834396860c22dd1f472, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 3983317682043423766, guid: 431fbce8ccd5eeb4cb69b636d9d9b7f4, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 344005791796031628, guid: 9f92062ce8356b14b97e1af0e96fdf6e, type: 3}
+      dropChance: 0
+    - itemPrefab: {fileID: 1733717513692727421, guid: db42887bcea0b2a4db0debffb0cd0faa, type: 3}
+      dropChance: 0.1
+    - itemPrefab: {fileID: 7338294496797462623, guid: f7dab6e67770d1f4f975ee71f5475e18, type: 3}
+      dropChance: 0.1
+    monsterList: []

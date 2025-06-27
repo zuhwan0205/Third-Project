@@ -9,6 +9,8 @@ public class Event_MainScene : MonoBehaviour
     public static event Action OnSettingButtonClicked;
     public static event Action OnQuitButtonClicked;
     public static event Action OnTestButtonClicked;
+    public static event Action OnNormalButtonClicked;
+    public static event Action OnHardButtonClicked;
     
     public static event Action OnCloseSettingButtonClicked;
     
@@ -17,6 +19,8 @@ public class Event_MainScene : MonoBehaviour
     [SerializeField] private Button QuitButton;
     [SerializeField] private Button TestButton;
     [SerializeField] private Button CloseSettingButton;
+    [SerializeField] private Button NormalButton;
+    [SerializeField] private Button HardButton;
      
     
     IEnumerator WaitSecond(Button button)
@@ -54,6 +58,20 @@ public class Event_MainScene : MonoBehaviour
         CloseSettingButton.interactable = false;
         StartCoroutine(WaitSecond(CloseSettingButton));
         OnCloseSettingButtonClicked?.Invoke();
+    }
+
+    public void OnClickNormalButton()
+    {
+        LobbyButton.interactable = false;
+        StartCoroutine(WaitSecond(NormalButton));
+        OnNormalButtonClicked?.Invoke();
+    }
+    
+    public void OnClickHardButton()
+    {
+        LobbyButton.interactable = false;
+        StartCoroutine(WaitSecond(NormalButton));
+        OnHardButtonClicked?.Invoke();
     }
     
 }
