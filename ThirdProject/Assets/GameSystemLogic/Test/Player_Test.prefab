@@ -102,9 +102,9 @@ GameObject:
   - component: {fileID: 2280918014189984132}
   - component: {fileID: 2224858327819843555}
   - component: {fileID: 2724937984389335279}
-  - component: {fileID: 5790772045934318859}
-  - component: {fileID: 3318439755638405077}
   - component: {fileID: 4661819933359076225}
+  - component: {fileID: 3914425250759582475}
+  - component: {fileID: 5128090120940299032}
   m_Layer: 0
   m_Name: Player_Test
   m_TagString: Untagged
@@ -229,36 +229,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5790772045934318859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911290542094441179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95673976c66660e48a6e9d4afcfed18a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraRoot: {fileID: 5080980769197708441}
-  mouseSensitivity: 2
-  clampAngle: 80
---- !u!114 &3318439755638405077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2911290542094441179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9be7a704900e37049aa3a67924a15dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  gravity: -9.81
-  cameraRoot: {fileID: 5080980769197708441}
 --- !u!114 &4661819933359076225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,6 +245,36 @@ MonoBehaviour:
   buttonLayerMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &3914425250759582475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2911290542094441179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9be7a704900e37049aa3a67924a15dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  gravity: -9.81
+  cameraRoot: {fileID: 5080980769197708441}
+--- !u!114 &5128090120940299032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2911290542094441179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95673976c66660e48a6e9d4afcfed18a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraRoot: {fileID: 5080980769197708441}
+  mouseSensitivity: 2
+  clampAngle: 80
 --- !u!1 &5675904235172286592
 GameObject:
   m_ObjectHideFlags: 0

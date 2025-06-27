@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("[GameManager] 쫄보ㅋ");
         }
+        SpawnManager.Instance.SpawnPlayer();
     }
     
 }
