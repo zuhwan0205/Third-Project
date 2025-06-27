@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
         Event_MainScene.OnQuitButtonClicked += QuitButton;
         Event_MainScene.OnTestButtonClicked += testButton;
         Event_MainScene.OnCloseSettingButtonClicked += CloseSetting;
+        Event_MainScene.OnNormalButtonClicked += NormalMode;
     }
 
     void OnDisable()
@@ -53,6 +54,11 @@ public class UIManager : MonoBehaviour
     private void CloseSetting()
     {
         SettingPanel.SetActive(false);
+    }
+
+    private void NormalMode()
+    {
+        
     }
     
     
