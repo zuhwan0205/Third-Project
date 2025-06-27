@@ -414,7 +414,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5528170790253704212, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -424,6 +425,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5191240208754372475, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 2977495360181466430, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1737956433}
     - targetCorrespondingSourceObject: {fileID: 4300950113043624847, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -758,6 +762,50 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &735055591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 735055593}
+  - component: {fileID: 735055592}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &735055592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735055591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d9e219102665f459c88765b7e31868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &735055593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735055591}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &783951545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,6 +1947,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1737956431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2977495360181466430, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+  m_PrefabInstance: {fileID: 138908389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1737956433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737956431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a62560b6f5cc54da688da44654ee4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introTextBank: {fileID: 11400000, guid: 6e07abba60583ac4ebb454c64c910f86, type: 2}
+  naturalQuestion: {fileID: 11400000, guid: 42e8caf589f64234981a09ce09d6bd59, type: 2}
+  rewardQuestion: {fileID: 11400000, guid: 0bad8fda5006b144ea6b4f32f97ab95a, type: 2}
+  monsterQuestion: {fileID: 11400000, guid: ac14aae222d632e4e8a1d832ecee2bfd, type: 2}
+  textMeshPro3D: {fileID: 2115405776}
+  typingSpeed: 0.05
 --- !u!1 &1767147945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1978,6 +2049,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115405776 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2165232298242980446, guid: 8dd1e96aa7879a64b93b182d191cfb46, type: 3}
+  m_PrefabInstance: {fileID: 138908389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4351833493114435892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2084,3 +2166,4 @@ SceneRoots:
   - {fileID: 1197518806}
   - {fileID: 84362868}
   - {fileID: 138908389}
+  - {fileID: 735055593}
