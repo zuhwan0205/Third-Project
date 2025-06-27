@@ -189,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 2074035016256731656}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.15, z: 0.05}
+  m_LocalPosition: {x: 0, y: 2.15, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 2030528848918648691}
   - component: {fileID: 2907125957987819319}
   - component: {fileID: 3737532165376794753}
-  - component: {fileID: 1212984033760998773}
+  - component: {fileID: 1689865719721632076}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -489,21 +489,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 0
-  walkSpeed: 15
-  sprintSpeed: 25
-  jumpHeight: 1.3
-  groundCheckDistance: 0.8
-  gravity: -9.81
+  walkSpeed: 5
+  sprintSpeed: 10
+  crouchSpeed: 2.5
   crouchHeight: 1.5
   standHeight: 3
-  crouchSpeed: 2.5
   playerCamera: {fileID: 7549821734909135284}
   cameraTransform: {fileID: 4633097178658611543}
   mouseSensitivity: 2
-  cameraCrouchHeight: 0
-  cameraStandHeight: 0
+  cameraCrouchHeight: 1.3
+  cameraStandHeight: 2.15
   healthText: {fileID: 0}
+  ui: {fileID: 0}
 --- !u!114 &5519065253379545307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,7 +513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99190fb779b4cbc45925bd614cdf2bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactDistance: 3
+  interactDistance: 8
   interactMask:
     serializedVersion: 2
     m_Bits: 1048576
@@ -574,10 +571,11 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4639411244518813097}
   - {fileID: 5519065253379545307}
+  - {fileID: 2030528848918648691}
   - {fileID: 2907125957987819319}
-  - {fileID: 1212984033760998773}
+  - {fileID: 1689865719721632076}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &1212984033760998773
+--- !u!114 &1689865719721632076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -586,14 +584,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2722088221876512396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 378411a89480da345945c2f888327a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  gravity: -20
+  jumpImpulse: 8
+  acceleration: 10
+  braking: 10
+  maxSpeed: 2
+  rotationSpeed: 15
 --- !u!1 &2857207413091561367
 GameObject:
   m_ObjectHideFlags: 0

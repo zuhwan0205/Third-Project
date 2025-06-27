@@ -1,24 +1,35 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Fusion;
 
 public class RoomView : MonoBehaviour
 {
     [SerializeField] private TextMeshPro screenText;
-    public int roomIndex;
+    [SerializeField] private AnswerCube answerCube;
+    public int roomIndex { get; set; }
 
     public void SetAliveState(bool isAlive)
     {
-        if (RoomManager.Instance == null) return;
-
-        var room = RoomManager.Instance.GetRoom(roomIndex);
-        if (room == null || room.state.hasAnswered) return;
-
-        room.state.hasAnswered = true;
-        room.state.isAlive = isAlive;
-        
-    }
+        Debug.Log($"[RoomView] SetAliveState({isAlive}) called for room {roomIndex}");
     
+        var room = RoomManager.Instance?.GetRoom(roomIndex);
+        if (room == null)
+        {
+            Debug.LogWarning("[RoomView] Room not found for index: " + roomIndex);
+            return;
+        }
+
+        if (room.state.hasAnswered)
+        {
+            Debug.LogWarning("[RoomView] Already answered.");
+            return;
+        }
+
+        Debug.Log($"[RoomView] Calling RoomManager.OnRoomAnswered({roomIndex}, {isAlive})");
+        RoomManager.Instance?.OnRoomAnswered(roomIndex, isAlive);
+    }
+
     public void PlayText(string text, float typingSpeed, System.Action onComplete)
     {
         StartCoroutine(TypeTextRoutine(text, typingSpeed, onComplete));
@@ -33,5 +44,10 @@ public class RoomView : MonoBehaviour
             yield return new WaitForSeconds(speed);
         }
         onComplete?.Invoke();
+    }
+    public void ResetAnswerCube()
+    {
+        if (answerCube != null)
+            answerCube.ResetAnswer();
     }
 }
