@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 2724937984389335279}
   - component: {fileID: 5790772045934318859}
   - component: {fileID: 3318439755638405077}
+  - component: {fileID: 4661819933359076225}
   m_Layer: 0
   m_Name: Player_Test
   m_TagString: Untagged
@@ -258,6 +259,22 @@ MonoBehaviour:
   moveSpeed: 5
   gravity: -9.81
   cameraRoot: {fileID: 5080980769197708441}
+--- !u!114 &4661819933359076225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2911290542094441179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d4f2fc38dfafb4592d18c3e3d0ffad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayDistance: 10
+  buttonLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &5675904235172286592
 GameObject:
   m_ObjectHideFlags: 0

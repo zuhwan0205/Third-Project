@@ -4,6 +4,8 @@ using DG.Tweening;
 
 public class QuestionManager : MonoBehaviour
 {
+    public static QuestionManager Instance { get; private set; }
+
     [Header("Question Sources")]
     [SerializeField] private IntroTextBank introTextBank;
     [SerializeField] private NaturalQuestion naturalQuestion;
@@ -16,6 +18,16 @@ public class QuestionManager : MonoBehaviour
 
     private Tween typingTween;
     private int introIndex = 0;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -48,5 +60,10 @@ public class QuestionManager : MonoBehaviour
                 Debug.Log($"[{introIndex}] 다음 인트로로 진행");
                 Invoke(nameof(ShowIntroText), 1.5f);
             });
+    }
+
+    public void OnPlayerAnswered(bool isYes)
+    {
+        Debug.Log($"플레이어 응답: {(isYes ? "예" : "아니오")}");
     }
 }
