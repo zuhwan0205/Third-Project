@@ -1,15 +1,10 @@
 using System.Collections;
+using Fusion;
 using UnityEngine;
-
-
-public class WeaponSaveData
-{
-    public int currentAmmo;
-    public int reseverAmmon;
-}
 
 public abstract class RangeWeapon : Weapon
 {
+    [Header("원거리 무기 필드 값 세팅")]
     [SerializeField] protected int maxAmmo;
     [SerializeField] protected int currentAmmo;
     [SerializeField] protected int reserveAmmo;
@@ -22,6 +17,9 @@ public abstract class RangeWeapon : Weapon
     protected float fireTime;
     protected float reloadTime;
     protected bool isReloading;
+
+    // Runner 참조(싱글턴 혹은 DI 방식으로 참조)
+    protected NetworkRunner runner = NetworkRunnerHandler.Instance.GetRunner();
 
     void Update()
     {
@@ -41,6 +39,8 @@ public abstract class RangeWeapon : Weapon
     }
     protected void FireProjectile(Transform firePoint, int projectileCount, float spreadAngle, PoolKey poolKey)
     {
+        if (!Object.HasStateAuthority) return; 
+
         Camera cam = Camera.main;
         Vector3 fireOrigin = firePoint.position;
 
@@ -77,10 +77,15 @@ public abstract class RangeWeapon : Weapon
                 dir = spreadRot * baseDir;
             }
 
-            if (ObjectPoolManager.Instance.TryGetObject<Projectile>(poolKey, out var projectile))
-            {
-                projectile.OnSpawn(firePoint, dir);
-            }
+            var projectileObj = runner.Spawn(
+                ObjectPoolManager.Instance.GetPrefab(poolKey),
+                firePoint.position,
+                Quaternion.LookRotation(dir),
+                Object.InputAuthority
+            );
+
+            var projectile = projectileObj.GetComponent<Projectile>();
+            projectile.Init(dir);
         }
     }
 
