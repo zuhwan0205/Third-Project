@@ -2,58 +2,44 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
-    public Transform cameraTransform;
-    public float shakeAmplitude = 0.05f;
-    public float shakeFrequency = 10f;
-
-    private Vector3 baseLocalPos;
+    public Transform cameraTransform;   // 카메라 Transform
+    public float shakeAmplitude = 0.05f; // 흔들림 세기(폭)
+    public float shakeFrequency = 10f;   // 흔들림 속도(빈도)
+    
+    private Vector3 defaultPos;
     private float shakeTimer = 0f;
-
-    private float cameraCrouchHeight;
-    private float cameraStandHeight;
-    private bool isSprinting = false;
-    private bool isCrouching = false;
-
-    public void SetCrouchAndSprint(bool crouch, bool sprint)
-    {
-        isCrouching = crouch;
-        isSprinting = sprint;
-    }
-
-    public void SetCrouchAndStandHeight(float crouch, float stand) 
-    {
-        cameraCrouchHeight = crouch;
-        cameraStandHeight = stand;
-    }
+    private bool isSprinting = false; // 이 값은 PlayerController 등에서 연동
 
     void Start()
     {
-        baseLocalPos = cameraTransform.localPosition;
+        defaultPos = cameraTransform.localPosition;
     }
 
     void Update()
     {
-        Vector3 targetPos = GetTargetPos();
+        UpdateCameraShake();
+    }
+
+    private void UpdateCameraShake()
+    {
+        // 스프린트 중이면
         if (isSprinting)
         {
             shakeTimer += Time.deltaTime * shakeFrequency;
             float xShake = Mathf.Sin(shakeTimer) * shakeAmplitude;
-            cameraTransform.localPosition = targetPos + new Vector3(xShake, 0, 0);
+            cameraTransform.localPosition = defaultPos + new Vector3(xShake, 0, 0);
         }
         else
         {
-            cameraTransform.localPosition = Vector3.Lerp(
-                cameraTransform.localPosition,
-                targetPos,
-                Time.deltaTime * 10f
-            );
+            // 흔들림 끝나면 카메라 원래 위치로 복귀
+            cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, defaultPos, Time.deltaTime * 10f);
             shakeTimer = 0f;
         }
     }
 
-    Vector3 GetTargetPos()
+    // PlayerController 등에서 이걸 호출해서 스프린트 상태 갱신
+    public void SetSprinting(bool sprinting)
     {
-        float targetY = isCrouching ? cameraCrouchHeight : cameraStandHeight;
-        return new Vector3(baseLocalPos.x, targetY, baseLocalPos.z);
+        isSprinting = sprinting;
     }
 }
