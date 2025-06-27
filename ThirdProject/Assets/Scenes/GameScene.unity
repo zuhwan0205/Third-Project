@@ -3427,6 +3427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &447226647
 Mesh:
   m_ObjectHideFlags: 0
@@ -4808,6 +4810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!1001 &700908283
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4986,6 +4990,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!1001 &723925253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5164,6 +5170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &731178492
 Mesh:
   m_ObjectHideFlags: 0
@@ -5987,6 +5995,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab3c47872a2efdc48bb04e86681bad39, type: 3}
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &831683824
 Mesh:
   m_ObjectHideFlags: 0
@@ -6495,6 +6505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &956280068
 Mesh:
   m_ObjectHideFlags: 0
@@ -7573,6 +7585,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TabPanel: {fileID: 15563892}
+=======
+--- !u!114 &1197518808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197518802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ec3f61663828a4fb8a26abc629d878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameText: {fileID: 1636536374}
+  healthSlider: {fileID: 1636536373}
+  hungerSlider: {fileID: 1636536372}
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &1215820821
 Mesh:
   m_ObjectHideFlags: 0
@@ -9924,6 +9953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!1 &1742889373
 GameObject:
   m_ObjectHideFlags: 0
@@ -10415,6 +10446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!1001 &1818038109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10593,6 +10626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75789f76ae263f545b4154456b6580ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> parent of 817fd3b0 (Merge pull request #70 from zuhwan0205/origin/Monster_Bug)
 --- !u!43 &1853029543
 Mesh:
   m_ObjectHideFlags: 0
