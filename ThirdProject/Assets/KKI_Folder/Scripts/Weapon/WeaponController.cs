@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
         currentWeaponType = WeaponType.None;
 
         ownedWeapons = new bool[5];
@@ -30,6 +31,12 @@ public class WeaponController : MonoBehaviour
         {
             ReturnToPool();
             currentWeaponIdx = -1;
+            currentWeaponType = WeaponType.None;
+            
+            // UI 업데이트 - 무기 없음
+            if (WeaponUIManager.Instance != null)
+                WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.None);
+            
             return;
         }
         
@@ -45,6 +52,10 @@ public class WeaponController : MonoBehaviour
             weaponObj.transform.localPosition = weaponObj.InitialPosition;
             weaponObj.transform.localRotation = Quaternion.identity;
             SetWeapon(weaponObj);
+            
+            // UI 업데이트 - 새로운 무기
+            if (WeaponUIManager.Instance != null)
+                WeaponUIManager.Instance.UpdateWeaponUI(currentWeaponType);
         }
         currentWeaponIdx = idx;
     }

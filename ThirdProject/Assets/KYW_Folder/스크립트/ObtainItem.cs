@@ -17,8 +17,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         if (!string.IsNullOrEmpty(itemName))
         {
             // 무기일 경우에만 WeaponController의 ownedWeapons 배열 값 true로 변경
-            if (WeaponController.Instance != null &&
-                (itemName == "도끼" || itemName == "칼" || itemName == "권총" 
+            if ((itemName == "도끼" || itemName == "칼" || itemName == "권총" 
                 || itemName == "샷건" || itemName == "활"))
             {
                 InventoryManager.Instance?.InsertNewItem(itemName);
@@ -49,26 +48,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
     private IEnumerator InteractionBarAndHealCoroutine()
     {
         isInteracting = true;
-        // 상호작용바 켜기
-        if (CharacterUIManager.Instance != null && CharacterUIManager.Instance.interactionBar != null)
-            CharacterUIManager.Instance.interactionBar.gameObject.SetActive(true);
-        float timer = 0f;
-        while (timer < interactionTime)
-        {
-            timer += Time.deltaTime;
-            float fill = Mathf.Clamp01(timer / interactionTime);
-            CharacterUIManager.Instance.SetInteractionBarFill(fill);
-            yield return null;
-        }
-        CharacterUIManager.Instance.SetInteractionBarFill(0f); // 바 초기화
-        CharacterUIManager.Instance.AddHealth(healAmount);
-        float healthFill = CharacterUIManager.Instance.CurrentHealth / CharacterUIManager.Instance.MaxHealth;
-        CharacterUIManager.Instance.SetHBbarFill(healthFill);
-        isInteracting = false;
-        // 상호작용바 끄기
-        if (CharacterUIManager.Instance != null && CharacterUIManager.Instance.interactionBar != null)
-            CharacterUIManager.Instance.interactionBar.gameObject.SetActive(false);
-        Destroy(gameObject);
+        yield return null;
     }
 
     // UI에 표시할 상호작용 문구 반환
