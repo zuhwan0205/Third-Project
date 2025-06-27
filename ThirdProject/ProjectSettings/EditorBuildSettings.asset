@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 129ee26af10eca246884c9511aecba5a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LobbyScene.unity
     guid: a5f367ef5b475d2488a612b4c3f11381
   - enabled: 1
@@ -26,9 +26,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/KKI_TestScene.unity
     guid: 13d20dd7fd83d8f48a7440aa6bfd496a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LeeScene.unity
     guid: db0f8fc468fd6e14c80ae8a399e6c88f
+  - enabled: 1
+    path: Assets/Scenes/EndingScene.unity
+    guid: a52dda86e1672fa4cbccef6f976f1ab5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
