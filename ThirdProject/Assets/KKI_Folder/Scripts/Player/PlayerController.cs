@@ -6,8 +6,7 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    // 허기
-    // [SerializeField] private float 
+    [SerializeField] private float currentHangry;
 
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
@@ -51,8 +50,10 @@ public class PlayerController : MonoBehaviour
 
     // 프로퍼티
     public float Health => currentHealth;
+    public float Hungry => currentHangry;
     public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
+
 
 
 
