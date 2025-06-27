@@ -93,10 +93,10 @@ Material:
     - _GlitchInterval: 0.01
     - _GlitchPeriod: 1
     - _GlitchSpeed: 1
-    - _GlowInner: 0.05
-    - _GlowOffset: 0
-    - _GlowOuter: 0.394
-    - _GlowPower: 0.75
+    - _GlowInner: 0.365
+    - _GlowOffset: -0.38
+    - _GlowOuter: 1
+    - _GlowPower: 1
     - _GradientScale: 10
     - _LagAmount: 0
     - _LagDuration: 0.5
@@ -111,10 +111,10 @@ Material:
     - _MultipleGhostStrength: 0.1
     - _OldChromaticAberrationOnOff: 0
     - _OldChromaticAberrationStrength: 0.005
-    - _OutlineSoftness: 0
+    - _OutlineSoftness: 0.288
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.261
+    - _OutlineWidth: 0.28
     - _PerspectiveFilter: 0.875
     - _RGBSPLITEnabled: 0
     - _RGBSplitOffset: 0.002
