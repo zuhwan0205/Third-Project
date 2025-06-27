@@ -1,9 +1,9 @@
 using UnityEngine;
+using Fusion;
 
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
     [Header("풀 세팅")]
-    [Tooltip("ObjectPoolManager의 PoolSettings.Key와 동일하게 설정")]
     [SerializeField] private PoolKey poolKey;
     
     [Header("투사체 기본 세팅")]
@@ -15,9 +15,41 @@ public class Projectile : MonoBehaviour
     private float timer;
 
     private Vector3 lastPosition;
+    private Vector3 direction;
 
-    protected virtual void OnEnable() 
+
+    public void Init(Vector3 dir)
     {
+        direction = dir;
+        timer = 0f;
+        if (rb != null)
+            rb.linearVelocity = direction * speed;
+        else 
+            Debug.LogWarning("Projectile에 RigidBody가 없음.");
+    }
+
+    public override void Spawned()
+    {
+        lastPosition = transform.position;
+        timer = 0f;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (!Object.HasStateAuthority) return;
+
+        // 이동
+        if (rb != null)
+            rb.linearVelocity = direction * speed;
+        else
+            transform.position += direction * speed * Runner.DeltaTime;
+
+        timer += Runner.DeltaTime;
+        if (timer >= lifeTime)
+        {
+            Runner.Despawn(Object); // NetworkObject 디스폰
+        }
+
         lastPosition = transform.position;
     }
 
@@ -26,25 +58,10 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public virtual void OnSpawn(Transform _transform, Vector3 direction)
-    {
-        gameObject.transform.position = _transform.position;
-        transform.forward = direction;
-        rb.linearVelocity = direction * speed;
-        gameObject.SetActive(true);
-    }
-
-    protected virtual void Update()
-    {
-        timer += Time.deltaTime;
-        if (timer >= lifeTime)
-            ReturnToPool();
-
-        lastPosition = transform.position;
-    }
-
     protected virtual void OnCollisionEnter(Collision other)
     {
+        if (!Object.HasStateAuthority) return;
+        
         var target = other.collider.GetComponent<MonsterController>();
         if (target != null)
         {
@@ -55,14 +72,8 @@ public class Projectile : MonoBehaviour
         else
             Debug.Log("몬스터 안 맞음!");
     
-        ReturnToPool();
+        Runner.Despawn(Object);
     }
-
-    protected void ReturnToPool()
-    {
-        ObjectPoolManager.Instance.ReturnObject(poolKey, gameObject);
-    }
-
     
     private void OnDrawGizmos()
     {
