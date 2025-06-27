@@ -27,6 +27,7 @@ public class GameScene_PlayerUI : MonoBehaviour
     public void SetHealth(float hp) {
         healthSlider.value = hp;
     }
+    
     public void SetHunger(float hungry) {
         hungerSlider.value = hungry;
     }
