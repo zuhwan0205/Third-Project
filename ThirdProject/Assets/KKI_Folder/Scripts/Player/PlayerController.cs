@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Fusion;
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    // 허기
-    // [SerializeField] private float 
+    [SerializeField] private float currentHangry;
 
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float sprintSpeed = 10f;
@@ -52,26 +50,11 @@ public class PlayerController : NetworkBehaviour
 
     // 프로퍼티
     public float Health => currentHealth;
+    public float Hungry => currentHangry;
     public float SprintSpeed => sprintSpeed;
     public bool IsSprinting => isSprinting;
 
-    
-    #region Fusion 함수
-    public override void Spawned()
-    {
-        // 내 컴퓨터에서 조작 권한이 있는 플레이어일 때만 카메라 활성화
-        if (Object.HasInputAuthority)
-        {
-            playerCamera.tag = "MainCamera";
-            playerCamera.enabled = true;
-        }
-        else
-        {
-            playerCamera.enabled = false;
-        }
-    }
 
-    #endregion
 
 
     #region 유니티 생명주기
