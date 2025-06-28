@@ -17,7 +17,7 @@ public class Arrow : Projectile
         base.OnSpawn(_transform, direction);
     }
 
-    protected override void OnCollisionEnter(Collision other)
+    protected override void OnTriggerEnter(Collider other)
     {
         // 사운드 재생
         if (hitSound)
@@ -26,6 +26,6 @@ public class Arrow : Projectile
         }
 
         //  부모 반환 처리
-        base.OnCollisionEnter(other);
+        base.OnTriggerEnter(other);
     }
 }

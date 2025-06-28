@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Bullet : Projectile
 {
-    protected override void OnCollisionEnter(Collision other)
+    protected override void OnTriggerEnter(Collider other)
     {
-        base.OnCollisionEnter(other);
+        base.OnTriggerEnter(other);
     }
 }

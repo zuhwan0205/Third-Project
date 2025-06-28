@@ -43,9 +43,9 @@ public class Projectile : MonoBehaviour
         lastPosition = transform.position;
     }
 
-    protected virtual void OnCollisionEnter(Collision other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        var target = other.collider.GetComponent<MonsterController>();
+        var target = other.GetComponent<MonsterController>();
         if (target != null)
         {
             // 데미지 처리
