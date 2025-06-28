@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum QuestionType { Neutral, Positive, Negative }
+public enum QuestionType { Nautral, Positive, Negative, Complex }
 
 [System.Serializable]
 public class RoomQuestion
