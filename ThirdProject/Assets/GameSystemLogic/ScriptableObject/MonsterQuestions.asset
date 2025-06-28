@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MonsterQuestions
   m_EditorClassIdentifier: 
   monsterQuestions:
-  - questionText: "\uB79C\uB364\uD55C \uBC29\uC5D0 \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uAE4C?"
+  - questionText: "\uBC29\uC5D0 \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uAE4C?"
     type: 2
     positiveRewards: []
     monsterList:
@@ -23,3 +23,5 @@ MonoBehaviour:
       spawnChance: 0.3
     - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
       spawnChance: 0.3
+    yesGaugeChange: 0
+    noGaugeChange: 0

@@ -22,3 +22,5 @@ MonoBehaviour:
     fogDensity: 0
     playSound: 0
     environmentSound: {fileID: 0}
+    yesGaugeChange: 50
+    noGaugeChange: -20
