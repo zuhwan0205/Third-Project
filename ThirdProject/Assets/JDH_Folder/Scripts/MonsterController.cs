@@ -13,7 +13,7 @@ public class MonsterController : MonoBehaviour
     public int currentHp = 0;
 
     [Header("Attack")]
-    public int damage = 10; // 인스펙터에서 조절 가능
+    public int damage = 10; 
 
     private Transform target;
     private Animator animator;
@@ -91,7 +91,7 @@ public class MonsterController : MonoBehaviour
             PlayerController player = target.GetComponent<PlayerController>();
             if (player != null)
             {
-                player.TakeDamage(damage);  // float 인자지만 int도 자동 변환됨
+                player.TakeDamage(damage);  
             }
         }
     }
