@@ -88,6 +88,7 @@ MonoBehaviour:
   naturalQuestion: {fileID: 11400000, guid: 42e8caf589f64234981a09ce09d6bd59, type: 2}
   rewardQuestion: {fileID: 11400000, guid: 0bad8fda5006b144ea6b4f32f97ab95a, type: 2}
   monsterQuestion: {fileID: 11400000, guid: ac14aae222d632e4e8a1d832ecee2bfd, type: 2}
+  complexQuestion: {fileID: 0}
   textMeshPro3D: {fileID: 2165232298242980446}
   typingSpeed: 0.05
 --- !u!1 &3136983679783396029

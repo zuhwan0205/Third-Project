@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b8b622f2b766449b49e643daed9856, type: 3}
+  m_Name: EnvironmentQuestions
+  m_EditorClassIdentifier: 
+  environmentQuestions:
+  - questionText: "\uBC29 \uC548\uC758 30\uCD08\uB3D9\uC548 \uC870\uBA85\uC774 \uC5B4\uB450\uC6CC\uC9D1\uB2C8\uB2E4."
+    dimSkybox: 1
+    skyIntensityMultiplier: 0.05
+    effectDuration: 30
+    enableFog: 0
+    fogColor: {r: 0, g: 0, b: 0, a: 0}
+    fogDensity: 0
+    playSound: 0
+    environmentSound: {fileID: 0}

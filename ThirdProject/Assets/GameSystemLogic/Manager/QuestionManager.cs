@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using System.Linq;
+using System.Collections.Generic;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -13,16 +14,24 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private RewardQuestion rewardQuestion;
     [SerializeField] private MonsterQuestion monsterQuestion;
     [SerializeField] private ComplexQuestion complexQuestion;
+    [SerializeField] private EnvironmentQuestion environmentQuestion;
 
     [Header("UI")]
     [SerializeField] private TextMeshPro textMeshPro3D;
     [SerializeField] private float typingSpeed = 0.05f;
+
+    [Header("Duplicate Prevention")]
+    [SerializeField] private float environmentQuestionCooldown = 60f;
 
     private Tween typingTween;
     private int introIndex = 0;
     private bool waitingForPlayerInput = false;
     private RoomQuestion currentQuestion;
     private ComplexQuestionData currentComplexQuestion;
+    private EnvironmentQuestionData currentEnvironmentQuestion;
+    
+    private float lastEnvironmentQuestionTime = -999f;
+    private HashSet<EnvironmentQuestionData> usedEnvironmentQuestions = new HashSet<EnvironmentQuestionData>();
 
     private void Awake()
     {
@@ -81,7 +90,7 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null || currentComplexQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
         {
             ProcessAnswer(isYes);
             
@@ -91,14 +100,22 @@ public class QuestionManager : MonoBehaviour
 
     private void ShowRandomQuestion()
     {
-        // ComplexQuestion도 포함하여 4가지 타입 중 랜덤 선택
-        int randomType = Random.Range(0, 4);
+        bool canShowEnvironmentQuestion = CanShowEnvironmentQuestion();
+        int availableTypes = canShowEnvironmentQuestion ? 5 : 4;
+        int randomType = Random.Range(0, availableTypes);
+        
+        if (!canShowEnvironmentQuestion && randomType >= 4)
+        {
+            randomType = Random.Range(0, 4);
+        }
+
         RoomQuestion selectedQuestion = null;
         ComplexQuestionData selectedComplexQuestion = null;
-
-        // 이전 질문 초기화
+        EnvironmentQuestionData selectedEnvironmentQuestion = null;
+        
         currentQuestion = null;
         currentComplexQuestion = null;
+        currentEnvironmentQuestion = null;
 
         switch (randomType)
         {
@@ -130,6 +147,12 @@ public class QuestionManager : MonoBehaviour
                     selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
                 }
                 break;
+            case 4:
+                if (canShowEnvironmentQuestion && environmentQuestion != null && environmentQuestion.environmentQuestions.Length > 0)
+                {
+                    selectedEnvironmentQuestion = GetAvailableEnvironmentQuestion();
+                }
+                break;
         }
 
         if (selectedQuestion != null)
@@ -140,10 +163,47 @@ public class QuestionManager : MonoBehaviour
         {
             DisplayComplexQuestion(selectedComplexQuestion);
         }
+        else if (selectedEnvironmentQuestion != null)
+        {
+            DisplayEnvironmentQuestion(selectedEnvironmentQuestion);
+        }
         else
         {
             Debug.LogWarning("선택된 질문이 없습니다!");
         }
+    }
+
+    private bool CanShowEnvironmentQuestion()
+    {
+        float timeSinceLastEnvironmentQuestion = Time.time - lastEnvironmentQuestionTime;
+        return timeSinceLastEnvironmentQuestion >= environmentQuestionCooldown;
+    }
+
+    private EnvironmentQuestionData GetAvailableEnvironmentQuestion()
+    {
+        var availableQuestions = environmentQuestion.environmentQuestions
+            .Where(q => !usedEnvironmentQuestions.Contains(q))
+            .ToArray();
+        
+        if (availableQuestions.Length == 0)
+        {
+            usedEnvironmentQuestions.Clear();
+            availableQuestions = environmentQuestion.environmentQuestions;
+            Debug.Log("모든 환경 질문을 사용했습니다. 질문 목록을 리셋합니다.");
+        }
+
+        if (availableQuestions.Length > 0)
+        {
+            int randomIndex = Random.Range(0, availableQuestions.Length);
+            var selectedQuestion = availableQuestions[randomIndex];
+            
+            // 사용된 질문으로 표시
+            usedEnvironmentQuestions.Add(selectedQuestion);
+            
+            return selectedQuestion;
+        }
+
+        return null;
     }
 
     private void DisplayQuestion(RoomQuestion question)
@@ -166,6 +226,18 @@ public class QuestionManager : MonoBehaviour
         typingTween = TypingText.Type(textMeshPro3D, complexQuestionData.questionText, typingSpeed);
     }
 
+    private void DisplayEnvironmentQuestion(EnvironmentQuestionData environmentQuestionData)
+    {
+        currentEnvironmentQuestion = environmentQuestionData;
+        lastEnvironmentQuestionTime = Time.time;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(textMeshPro3D, environmentQuestionData.questionText, typingSpeed);
+        
+    }
+
     private void ProcessAnswer(bool isYes)
     {
         if (currentQuestion != null)
@@ -175,6 +247,10 @@ public class QuestionManager : MonoBehaviour
         else if (currentComplexQuestion != null)
         {
             ProcessComplexQuestion(isYes);
+        }
+        else if (currentEnvironmentQuestion != null)
+        {
+            ProcessEnvironmentQuestion(isYes);
         }
     }
 
@@ -220,5 +296,26 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 복합 질문을 거부했습니다.");
         }
+    }
+
+    private void ProcessEnvironmentQuestion(bool isYes)
+    {
+        if (currentEnvironmentQuestion == null) return;
+
+        if (isYes)
+        {
+            EnvironmentManager.Instance.ApplyEnvironmentEffect(currentEnvironmentQuestion);
+        }
+        else
+        {
+            Debug.Log("플레이어가 스카이박스 환경 효과 질문을 거부했습니다.");
+        }
+    }
+    [ContextMenu("Reset Environment Question Cooldown")]
+    private void ResetEnvironmentQuestionCooldown()
+    {
+        lastEnvironmentQuestionTime = -999f;
+        usedEnvironmentQuestions.Clear();
+        Debug.Log("환경 질문 쿨다운이 리셋되었습니다.");
     }
 }
