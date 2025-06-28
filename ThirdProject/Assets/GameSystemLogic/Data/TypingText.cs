@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class TypingText
 {
-    public static Tween Type(TextMeshPro textUI, string content, float speed)
+    public static Tween Type(TextMeshProUGUI textUI, string content, float speed)
     {
         textUI.text = "";
         string current = "";
