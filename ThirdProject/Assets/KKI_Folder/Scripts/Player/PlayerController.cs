@@ -344,7 +344,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("허기 -1 감소");
         }
     }
-
     public void IncreaseHunger(float amount)           //이후 빵이나 통조림 먹으면 상승하는데 사용할 코드입니다!
     {
         currentHangry += amount;
