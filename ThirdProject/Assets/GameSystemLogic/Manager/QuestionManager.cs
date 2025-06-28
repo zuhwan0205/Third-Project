@@ -17,6 +17,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private ComplexQuestion complexQuestion;
     [SerializeField] private EnvironmentQuestion environmentQuestion;
     [SerializeField] private SongQuestion songQuestion;
+    [SerializeField] private FurnitureQuestion furnitureQuestion; // 추가
 
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI questionText;
@@ -34,6 +35,7 @@ public class QuestionManager : MonoBehaviour
     private ComplexQuestionData currentComplexQuestion;
     private EnvironmentQuestionData currentEnvironmentQuestion;
     private SongQuestionData currentSongQuestion;
+    private FurnitureQuestionData currentFurnitureQuestion; // 추가
     
     private float lastEnvironmentQuestionTime = -999f;
     private HashSet<EnvironmentQuestionData> usedEnvironmentQuestions = new HashSet<EnvironmentQuestionData>();
@@ -116,7 +118,7 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
         {
             bool processSuccessful = ProcessAnswer(isYes);
             
@@ -157,16 +159,22 @@ public class QuestionManager : MonoBehaviour
         {
             DisplaySongQuestion(currentSongQuestion);
         }
+        else if (currentFurnitureQuestion != null) // 추가
+        {
+            DisplayFurnitureQuestion(currentFurnitureQuestion);
+        }
     }
 
     private void ShowRandomQuestion()
     {
         bool canShowEnvironmentQuestion = CanShowEnvironmentQuestion();
         bool canShowSongQuestion = CanShowSongQuestion();
+        bool canShowFurnitureQuestion = CanShowFurnitureQuestion(); // 추가
         
         int availableTypes = 4;
         if (canShowEnvironmentQuestion) availableTypes++;
         if (canShowSongQuestion) availableTypes++;
+        if (canShowFurnitureQuestion) availableTypes++; // 추가
         
         int randomType = Random.Range(0, availableTypes);
         
@@ -174,11 +182,13 @@ public class QuestionManager : MonoBehaviour
         ComplexQuestionData selectedComplexQuestion = null;
         EnvironmentQuestionData selectedEnvironmentQuestion = null;
         SongQuestionData selectedSongQuestion = null;
+        FurnitureQuestionData selectedFurnitureQuestion = null; // 추가
         
         currentQuestion = null;
         currentComplexQuestion = null;
         currentEnvironmentQuestion = null;
         currentSongQuestion = null;
+        currentFurnitureQuestion = null; // 추가
 
         int typeIndex = 0;
         
@@ -229,6 +239,13 @@ public class QuestionManager : MonoBehaviour
                 selectedSongQuestion = songQuestion.songQuestions[randomIndex];
             }
         }
+        else if (canShowFurnitureQuestion && randomType == typeIndex++) // 추가
+        {
+            if (furnitureQuestion != null && furnitureQuestion.furnitureQuestions.Length > 0)
+            {
+                selectedFurnitureQuestion = GetAvailableFurnitureQuestion();
+            }
+        }
 
         if (selectedQuestion != null)
         {
@@ -246,6 +263,10 @@ public class QuestionManager : MonoBehaviour
         {
             DisplaySongQuestion(selectedSongQuestion);
         }
+        else if (selectedFurnitureQuestion != null) // 추가
+        {
+            DisplayFurnitureQuestion(selectedFurnitureQuestion);
+        }
         else
         {
             Debug.LogWarning("선택된 질문이 없습니다!");
@@ -261,6 +282,36 @@ public class QuestionManager : MonoBehaviour
     private bool CanShowSongQuestion()
     {
         return SongManager.Instance == null || !SongManager.Instance.IsSongPlaying();
+    }
+    
+    private bool CanShowFurnitureQuestion()
+    {
+        if (FurnitureManager.Instance == null || furnitureQuestion == null || furnitureQuestion.furnitureQuestions.Length == 0)
+            return false;
+        
+        foreach (var furniture in furnitureQuestion.furnitureQuestions)
+        {
+            if (FurnitureManager.Instance.CanShowFurnitureQuestion(furniture.furnitureID))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private FurnitureQuestionData GetAvailableFurnitureQuestion()
+    {
+        var availableQuestions = furnitureQuestion.furnitureQuestions
+            .Where(q => FurnitureManager.Instance.CanShowFurnitureQuestion(q.furnitureID))
+            .ToArray();
+
+        if (availableQuestions.Length > 0)
+        {
+            int randomIndex = Random.Range(0, availableQuestions.Length);
+            return availableQuestions[randomIndex];
+        }
+
+        return null;
     }
 
     private EnvironmentQuestionData GetAvailableEnvironmentQuestion()
@@ -349,6 +400,22 @@ public class QuestionManager : MonoBehaviour
             });
     }
 
+    // 추가: Furniture 질문 표시
+    private void DisplayFurnitureQuestion(FurnitureQuestionData furnitureQuestionData)
+    {
+        currentFurnitureQuestion = furnitureQuestionData;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, furnitureQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, furnitureQuestionData.yesGaugeChange, furnitureQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
+    }
+
     private bool ProcessAnswer(bool isYes)
     {
         if (currentQuestion != null)
@@ -366,6 +433,10 @@ public class QuestionManager : MonoBehaviour
         else if (currentSongQuestion != null)
         {
             return ProcessSongQuestion(isYes);
+        }
+        else if (currentFurnitureQuestion != null) // 추가
+        {
+            return ProcessFurnitureQuestion(isYes);
         }
         return true;
     }
@@ -489,6 +560,35 @@ public class QuestionManager : MonoBehaviour
         return true;
     }
     
+    // 추가: Furniture 질문 처리
+    private bool ProcessFurnitureQuestion(bool isYes)
+    {
+        if (currentFurnitureQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentFurnitureQuestion.yesGaugeChange : currentFurnitureQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
+
+        if (isYes)
+        {
+            if (FurnitureManager.Instance != null)
+            {
+                FurnitureManager.Instance.SpawnFurniture(currentFurnitureQuestion.furnitureID);
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 가구 소환을 거부했습니다.");
+        }
+        return true;
+    }
+    
     private void HandleTimeUp()
     {
         TypingText.HideScoreTexts(yesScoreText, noScoreText);
@@ -497,11 +597,10 @@ public class QuestionManager : MonoBehaviour
         {
             waitingForPlayerInput = false;
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
         {
             ProcessAnswer(false);
             Invoke(nameof(ShowRandomQuestion), 2f);
         }
     }
-    
 }
