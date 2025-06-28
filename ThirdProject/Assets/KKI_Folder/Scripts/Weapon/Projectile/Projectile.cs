@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     
     [Header("투사체 기본 세팅")]
     [SerializeField] protected int damage = 25;
-    [SerializeField] protected float speed = 20f;
+    [SerializeField] protected float speed = 5f;
     [SerializeField] protected float lifeTime = 5f;
 
     protected Rigidbody rb;
