@@ -10,10 +10,10 @@ public class MonsterController : MonoBehaviour
 
     [Header("Health")]
     public int maxHp = 100;
-    private int currentHp;
+    public int currentHp = 0;
 
     [Header("Attack")]
-    public int damage = 10; 
+    public int damage = 10; // 인스펙터에서 조절 가능
 
     private Transform target;
     private Animator animator;
@@ -91,7 +91,7 @@ public class MonsterController : MonoBehaviour
             PlayerController player = target.GetComponent<PlayerController>();
             if (player != null)
             {
-                player.TakeDamage(damage);  
+                player.TakeDamage(damage);  // float 인자지만 int도 자동 변환됨
             }
         }
     }
