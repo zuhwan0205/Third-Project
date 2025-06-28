@@ -1,24 +1,38 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameScene_Button : MonoBehaviour
 {
     [SerializeField] private Animator pushNoBtn;
     [SerializeField] private Animator pushYesBtn;
-
-    void Start()
+    [SerializeField] private AudioSource pushBtn;
+    public static GameScene_Button instance;
+    
+    private void Awake()
     {
-        PushNoButton();
-        PushYesButton();
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
     }
 
-    void PushNoButton()
-    {
-        pushNoBtn.SetTrigger("PushNo");
-    }
-
-    void PushYesButton()
+    public void PushNoButton()
     {
         pushYesBtn.SetTrigger("PushYes");
+        pushBtn.Play();
+        Debug.Log("PushNo");
     }
+
+    public void PushYesButton()
+    {
+        pushNoBtn.SetTrigger("PushNo");
+        pushBtn.Play();
+        Debug.Log("Pushyes");
+    }
+
+    
 }
