@@ -12,7 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c306b939a61d34fa4c3374ff5fac26, type: 3}
   m_Name: ComplexQuestions
   m_EditorClassIdentifier: 
-  spawnMonster: 0
-  extraMonsters: []
-  spawnReward: 0
-  extraRewards: []
+  complexQuestions:
+  - questionText: "\uBC29 \uD55C\uAC00\uC6B4\uB370 \uBCF4\uBB3C \uC0C1\uC790\uAC00
+      \uB098\uD0C0\uB0A9\uB2C8\uB2E4. \uD558\uC9C0\uB9CC, \uC0C1\uC790\uB97C \uC9C0\uD0A4\uB294
+      \uD749\uD3EC\uD55C \uAD34\uBB3C\uB3C4 \uD568\uAED8 \uB098\uD0C0\uB0A9\uB2C8\uB2E4.
+      \uC18C\uD658\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+    spawnMonster: 1
+    extraMonsters:
+    - monsterPrefab: {fileID: 4164734482874354975, guid: c1b268cb5f38cb44eb1ceacf6561bd45, type: 3}
+      spawnChance: 1
+    spawnReward: 1
+    extraRewards:
+    - itemPrefab: {fileID: 7464983958052808676, guid: af4a949a9061a8048bb10bfba2996eef, type: 3}
+      dropChance: 0
