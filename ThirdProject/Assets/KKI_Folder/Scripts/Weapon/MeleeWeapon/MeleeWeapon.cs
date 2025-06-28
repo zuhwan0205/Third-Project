@@ -35,6 +35,10 @@ public abstract class MeleeWeapon : Weapon
             Debug.Log(enemy.name + "에게 공격");
 
             // 적 공격 처리
+            if (enemy.TryGetComponent<MonsterController>(out var monster))
+            {
+                monster.TakeDamage((int)damage);
+            }
         }
 
         DebugDrawHitArea(hitOrigin);

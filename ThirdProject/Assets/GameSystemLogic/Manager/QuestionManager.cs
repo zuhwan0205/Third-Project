@@ -16,13 +16,13 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private MonsterQuestion monsterQuestion;
     [SerializeField] private ComplexQuestion complexQuestion;
     [SerializeField] private EnvironmentQuestion environmentQuestion;
+    [SerializeField] private SongQuestion songQuestion;
+    [SerializeField] private FurnitureQuestion furnitureQuestion; // 추가
 
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI questionText;
-    [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private TextMeshProUGUI yesAnswerText;
-    [SerializeField] private TextMeshProUGUI noAnswerText;
-    [SerializeField] private Slider progressSlider;
+    [SerializeField] private TextMeshProUGUI yesScoreText;
+    [SerializeField] private TextMeshProUGUI noScoreText;
     [SerializeField] private float typingSpeed = 0.05f;
 
     [Header("Duplicate Prevention")]
@@ -34,6 +34,8 @@ public class QuestionManager : MonoBehaviour
     private RoomQuestion currentQuestion;
     private ComplexQuestionData currentComplexQuestion;
     private EnvironmentQuestionData currentEnvironmentQuestion;
+    private SongQuestionData currentSongQuestion;
+    private FurnitureQuestionData currentFurnitureQuestion; // 추가
     
     private float lastEnvironmentQuestionTime = -999f;
     private HashSet<EnvironmentQuestionData> usedEnvironmentQuestions = new HashSet<EnvironmentQuestionData>();
@@ -50,27 +52,24 @@ public class QuestionManager : MonoBehaviour
 
     private void Start()
     {
+        Timer.OnTimeUp += HandleTimeUp;
+        
         InitializeUI();
         ShowIntroText();
     }
 
+    private void OnDestroy()
+    {
+        Timer.OnTimeUp -= HandleTimeUp;
+    }
+
     private void InitializeUI()
     {
-        if (yesAnswerText != null)
-            yesAnswerText.text = "YES";
+        if (yesScoreText != null)
+            yesScoreText.text = "";
         
-        if (noAnswerText != null)
-            noAnswerText.text = "NO";
-        
-        if (progressSlider != null)
-        {
-            progressSlider.value = 0f;
-            progressSlider.minValue = 0f;
-            progressSlider.maxValue = 1f;
-        }
-        
-        if (timerText != null)
-            timerText.text = "00:00";
+        if (noScoreText != null)
+            noScoreText.text = "";
     }
 
     private void ShowIntroText()
@@ -102,12 +101,16 @@ public class QuestionManager : MonoBehaviour
                 else
                 {
                     waitingForPlayerInput = true;
+                    Timer.Instance.StartTimer();
                 }
             });
     }
 
     public void OnPlayerAnswered(bool isYes)
     {
+        Timer.Instance.SetAnswered();
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        
         Debug.Log($"플레이어 응답: {(isYes ? "예" : "아니오")}");
         
         if (waitingForPlayerInput && isYes)
@@ -115,69 +118,133 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
         {
-            ProcessAnswer(isYes);
+            bool processSuccessful = ProcessAnswer(isYes);
             
-            Invoke(nameof(ShowRandomQuestion), 2f);
+            if (processSuccessful)
+            {
+                Invoke(nameof(ShowRandomQuestion), 2f);
+            }
+        }
+    }
+
+    public void OnGaugeInsufficient(string message)
+    {
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, message, typingSpeed)
+            .OnComplete(() =>
+            {
+                Invoke(nameof(ReturnToCurrentQuestion), 2f);
+            });
+    }
+
+    private void ReturnToCurrentQuestion()
+    {
+        if (currentQuestion != null)
+        {
+            DisplayQuestion(currentQuestion);
+        }
+        else if (currentComplexQuestion != null)
+        {
+            DisplayComplexQuestion(currentComplexQuestion);
+        }
+        else if (currentEnvironmentQuestion != null)
+        {
+            DisplayEnvironmentQuestion(currentEnvironmentQuestion);
+        }
+        else if (currentSongQuestion != null)
+        {
+            DisplaySongQuestion(currentSongQuestion);
+        }
+        else if (currentFurnitureQuestion != null) // 추가
+        {
+            DisplayFurnitureQuestion(currentFurnitureQuestion);
         }
     }
 
     private void ShowRandomQuestion()
     {
         bool canShowEnvironmentQuestion = CanShowEnvironmentQuestion();
-        int availableTypes = canShowEnvironmentQuestion ? 5 : 4;
+        bool canShowSongQuestion = CanShowSongQuestion();
+        bool canShowFurnitureQuestion = CanShowFurnitureQuestion(); // 추가
+        
+        int availableTypes = 4;
+        if (canShowEnvironmentQuestion) availableTypes++;
+        if (canShowSongQuestion) availableTypes++;
+        if (canShowFurnitureQuestion) availableTypes++; // 추가
+        
         int randomType = Random.Range(0, availableTypes);
         
-        if (!canShowEnvironmentQuestion && randomType >= 4)
-        {
-            randomType = Random.Range(0, 4);
-        }
-
         RoomQuestion selectedQuestion = null;
         ComplexQuestionData selectedComplexQuestion = null;
         EnvironmentQuestionData selectedEnvironmentQuestion = null;
+        SongQuestionData selectedSongQuestion = null;
+        FurnitureQuestionData selectedFurnitureQuestion = null; // 추가
         
         currentQuestion = null;
         currentComplexQuestion = null;
         currentEnvironmentQuestion = null;
+        currentSongQuestion = null;
+        currentFurnitureQuestion = null; // 추가
 
-        switch (randomType)
+        int typeIndex = 0;
+        
+        if (randomType == typeIndex++)
         {
-            case 0:
-                if (naturalQuestion != null && naturalQuestion.naturalQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, naturalQuestion.naturalQuestions.Length);
-                    selectedQuestion = naturalQuestion.naturalQuestions[randomIndex];
-                }
-                break;
-            case 1:
-                if (rewardQuestion != null && rewardQuestion.rewardQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, rewardQuestion.rewardQuestions.Length);
-                    selectedQuestion = rewardQuestion.rewardQuestions[randomIndex];
-                }
-                break;
-            case 2:
-                if (monsterQuestion != null && monsterQuestion.monsterQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, monsterQuestion.monsterQuestions.Length);
-                    selectedQuestion = monsterQuestion.monsterQuestions[randomIndex];
-                }
-                break;
-            case 3:
-                if (complexQuestion != null && complexQuestion.complexQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, complexQuestion.complexQuestions.Length);
-                    selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
-                }
-                break;
-            case 4:
-                if (canShowEnvironmentQuestion && environmentQuestion != null && environmentQuestion.environmentQuestions.Length > 0)
-                {
-                    selectedEnvironmentQuestion = GetAvailableEnvironmentQuestion();
-                }
-                break;
+            if (naturalQuestion != null && naturalQuestion.naturalQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, naturalQuestion.naturalQuestions.Length);
+                selectedQuestion = naturalQuestion.naturalQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (rewardQuestion != null && rewardQuestion.rewardQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, rewardQuestion.rewardQuestions.Length);
+                selectedQuestion = rewardQuestion.rewardQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (monsterQuestion != null && monsterQuestion.monsterQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, monsterQuestion.monsterQuestions.Length);
+                selectedQuestion = monsterQuestion.monsterQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (complexQuestion != null && complexQuestion.complexQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, complexQuestion.complexQuestions.Length);
+                selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
+            }
+        }
+        else if (canShowEnvironmentQuestion && randomType == typeIndex++)
+        {
+            if (environmentQuestion != null && environmentQuestion.environmentQuestions.Length > 0)
+            {
+                selectedEnvironmentQuestion = GetAvailableEnvironmentQuestion();
+            }
+        }
+        else if (canShowSongQuestion && randomType == typeIndex++)
+        {
+            if (songQuestion != null && songQuestion.songQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, songQuestion.songQuestions.Length);
+                selectedSongQuestion = songQuestion.songQuestions[randomIndex];
+            }
+        }
+        else if (canShowFurnitureQuestion && randomType == typeIndex++) // 추가
+        {
+            if (furnitureQuestion != null && furnitureQuestion.furnitureQuestions.Length > 0)
+            {
+                selectedFurnitureQuestion = GetAvailableFurnitureQuestion();
+            }
         }
 
         if (selectedQuestion != null)
@@ -192,6 +259,14 @@ public class QuestionManager : MonoBehaviour
         {
             DisplayEnvironmentQuestion(selectedEnvironmentQuestion);
         }
+        else if (selectedSongQuestion != null)
+        {
+            DisplaySongQuestion(selectedSongQuestion);
+        }
+        else if (selectedFurnitureQuestion != null) // 추가
+        {
+            DisplayFurnitureQuestion(selectedFurnitureQuestion);
+        }
         else
         {
             Debug.LogWarning("선택된 질문이 없습니다!");
@@ -202,6 +277,41 @@ public class QuestionManager : MonoBehaviour
     {
         float timeSinceLastEnvironmentQuestion = Time.time - lastEnvironmentQuestionTime;
         return timeSinceLastEnvironmentQuestion >= environmentQuestionCooldown;
+    }
+
+    private bool CanShowSongQuestion()
+    {
+        return SongManager.Instance == null || !SongManager.Instance.IsSongPlaying();
+    }
+    
+    private bool CanShowFurnitureQuestion()
+    {
+        if (FurnitureManager.Instance == null || furnitureQuestion == null || furnitureQuestion.furnitureQuestions.Length == 0)
+            return false;
+        
+        foreach (var furniture in furnitureQuestion.furnitureQuestions)
+        {
+            if (FurnitureManager.Instance.CanShowFurnitureQuestion(furniture.furnitureID))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private FurnitureQuestionData GetAvailableFurnitureQuestion()
+    {
+        var availableQuestions = furnitureQuestion.furnitureQuestions
+            .Where(q => FurnitureManager.Instance.CanShowFurnitureQuestion(q.furnitureID))
+            .ToArray();
+
+        if (availableQuestions.Length > 0)
+        {
+            int randomIndex = Random.Range(0, availableQuestions.Length);
+            return availableQuestions[randomIndex];
+        }
+
+        return null;
     }
 
     private EnvironmentQuestionData GetAvailableEnvironmentQuestion()
@@ -236,7 +346,12 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, question.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, question.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, question.yesGaugeChange, question.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
     private void DisplayComplexQuestion(ComplexQuestionData complexQuestionData)
@@ -246,7 +361,12 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, complexQuestionData.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, complexQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, complexQuestionData.yesGaugeChange, complexQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
     private void DisplayEnvironmentQuestion(EnvironmentQuestionData environmentQuestionData)
@@ -257,28 +377,83 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, environmentQuestionData.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, environmentQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, environmentQuestionData.yesGaugeChange, environmentQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
-    private void ProcessAnswer(bool isYes)
+    private void DisplaySongQuestion(SongQuestionData songQuestionData)
+    {
+        currentSongQuestion = songQuestionData;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, songQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, songQuestionData.yesGaugeChange, songQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
+    }
+
+    // 추가: Furniture 질문 표시
+    private void DisplayFurnitureQuestion(FurnitureQuestionData furnitureQuestionData)
+    {
+        currentFurnitureQuestion = furnitureQuestionData;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, furnitureQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, furnitureQuestionData.yesGaugeChange, furnitureQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
+    }
+
+    private bool ProcessAnswer(bool isYes)
     {
         if (currentQuestion != null)
         {
-            ProcessRoomQuestion(isYes);
+            return ProcessRoomQuestion(isYes);
         }
         else if (currentComplexQuestion != null)
         {
-            ProcessComplexQuestion(isYes);
+            return ProcessComplexQuestion(isYes);
         }
         else if (currentEnvironmentQuestion != null)
         {
-            ProcessEnvironmentQuestion(isYes);
+            return ProcessEnvironmentQuestion(isYes);
         }
+        else if (currentSongQuestion != null)
+        {
+            return ProcessSongQuestion(isYes);
+        }
+        else if (currentFurnitureQuestion != null) // 추가
+        {
+            return ProcessFurnitureQuestion(isYes);
+        }
+        return true;
     }
 
-    private void ProcessRoomQuestion(bool isYes)
+    private bool ProcessRoomQuestion(bool isYes)
     {
-        if (currentQuestion == null) return;
+        if (currentQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentQuestion.yesGaugeChange : currentQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -296,11 +471,22 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 거부했습니다. 아무것도 스폰하지 않습니다.");
         }
+        return true;
     }
 
-    private void ProcessComplexQuestion(bool isYes)
+    private bool ProcessComplexQuestion(bool isYes)
     {
-        if (currentComplexQuestion == null) return;
+        if (currentComplexQuestion == null) return true;
+
+        float gaugeChange = isYes ? currentComplexQuestion.yesGaugeChange : currentComplexQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -318,11 +504,22 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 복합 질문을 거부했습니다.");
         }
+        return true;
     }
 
-    private void ProcessEnvironmentQuestion(bool isYes)
+    private bool ProcessEnvironmentQuestion(bool isYes)
     {
-        if (currentEnvironmentQuestion == null) return;
+        if (currentEnvironmentQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentEnvironmentQuestion.yesGaugeChange : currentEnvironmentQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -332,29 +529,78 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 스카이박스 환경 효과 질문을 거부했습니다.");
         }
-    }
-    
-    public void UpdateTimer(float minutes, float seconds)
-    {
-        if (timerText != null)
-        {
-            timerText.text = $"{minutes:00}:{seconds:00}";
-        }
-    }
-    
-    public void UpdateProgressSlider(float progress)
-    {
-        if (progressSlider != null)
-        {
-            progressSlider.value = progress;
-        }
+        return true;
     }
 
-    [ContextMenu("Reset Environment Question Cooldown")]
-    private void ResetEnvironmentQuestionCooldown()
+    private bool ProcessSongQuestion(bool isYes)
     {
-        lastEnvironmentQuestionTime = -999f;
-        usedEnvironmentQuestions.Clear();
-        Debug.Log("환경 질문 쿨다운이 리셋되었습니다.");
+        if (currentSongQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentSongQuestion.yesGaugeChange : currentSongQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
+
+        if (isYes)
+        {
+            if (SongManager.Instance != null)
+            {
+                SongManager.Instance.PlaySong(currentSongQuestion);
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 노래 재생을 거부했습니다.");
+        }
+        return true;
+    }
+    
+    // 추가: Furniture 질문 처리
+    private bool ProcessFurnitureQuestion(bool isYes)
+    {
+        if (currentFurnitureQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentFurnitureQuestion.yesGaugeChange : currentFurnitureQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
+
+        if (isYes)
+        {
+            if (FurnitureManager.Instance != null)
+            {
+                FurnitureManager.Instance.SpawnFurniture(currentFurnitureQuestion.furnitureID);
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 가구 소환을 거부했습니다.");
+        }
+        return true;
+    }
+    
+    private void HandleTimeUp()
+    {
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        
+        if (waitingForPlayerInput)
+        {
+            waitingForPlayerInput = false;
+        }
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
+        {
+            ProcessAnswer(false);
+            Invoke(nameof(ShowRandomQuestion), 2f);
+        }
     }
 }
