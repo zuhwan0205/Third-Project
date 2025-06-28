@@ -18,4 +18,8 @@ public class EnvironmentQuestionData
     
     public bool playSound;
     public AudioClip environmentSound;
+    
+    [Header("Gauge System")]
+    public float yesGaugeChange = 0f;
+    public float noGaugeChange = 0f;
 }

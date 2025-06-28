@@ -13,4 +13,8 @@ public class ComplexQuestionData
     [Header("Reward")]
     public bool spawnReward;
     public RewardItem[] extraRewards;
+    
+    [Header("Gauge System")]
+    public float yesGaugeChange = 0f;
+    public float noGaugeChange = 0f;
 }

@@ -19,10 +19,8 @@ public class QuestionManager : MonoBehaviour
 
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI questionText;
-    [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private TextMeshProUGUI yesAnswerText;
-    [SerializeField] private TextMeshProUGUI noAnswerText;
-    [SerializeField] private Slider progressSlider;
+    [SerializeField] private TextMeshProUGUI yesScoreText;
+    [SerializeField] private TextMeshProUGUI noScoreText;
     [SerializeField] private float typingSpeed = 0.05f;
 
     [Header("Duplicate Prevention")]
@@ -50,27 +48,24 @@ public class QuestionManager : MonoBehaviour
 
     private void Start()
     {
+        Timer.OnTimeUp += HandleTimeUp;
+        
         InitializeUI();
         ShowIntroText();
     }
 
+    private void OnDestroy()
+    {
+        Timer.OnTimeUp -= HandleTimeUp;
+    }
+
     private void InitializeUI()
     {
-        if (yesAnswerText != null)
-            yesAnswerText.text = "YES";
+        if (yesScoreText != null)
+            yesScoreText.text = "";
         
-        if (noAnswerText != null)
-            noAnswerText.text = "NO";
-        
-        if (progressSlider != null)
-        {
-            progressSlider.value = 0f;
-            progressSlider.minValue = 0f;
-            progressSlider.maxValue = 1f;
-        }
-        
-        if (timerText != null)
-            timerText.text = "00:00";
+        if (noScoreText != null)
+            noScoreText.text = "";
     }
 
     private void ShowIntroText()
@@ -102,12 +97,16 @@ public class QuestionManager : MonoBehaviour
                 else
                 {
                     waitingForPlayerInput = true;
+                    Timer.Instance.StartTimer();
                 }
             });
     }
 
     public void OnPlayerAnswered(bool isYes)
     {
+        Timer.Instance.SetAnswered();
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        
         Debug.Log($"플레이어 응답: {(isYes ? "예" : "아니오")}");
         
         if (waitingForPlayerInput && isYes)
@@ -117,9 +116,40 @@ public class QuestionManager : MonoBehaviour
         }
         else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
         {
-            ProcessAnswer(isYes);
+            bool processSuccessful = ProcessAnswer(isYes);
             
-            Invoke(nameof(ShowRandomQuestion), 2f);
+            if (processSuccessful)
+            {
+                Invoke(nameof(ShowRandomQuestion), 2f);
+            }
+        }
+    }
+
+    public void OnGaugeInsufficient(string message)
+    {
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, message, typingSpeed)
+            .OnComplete(() =>
+            {
+                Invoke(nameof(ReturnToCurrentQuestion), 2f);
+            });
+    }
+
+    private void ReturnToCurrentQuestion()
+    {
+        if (currentQuestion != null)
+        {
+            DisplayQuestion(currentQuestion);
+        }
+        else if (currentComplexQuestion != null)
+        {
+            DisplayComplexQuestion(currentComplexQuestion);
+        }
+        else if (currentEnvironmentQuestion != null)
+        {
+            DisplayEnvironmentQuestion(currentEnvironmentQuestion);
         }
     }
 
@@ -236,7 +266,12 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, question.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, question.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, question.yesGaugeChange, question.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
     private void DisplayComplexQuestion(ComplexQuestionData complexQuestionData)
@@ -246,7 +281,12 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, complexQuestionData.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, complexQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, complexQuestionData.yesGaugeChange, complexQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
     private void DisplayEnvironmentQuestion(EnvironmentQuestionData environmentQuestionData)
@@ -257,28 +297,44 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(questionText, environmentQuestionData.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, environmentQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, environmentQuestionData.yesGaugeChange, environmentQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
     }
 
-    private void ProcessAnswer(bool isYes)
+    private bool ProcessAnswer(bool isYes)
     {
         if (currentQuestion != null)
         {
-            ProcessRoomQuestion(isYes);
+            return ProcessRoomQuestion(isYes);
         }
         else if (currentComplexQuestion != null)
         {
-            ProcessComplexQuestion(isYes);
+            return ProcessComplexQuestion(isYes);
         }
         else if (currentEnvironmentQuestion != null)
         {
-            ProcessEnvironmentQuestion(isYes);
+            return ProcessEnvironmentQuestion(isYes);
         }
+        return true;
     }
 
-    private void ProcessRoomQuestion(bool isYes)
+    private bool ProcessRoomQuestion(bool isYes)
     {
-        if (currentQuestion == null) return;
+        if (currentQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentQuestion.yesGaugeChange : currentQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -296,11 +352,22 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 거부했습니다. 아무것도 스폰하지 않습니다.");
         }
+        return true;
     }
 
-    private void ProcessComplexQuestion(bool isYes)
+    private bool ProcessComplexQuestion(bool isYes)
     {
-        if (currentComplexQuestion == null) return;
+        if (currentComplexQuestion == null) return true;
+
+        float gaugeChange = isYes ? currentComplexQuestion.yesGaugeChange : currentComplexQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -318,11 +385,22 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 복합 질문을 거부했습니다.");
         }
+        return true;
     }
 
-    private void ProcessEnvironmentQuestion(bool isYes)
+    private bool ProcessEnvironmentQuestion(bool isYes)
     {
-        if (currentEnvironmentQuestion == null) return;
+        if (currentEnvironmentQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentEnvironmentQuestion.yesGaugeChange : currentEnvironmentQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
 
         if (isYes)
         {
@@ -332,29 +410,22 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("플레이어가 스카이박스 환경 효과 질문을 거부했습니다.");
         }
+        return true;
     }
     
-    public void UpdateTimer(float minutes, float seconds)
+    private void HandleTimeUp()
     {
-        if (timerText != null)
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        
+        if (waitingForPlayerInput)
         {
-            timerText.text = $"{minutes:00}:{seconds:00}";
+            waitingForPlayerInput = false;
+        }
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
+        {
+            ProcessAnswer(false);
+            Invoke(nameof(ShowRandomQuestion), 2f);
         }
     }
     
-    public void UpdateProgressSlider(float progress)
-    {
-        if (progressSlider != null)
-        {
-            progressSlider.value = progress;
-        }
-    }
-
-    [ContextMenu("Reset Environment Question Cooldown")]
-    private void ResetEnvironmentQuestionCooldown()
-    {
-        lastEnvironmentQuestionTime = -999f;
-        usedEnvironmentQuestions.Clear();
-        Debug.Log("환경 질문 쿨다운이 리셋되었습니다.");
-    }
 }

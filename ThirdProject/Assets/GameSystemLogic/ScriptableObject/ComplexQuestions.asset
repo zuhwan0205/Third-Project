@@ -24,4 +24,6 @@ MonoBehaviour:
     spawnReward: 1
     extraRewards:
     - itemPrefab: {fileID: 7464983958052808676, guid: af4a949a9061a8048bb10bfba2996eef, type: 3}
-      dropChance: 0
+      dropChance: 1
+    yesGaugeChange: 10
+    noGaugeChange: 0
