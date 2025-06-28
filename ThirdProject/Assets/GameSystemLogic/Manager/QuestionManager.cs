@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using System.Collections.Generic;
@@ -16,8 +17,12 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private ComplexQuestion complexQuestion;
     [SerializeField] private EnvironmentQuestion environmentQuestion;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshPro textMeshPro3D;
+    [Header("UI Components")]
+    [SerializeField] private TextMeshProUGUI questionText;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI yesAnswerText;
+    [SerializeField] private TextMeshProUGUI noAnswerText;
+    [SerializeField] private Slider progressSlider;
     [SerializeField] private float typingSpeed = 0.05f;
 
     [Header("Duplicate Prevention")]
@@ -45,7 +50,27 @@ public class QuestionManager : MonoBehaviour
 
     private void Start()
     {
+        InitializeUI();
         ShowIntroText();
+    }
+
+    private void InitializeUI()
+    {
+        if (yesAnswerText != null)
+            yesAnswerText.text = "YES";
+        
+        if (noAnswerText != null)
+            noAnswerText.text = "NO";
+        
+        if (progressSlider != null)
+        {
+            progressSlider.value = 0f;
+            progressSlider.minValue = 0f;
+            progressSlider.maxValue = 1f;
+        }
+        
+        if (timerText != null)
+            timerText.text = "00:00";
     }
 
     private void ShowIntroText()
@@ -67,7 +92,7 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(textMeshPro3D, intro, typingSpeed)
+        typingTween = TypingText.Type(questionText, intro, typingSpeed)
             .OnComplete(() =>
             {
                 if (introIndex < introTextBank.startTexts.Length)
@@ -197,9 +222,7 @@ public class QuestionManager : MonoBehaviour
             int randomIndex = Random.Range(0, availableQuestions.Length);
             var selectedQuestion = availableQuestions[randomIndex];
             
-            // 사용된 질문으로 표시
             usedEnvironmentQuestions.Add(selectedQuestion);
-            
             return selectedQuestion;
         }
 
@@ -213,7 +236,7 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(textMeshPro3D, question.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, question.questionText, typingSpeed);
     }
 
     private void DisplayComplexQuestion(ComplexQuestionData complexQuestionData)
@@ -223,7 +246,7 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(textMeshPro3D, complexQuestionData.questionText, typingSpeed);
+        typingTween = TypingText.Type(questionText, complexQuestionData.questionText, typingSpeed);
     }
 
     private void DisplayEnvironmentQuestion(EnvironmentQuestionData environmentQuestionData)
@@ -234,8 +257,7 @@ public class QuestionManager : MonoBehaviour
         if (typingTween != null && typingTween.IsActive())
             typingTween.Kill();
 
-        typingTween = TypingText.Type(textMeshPro3D, environmentQuestionData.questionText, typingSpeed);
-        
+        typingTween = TypingText.Type(questionText, environmentQuestionData.questionText, typingSpeed);
     }
 
     private void ProcessAnswer(bool isYes)
@@ -311,6 +333,23 @@ public class QuestionManager : MonoBehaviour
             Debug.Log("플레이어가 스카이박스 환경 효과 질문을 거부했습니다.");
         }
     }
+    
+    public void UpdateTimer(float minutes, float seconds)
+    {
+        if (timerText != null)
+        {
+            timerText.text = $"{minutes:00}:{seconds:00}";
+        }
+    }
+    
+    public void UpdateProgressSlider(float progress)
+    {
+        if (progressSlider != null)
+        {
+            progressSlider.value = progress;
+        }
+    }
+
     [ContextMenu("Reset Environment Question Cooldown")]
     private void ResetEnvironmentQuestionCooldown()
     {
