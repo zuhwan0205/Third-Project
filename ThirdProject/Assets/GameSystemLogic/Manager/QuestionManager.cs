@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using System.Linq;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private NaturalQuestion naturalQuestion;
     [SerializeField] private RewardQuestion rewardQuestion;
     [SerializeField] private MonsterQuestion monsterQuestion;
+    [SerializeField] private ComplexQuestion complexQuestion;
 
     [Header("UI")]
     [SerializeField] private TextMeshPro textMeshPro3D;
@@ -20,6 +22,7 @@ public class QuestionManager : MonoBehaviour
     private int introIndex = 0;
     private bool waitingForPlayerInput = false;
     private RoomQuestion currentQuestion;
+    private ComplexQuestionData currentComplexQuestion;
 
     private void Awake()
     {
@@ -78,7 +81,7 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null)
         {
             ProcessAnswer(isYes);
             
@@ -88,8 +91,14 @@ public class QuestionManager : MonoBehaviour
 
     private void ShowRandomQuestion()
     {
-        int randomType = Random.Range(0, 3);
+        // ComplexQuestion도 포함하여 4가지 타입 중 랜덤 선택
+        int randomType = Random.Range(0, 4);
         RoomQuestion selectedQuestion = null;
+        ComplexQuestionData selectedComplexQuestion = null;
+
+        // 이전 질문 초기화
+        currentQuestion = null;
+        currentComplexQuestion = null;
 
         switch (randomType)
         {
@@ -114,11 +123,22 @@ public class QuestionManager : MonoBehaviour
                     selectedQuestion = monsterQuestion.monsterQuestions[randomIndex];
                 }
                 break;
+            case 3:
+                if (complexQuestion != null && complexQuestion.complexQuestions.Length > 0)
+                {
+                    int randomIndex = Random.Range(0, complexQuestion.complexQuestions.Length);
+                    selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
+                }
+                break;
         }
 
         if (selectedQuestion != null)
         {
             DisplayQuestion(selectedQuestion);
+        }
+        else if (selectedComplexQuestion != null)
+        {
+            DisplayComplexQuestion(selectedComplexQuestion);
         }
         else
         {
@@ -134,14 +154,33 @@ public class QuestionManager : MonoBehaviour
             typingTween.Kill();
 
         typingTween = TypingText.Type(textMeshPro3D, question.questionText, typingSpeed);
-        Debug.Log($"질문 타입: {question.type}, 질문: {question.questionText}");
+    }
+
+    private void DisplayComplexQuestion(ComplexQuestionData complexQuestionData)
+    {
+        currentComplexQuestion = complexQuestionData;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(textMeshPro3D, complexQuestionData.questionText, typingSpeed);
     }
 
     private void ProcessAnswer(bool isYes)
     {
-        if (currentQuestion == null) return;
+        if (currentQuestion != null)
+        {
+            ProcessRoomQuestion(isYes);
+        }
+        else if (currentComplexQuestion != null)
+        {
+            ProcessComplexQuestion(isYes);
+        }
+    }
 
-        Debug.Log($"질문: {currentQuestion.questionText}, 답변: {(isYes ? "YES" : "NO")}");
+    private void ProcessRoomQuestion(bool isYes)
+    {
+        if (currentQuestion == null) return;
 
         if (isYes)
         {
@@ -158,6 +197,28 @@ public class QuestionManager : MonoBehaviour
         else
         {
             Debug.Log("플레이어가 거부했습니다. 아무것도 스폰하지 않습니다.");
+        }
+    }
+
+    private void ProcessComplexQuestion(bool isYes)
+    {
+        if (currentComplexQuestion == null) return;
+
+        if (isYes)
+        {
+            if (currentComplexQuestion.spawnMonster && currentComplexQuestion.extraMonsters != null)
+            {
+                SpawnManager.Instance.SpawnMonsters(currentComplexQuestion.extraMonsters.ToList());
+            }
+            
+            if (currentComplexQuestion.spawnReward && currentComplexQuestion.extraRewards != null)
+            {
+                SpawnManager.Instance.SpawnItems(currentComplexQuestion.extraRewards.ToList());
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 복합 질문을 거부했습니다.");
         }
     }
 }

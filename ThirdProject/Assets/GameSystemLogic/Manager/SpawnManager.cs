@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -47,6 +48,11 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
+    public void SpawnMonsters(SpawnableMonster[] monsters)
+    {
+        if (monsters == null) return;
+        SpawnMonsters(monsters.ToList());
+    }
 
     public void SpawnItems(List<RewardItem> items)
     {
@@ -59,5 +65,10 @@ public class SpawnManager : MonoBehaviour
                 Instantiate(data.itemPrefab, itemSpawnPoint.position, Quaternion.identity);
             }
         }
+    }
+    public void SpawnItems(RewardItem[] items)
+    {
+        if (items == null) return;
+        SpawnItems(items.ToList());
     }
 }
