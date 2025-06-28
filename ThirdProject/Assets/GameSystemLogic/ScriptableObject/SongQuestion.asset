@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08e9135dc4c85cb41b7c8b815433076e, type: 3}
+  m_Name: SongQuestion
+  m_EditorClassIdentifier: 
+  songQuestions:
+  - questionText: "\uBC29\uC5D0 \uB79C\uB364\uD55C \uB178\uB798\uB97C \uD2C0\uC5B4\uB4DC\uB9B4\uAE4C\uC694?"
+    songClips:
+    - clip: {fileID: 8300000, guid: 92fc5eb3253bc344d854902782b675f7, type: 3}
+      playChance: 0.25
+    - clip: {fileID: 8300000, guid: 3f13d5d1cc5c1d24a98a6d88ee9602ca, type: 3}
+      playChance: 0.25
+    - clip: {fileID: 8300000, guid: 5b7d7a07a9b7adc48a308032d394737d, type: 3}
+      playChance: 0.1
+    - clip: {fileID: 8300000, guid: 3c6da89e2a2ccb347bf673c3daac9ce4, type: 3}
+      playChance: 0.1
+    - clip: {fileID: 8300000, guid: 253a872e8c4530c41be26ea7d407945c, type: 3}
+      playChance: 0.2
+    - clip: {fileID: 8300000, guid: 90bc940c2434a5a4ebd6ebc230ad7140, type: 3}
+      playChance: 0.1
+    volume: 0.5
+    loop: 0
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uBC29\uC5D0 \uC218\uBA74\uC720\uB3C4\uC74C\uC6D0\uC744 \uC7AC\uC0DD\uC2DC\uCF1C\uB4DC\uB9B4\uAE4C\uC694?"
+    songClips:
+    - clip: {fileID: 8300000, guid: 05f91a4345bfbcd44b0db2fee3675ab1, type: 3}
+      playChance: 1
+    volume: 0.75
+    loop: 0
+    yesGaugeChange: 0
+    noGaugeChange: 0
