@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+    
     [Header("플레이어 스탯")]
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
@@ -62,6 +64,13 @@ public class PlayerController : MonoBehaviour
     #region 유니티 생명주기
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        
         input = GetComponent<InputManager>();
         playerInteraction = GetComponent<PlayerInteraction>();
         characterController = GetComponent<CharacterController>();
@@ -335,14 +344,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("허기 -1 감소");
         }
     }
-
-    private void IncreaseHunger(float amount)           //이후 빵이나 통조림 먹으면 상승하는데 사용할 코드입니다!
+    public void IncreaseHunger(float amount)           //이후 빵이나 통조림 먹으면 상승하는데 사용할 코드입니다!
     {
-        
         currentHangry += amount;
         currentHangry = Mathf.Min(currentHangry, 100);
-        Debug.Log("허기 상승");
-        currentHangry += 30;
+        Debug.Log($"허기 +{amount} 상승");
         UpdateHungerUI();
     }
     #endregion
