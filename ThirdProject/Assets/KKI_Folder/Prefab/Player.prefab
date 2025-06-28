@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 2907125957987819319}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -488,6 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  currentHangry: 0
   walkSpeed: 3
   sprintSpeed: 5
   jumpHeight: 0.8
@@ -501,7 +502,6 @@ MonoBehaviour:
   mouseSensitivity: 2
   cameraCrouchHeight: 0
   cameraStandHeight: 0
-  healthText: {fileID: 0}
 --- !u!114 &5519065253379545307
 MonoBehaviour:
   m_ObjectHideFlags: 0

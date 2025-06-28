@@ -12,6 +12,9 @@ public class MonsterController : MonoBehaviour
     public int maxHp = 100;
     private int currentHp;
 
+    [Header("Attack")]
+    public int damage = 10; 
+
     private Transform target;
     private Animator animator;
     private NavMeshAgent agent;
@@ -71,7 +74,6 @@ public class MonsterController : MonoBehaviour
             isAttacking = true;
             lastAttackTime = Time.time;
 
-            // 회전해서 바라보게
             Vector3 dir = (target.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -86,13 +88,14 @@ public class MonsterController : MonoBehaviour
 
         if (dist <= attackDistance)
         {
-            PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            PlayerController player = target.GetComponent<PlayerController>();
+            if (player != null)
             {
-                playerHealth.TakeDamage(10);
+                player.TakeDamage(damage);  
             }
         }
     }
+
 
     public void EndAttack()
     {
