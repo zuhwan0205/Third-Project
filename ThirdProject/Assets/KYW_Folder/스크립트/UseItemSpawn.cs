@@ -4,7 +4,7 @@ public class UseItemSpawn : MonoBehaviour
 {
     [SerializeField] private GameObject fKeyPotionPrefab;
     [SerializeField] private GameObject gKeyCanPrefab;
-
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))

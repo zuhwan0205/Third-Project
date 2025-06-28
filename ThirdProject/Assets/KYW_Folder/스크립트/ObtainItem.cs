@@ -38,9 +38,12 @@ public class InteractableItem : MonoBehaviour, IInteractable
             Destroy(gameObject);
             return;
         }
-
-
-
+        if ((itemName == "상자") && !isInteracting)
+        {
+            transform.GetComponent<Animation>().Play("ChestOpen");
+            Destroy(gameObject, 5f);
+            return;
+        }
 
 
 
