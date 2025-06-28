@@ -23,5 +23,5 @@ MonoBehaviour:
       spawnChance: 0.3
     - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
       spawnChance: 0.3
-    yesGaugeChange: 0
-    noGaugeChange: 0
+    yesGaugeChange: 15
+    noGaugeChange: -10
