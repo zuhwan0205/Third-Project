@@ -16,6 +16,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private MonsterQuestion monsterQuestion;
     [SerializeField] private ComplexQuestion complexQuestion;
     [SerializeField] private EnvironmentQuestion environmentQuestion;
+    [SerializeField] private SongQuestion songQuestion;
 
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI questionText;
@@ -32,6 +33,7 @@ public class QuestionManager : MonoBehaviour
     private RoomQuestion currentQuestion;
     private ComplexQuestionData currentComplexQuestion;
     private EnvironmentQuestionData currentEnvironmentQuestion;
+    private SongQuestionData currentSongQuestion;
     
     private float lastEnvironmentQuestionTime = -999f;
     private HashSet<EnvironmentQuestionData> usedEnvironmentQuestions = new HashSet<EnvironmentQuestionData>();
@@ -114,7 +116,7 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null)
         {
             bool processSuccessful = ProcessAnswer(isYes);
             
@@ -151,63 +153,81 @@ public class QuestionManager : MonoBehaviour
         {
             DisplayEnvironmentQuestion(currentEnvironmentQuestion);
         }
+        else if (currentSongQuestion != null)
+        {
+            DisplaySongQuestion(currentSongQuestion);
+        }
     }
 
     private void ShowRandomQuestion()
     {
         bool canShowEnvironmentQuestion = CanShowEnvironmentQuestion();
-        int availableTypes = canShowEnvironmentQuestion ? 5 : 4;
+        bool canShowSongQuestion = CanShowSongQuestion();
+        
+        int availableTypes = 4;
+        if (canShowEnvironmentQuestion) availableTypes++;
+        if (canShowSongQuestion) availableTypes++;
+        
         int randomType = Random.Range(0, availableTypes);
         
-        if (!canShowEnvironmentQuestion && randomType >= 4)
-        {
-            randomType = Random.Range(0, 4);
-        }
-
         RoomQuestion selectedQuestion = null;
         ComplexQuestionData selectedComplexQuestion = null;
         EnvironmentQuestionData selectedEnvironmentQuestion = null;
+        SongQuestionData selectedSongQuestion = null;
         
         currentQuestion = null;
         currentComplexQuestion = null;
         currentEnvironmentQuestion = null;
+        currentSongQuestion = null;
 
-        switch (randomType)
+        int typeIndex = 0;
+        
+        if (randomType == typeIndex++)
         {
-            case 0:
-                if (naturalQuestion != null && naturalQuestion.naturalQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, naturalQuestion.naturalQuestions.Length);
-                    selectedQuestion = naturalQuestion.naturalQuestions[randomIndex];
-                }
-                break;
-            case 1:
-                if (rewardQuestion != null && rewardQuestion.rewardQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, rewardQuestion.rewardQuestions.Length);
-                    selectedQuestion = rewardQuestion.rewardQuestions[randomIndex];
-                }
-                break;
-            case 2:
-                if (monsterQuestion != null && monsterQuestion.monsterQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, monsterQuestion.monsterQuestions.Length);
-                    selectedQuestion = monsterQuestion.monsterQuestions[randomIndex];
-                }
-                break;
-            case 3:
-                if (complexQuestion != null && complexQuestion.complexQuestions.Length > 0)
-                {
-                    int randomIndex = Random.Range(0, complexQuestion.complexQuestions.Length);
-                    selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
-                }
-                break;
-            case 4:
-                if (canShowEnvironmentQuestion && environmentQuestion != null && environmentQuestion.environmentQuestions.Length > 0)
-                {
-                    selectedEnvironmentQuestion = GetAvailableEnvironmentQuestion();
-                }
-                break;
+            if (naturalQuestion != null && naturalQuestion.naturalQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, naturalQuestion.naturalQuestions.Length);
+                selectedQuestion = naturalQuestion.naturalQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (rewardQuestion != null && rewardQuestion.rewardQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, rewardQuestion.rewardQuestions.Length);
+                selectedQuestion = rewardQuestion.rewardQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (monsterQuestion != null && monsterQuestion.monsterQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, monsterQuestion.monsterQuestions.Length);
+                selectedQuestion = monsterQuestion.monsterQuestions[randomIndex];
+            }
+        }
+        else if (randomType == typeIndex++)
+        {
+            if (complexQuestion != null && complexQuestion.complexQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, complexQuestion.complexQuestions.Length);
+                selectedComplexQuestion = complexQuestion.complexQuestions[randomIndex];
+            }
+        }
+        else if (canShowEnvironmentQuestion && randomType == typeIndex++)
+        {
+            if (environmentQuestion != null && environmentQuestion.environmentQuestions.Length > 0)
+            {
+                selectedEnvironmentQuestion = GetAvailableEnvironmentQuestion();
+            }
+        }
+        else if (canShowSongQuestion && randomType == typeIndex++)
+        {
+            if (songQuestion != null && songQuestion.songQuestions.Length > 0)
+            {
+                int randomIndex = Random.Range(0, songQuestion.songQuestions.Length);
+                selectedSongQuestion = songQuestion.songQuestions[randomIndex];
+            }
         }
 
         if (selectedQuestion != null)
@@ -222,6 +242,10 @@ public class QuestionManager : MonoBehaviour
         {
             DisplayEnvironmentQuestion(selectedEnvironmentQuestion);
         }
+        else if (selectedSongQuestion != null)
+        {
+            DisplaySongQuestion(selectedSongQuestion);
+        }
         else
         {
             Debug.LogWarning("선택된 질문이 없습니다!");
@@ -232,6 +256,11 @@ public class QuestionManager : MonoBehaviour
     {
         float timeSinceLastEnvironmentQuestion = Time.time - lastEnvironmentQuestionTime;
         return timeSinceLastEnvironmentQuestion >= environmentQuestionCooldown;
+    }
+
+    private bool CanShowSongQuestion()
+    {
+        return SongManager.Instance == null || !SongManager.Instance.IsSongPlaying();
     }
 
     private EnvironmentQuestionData GetAvailableEnvironmentQuestion()
@@ -305,6 +334,21 @@ public class QuestionManager : MonoBehaviour
             });
     }
 
+    private void DisplaySongQuestion(SongQuestionData songQuestionData)
+    {
+        currentSongQuestion = songQuestionData;
+        
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, songQuestionData.questionText, typingSpeed)
+            .OnComplete(() =>
+            {
+                TypingText.UpdateScoreTexts(yesScoreText, noScoreText, songQuestionData.yesGaugeChange, songQuestionData.noGaugeChange);
+                Timer.Instance.StartTimer();
+            });
+    }
+
     private bool ProcessAnswer(bool isYes)
     {
         if (currentQuestion != null)
@@ -318,6 +362,10 @@ public class QuestionManager : MonoBehaviour
         else if (currentEnvironmentQuestion != null)
         {
             return ProcessEnvironmentQuestion(isYes);
+        }
+        else if (currentSongQuestion != null)
+        {
+            return ProcessSongQuestion(isYes);
         }
         return true;
     }
@@ -412,6 +460,34 @@ public class QuestionManager : MonoBehaviour
         }
         return true;
     }
+
+    private bool ProcessSongQuestion(bool isYes)
+    {
+        if (currentSongQuestion == null) return true;
+        
+        float gaugeChange = isYes ? currentSongQuestion.yesGaugeChange : currentSongQuestion.noGaugeChange;
+        if (Gauge.Instance != null)
+        {
+            bool canProceed = Gauge.Instance.TryAddGauge(gaugeChange);
+            if (!canProceed)
+            {
+                return false;
+            }
+        }
+
+        if (isYes)
+        {
+            if (SongManager.Instance != null)
+            {
+                SongManager.Instance.PlaySong(currentSongQuestion);
+            }
+        }
+        else
+        {
+            Debug.Log("플레이어가 노래 재생을 거부했습니다.");
+        }
+        return true;
+    }
     
     private void HandleTimeUp()
     {
@@ -421,7 +497,7 @@ public class QuestionManager : MonoBehaviour
         {
             waitingForPlayerInput = false;
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null)
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null)
         {
             ProcessAnswer(false);
             Invoke(nameof(ShowRandomQuestion), 2f);
