@@ -32,7 +32,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
             Destroy(gameObject);
             return;
         }
-        if ((itemName == "포션" || itemName == "통조림") && !isInteracting)
+        if ((itemName == "포션" || itemName == "통조림" || itemName == "총알" || itemName == "화살") && !isInteracting)
         {
             InventoryManager.Instance.InsertNewItem(itemName);
             Destroy(gameObject);
@@ -52,6 +52,8 @@ public class InteractableItem : MonoBehaviour, IInteractable
             StartCoroutine(InteractionCoroutine(2f));
 
             // 상호작용 완료 후 체력 회복
+            PlayerController.Instance.Heal(25);
+            
             return;
         }
 
@@ -61,6 +63,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
             StartCoroutine(InteractionCoroutine(2f));
 
             // 상호작용 완료 후 허기 회복
+            PlayerController.Instance.IncreaseHunger(25);
             return;
         }
 
