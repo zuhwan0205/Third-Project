@@ -151,6 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolKey: 2
   damage: 10
-  speed: 100
+  speed: 150
   lifeTime: 5
   hitSound: {fileID: 8300000, guid: 15336f3812336174dab3764643ae5a7a, type: 3}
