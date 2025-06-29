@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introTextBank: {fileID: 11400000, guid: 6e07abba60583ac4ebb454c64c910f86, type: 2}
+  endingTextBank: {fileID: 11400000, guid: 0f5088e8150d1704eacd6af84e2961f1, type: 2}
   naturalQuestion: {fileID: 11400000, guid: 42e8caf589f64234981a09ce09d6bd59, type: 2}
   rewardQuestion: {fileID: 11400000, guid: 0bad8fda5006b144ea6b4f32f97ab95a, type: 2}
   monsterQuestion: {fileID: 11400000, guid: ac14aae222d632e4e8a1d832ecee2bfd, type: 2}
@@ -677,7 +678,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4324
+  m_VersionIndex: 4330
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1347,7 +1348,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2615
+  m_VersionIndex: 2621
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2023,7 +2024,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1362
+  m_VersionIndex: 1368
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3158,7 +3159,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2615
+  m_VersionIndex: 2621
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3825,7 +3826,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5263
+  m_VersionIndex: 5269
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4498,7 +4499,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1362
+  m_VersionIndex: 1368
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5067,6 +5068,7 @@ MonoBehaviour:
   gaugeSlider: {fileID: 3803889413523593233}
   maxGauge: 500
   currentGauge: 0
+  endingTextBank: {fileID: 11400000, guid: 0f5088e8150d1704eacd6af84e2961f1, type: 2}
 --- !u!1 &7052447994512357611
 GameObject:
   m_ObjectHideFlags: 0
