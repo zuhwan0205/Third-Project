@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Furniture
   - Lazer
-  - Monster
   layers:
   - Default
   - TransparentFX
@@ -29,8 +28,8 @@ TagManager:
   - 
   - 
   - Weapon
-  - Projectile
-  - Monster
+  - 
+  - 
   - 
   - 
   - 
