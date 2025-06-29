@@ -13,6 +13,9 @@ public class WeaponUIManager : MonoBehaviour
     [SerializeField] Image ammoImage;
     [SerializeField] TextMeshProUGUI ammoCountText;
     
+    // 마지막으로 업데이트된 장탄 수를 저장
+    private int currentLoadedAmmo = 0;
+
     [Header("무기별 스프라이트")]
     [SerializeField] Sprite axeSprite;
     [SerializeField] Sprite swordSprite;
@@ -41,17 +44,62 @@ public class WeaponUIManager : MonoBehaviour
         UpdateWeaponUI(WeaponType.None);
     }
 
-    // 무기 UI 업데이트
+    // 무기 교체 시 호출되는 기본 UI 업데이트 함수
     public void UpdateWeaponUI(WeaponType weaponType)
     {
-        // 무기 이미지 업데이트
+        // 핵심 로직을 담은 오버로딩 함수를 loadedAmmo = 0 으로 호출
+        UpdateWeaponUI(weaponType, 0);
+    }
+    
+    // 장탄수를 포함하여 UI를 업데이트하는 핵심 오버로딩 함수
+    public void UpdateWeaponUI(WeaponType weaponType, int loadedAmmo)
+    {
+        currentLoadedAmmo = loadedAmmo; // 전달받은 장탄수 저장
+        
+        // 1. 무기 이미지 업데이트
         UpdateWeaponImage(weaponType);
         
-        // 탄약 UI 업데이트
-        UpdateAmmoUI(weaponType);
+        // 2. 탄약 UI 업데이트
+        string totalAmmoString;
+        Sprite ammoSprite;
+
+        switch (weaponType)
+        {
+            case WeaponType.Pistol:
+                totalAmmoString = InventoryManager.Instance.CheckItemCount("총알").ToString();
+                ammoSprite = bulletSprite;
+                break;
+            case WeaponType.Shotgun:
+                totalAmmoString = InventoryManager.Instance.CheckItemCount("샷건총알").ToString();
+                ammoSprite = shotgunShellSprite;
+                break;
+            case WeaponType.Bow:
+                totalAmmoString = InventoryManager.Instance.CheckItemCount("화살").ToString();
+                ammoSprite = arrowSprite;
+                break;
+            default:
+                // 탄약이 필요없는 무기 (UI 숨기기)
+                ammoImage.sprite = null;
+                ammoImage.color = Color.clear;
+                ammoCountText.text = "";
+                return;
+        }
+
+        ammoImage.sprite = ammoSprite;
+        ammoImage.color = Color.white;
+        ammoCountText.text = $"{currentLoadedAmmo} / {totalAmmoString}";
+        ammoCountText.color = Color.white;
     }
 
-    // 무기 이미지 업데이트
+    // 보유 탄약 개수가 바뀔 때 호출 (인벤토리 매니저 등에서)
+    public void UpdateAmmoCount()
+    {
+        // 현재 무기 타입과, 마지막으로 저장된 장탄수를 이용해 UI를 다시 그림
+        WeaponType currentWeapon = WeaponController.Instance.currentWeaponType;
+        UpdateWeaponUI(currentWeapon, currentLoadedAmmo);
+    }
+    
+    // 무기 이미지 업데이트 (헬퍼 함수)
     private void UpdateWeaponImage(WeaponType weaponType)
     {
         Sprite weaponSprite = GetWeaponSprite(weaponType);
@@ -65,48 +113,6 @@ public class WeaponUIManager : MonoBehaviour
         {
             weaponImage.sprite = null;
             weaponImage.color = Color.clear; // 이미지 숨기기
-        }
-    }
-
-    // 탄약 UI 업데이트
-    private void UpdateAmmoUI(WeaponType weaponType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.Pistol:
-                // 총알 UI 표시
-                ammoImage.sprite = bulletSprite;
-                ammoImage.color = Color.white;
-                int bulletCount = InventoryManager.Instance.CheckItemCount("총알");
-                ammoCountText.text = bulletCount.ToString();
-                ammoCountText.color = Color.white;
-                break;
-            
-            case WeaponType.Shotgun:
-                // 샷건탄 UI 표시
-                ammoImage.sprite = shotgunShellSprite;
-                ammoImage.color = Color.white;
-                int shellCount = InventoryManager.Instance.CheckItemCount("샷건총알");
-                ammoCountText.text = shellCount.ToString();
-                ammoCountText.color = Color.white;
-                break;
-                
-            case WeaponType.Bow:
-                // 화살 UI 표시
-                ammoImage.sprite = arrowSprite;
-                ammoImage.color = Color.white;
-                int arrowCount = InventoryManager.Instance.CheckItemCount("화살");
-                ammoCountText.text = arrowCount.ToString();
-                ammoCountText.color = Color.white;
-                break;
-                
-            default:
-                // 탄약이 필요없는 무기이거나 무기가 없는 경우
-                ammoImage.sprite = null;
-                ammoImage.color = Color.clear;
-                ammoCountText.text = "";
-                ammoCountText.color = Color.clear;
-                break;
         }
     }
 
@@ -127,30 +133,6 @@ public class WeaponUIManager : MonoBehaviour
                 return shotgunSprite;
             default:
                 return null;
-        }
-    }
-
-    // 탄약 개수만 업데이트 (아이템을 사용했을 때 호출)
-    public void UpdateAmmoCount()
-    {
-        WeaponType currentWeapon = WeaponController.Instance.currentWeaponType;
-        
-        switch (currentWeapon)
-        {
-            case WeaponType.Pistol:
-                int bulletCount = InventoryManager.Instance.CheckItemCount("총알");
-                ammoCountText.text = bulletCount.ToString();
-                break;
-            
-            case WeaponType.Shotgun:
-                int shellCount = InventoryManager.Instance.CheckItemCount("샷건총알");
-                ammoCountText.text = shellCount.ToString();
-                break;
-                
-            case WeaponType.Bow:
-                int arrowCount = InventoryManager.Instance.CheckItemCount("화살");
-                ammoCountText.text = arrowCount.ToString();
-                break;
         }
     }
 } 
