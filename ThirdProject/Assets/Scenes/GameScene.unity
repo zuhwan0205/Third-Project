@@ -1004,6 +1004,10 @@ PrefabInstance:
       value: -0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 2200455166386977779, guid: f0a7ba1f630635a4890126b6cc307354, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2200455166386977779, guid: f0a7ba1f630635a4890126b6cc307354, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
