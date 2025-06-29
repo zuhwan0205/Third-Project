@@ -11,13 +11,14 @@ public class QuestionManager : MonoBehaviour
 
     [Header("Question Sources")]
     [SerializeField] private IntroTextBank introTextBank;
+    [SerializeField] private EndingTextBank endingTextBank; // 추가
     [SerializeField] private NaturalQuestion naturalQuestion;
     [SerializeField] private RewardQuestion rewardQuestion;
     [SerializeField] private MonsterQuestion monsterQuestion;
     [SerializeField] private ComplexQuestion complexQuestion;
     [SerializeField] private EnvironmentQuestion environmentQuestion;
     [SerializeField] private SongQuestion songQuestion;
-    [SerializeField] private FurnitureQuestion furnitureQuestion; // 추가
+    [SerializeField] private FurnitureQuestion furnitureQuestion;
 
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI questionText;
@@ -35,10 +36,15 @@ public class QuestionManager : MonoBehaviour
     private ComplexQuestionData currentComplexQuestion;
     private EnvironmentQuestionData currentEnvironmentQuestion;
     private SongQuestionData currentSongQuestion;
-    private FurnitureQuestionData currentFurnitureQuestion; // 추가
+    private FurnitureQuestionData currentFurnitureQuestion;
     
     private float lastEnvironmentQuestionTime = -999f;
     private HashSet<EnvironmentQuestionData> usedEnvironmentQuestions = new HashSet<EnvironmentQuestionData>();
+    
+    // 엔딩 관련 변수들
+    private int endingTextIndex = 0;
+    private bool isPlayingEnding = false;
+    private EndingTextBank currentEndingTextBank;
 
     private void Awake()
     {
@@ -108,6 +114,12 @@ public class QuestionManager : MonoBehaviour
 
     public void OnPlayerAnswered(bool isYes)
     {
+        // 엔딩 중에는 플레이어 입력 무시
+        if (isPlayingEnding)
+        {
+            return;
+        }
+        
         Timer.Instance.SetAnswered();
         TypingText.HideScoreTexts(yesScoreText, noScoreText);
         
@@ -118,7 +130,7 @@ public class QuestionManager : MonoBehaviour
             waitingForPlayerInput = false;
             ShowRandomQuestion();
         }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null)
         {
             bool processSuccessful = ProcessAnswer(isYes);
             
@@ -159,7 +171,7 @@ public class QuestionManager : MonoBehaviour
         {
             DisplaySongQuestion(currentSongQuestion);
         }
-        else if (currentFurnitureQuestion != null) // 추가
+        else if (currentFurnitureQuestion != null)
         {
             DisplayFurnitureQuestion(currentFurnitureQuestion);
         }
@@ -169,12 +181,12 @@ public class QuestionManager : MonoBehaviour
     {
         bool canShowEnvironmentQuestion = CanShowEnvironmentQuestion();
         bool canShowSongQuestion = CanShowSongQuestion();
-        bool canShowFurnitureQuestion = CanShowFurnitureQuestion(); // 추가
+        bool canShowFurnitureQuestion = CanShowFurnitureQuestion();
         
         int availableTypes = 4;
         if (canShowEnvironmentQuestion) availableTypes++;
         if (canShowSongQuestion) availableTypes++;
-        if (canShowFurnitureQuestion) availableTypes++; // 추가
+        if (canShowFurnitureQuestion) availableTypes++;
         
         int randomType = Random.Range(0, availableTypes);
         
@@ -182,13 +194,13 @@ public class QuestionManager : MonoBehaviour
         ComplexQuestionData selectedComplexQuestion = null;
         EnvironmentQuestionData selectedEnvironmentQuestion = null;
         SongQuestionData selectedSongQuestion = null;
-        FurnitureQuestionData selectedFurnitureQuestion = null; // 추가
+        FurnitureQuestionData selectedFurnitureQuestion = null;
         
         currentQuestion = null;
         currentComplexQuestion = null;
         currentEnvironmentQuestion = null;
         currentSongQuestion = null;
-        currentFurnitureQuestion = null; // 추가
+        currentFurnitureQuestion = null;
 
         int typeIndex = 0;
         
@@ -239,7 +251,7 @@ public class QuestionManager : MonoBehaviour
                 selectedSongQuestion = songQuestion.songQuestions[randomIndex];
             }
         }
-        else if (canShowFurnitureQuestion && randomType == typeIndex++) // 추가
+        else if (canShowFurnitureQuestion && randomType == typeIndex++)
         {
             if (furnitureQuestion != null && furnitureQuestion.furnitureQuestions.Length > 0)
             {
@@ -263,7 +275,7 @@ public class QuestionManager : MonoBehaviour
         {
             DisplaySongQuestion(selectedSongQuestion);
         }
-        else if (selectedFurnitureQuestion != null) // 추가
+        else if (selectedFurnitureQuestion != null)
         {
             DisplayFurnitureQuestion(selectedFurnitureQuestion);
         }
@@ -399,8 +411,7 @@ public class QuestionManager : MonoBehaviour
                 Timer.Instance.StartTimer();
             });
     }
-
-    // 추가: Furniture 질문 표시
+    
     private void DisplayFurnitureQuestion(FurnitureQuestionData furnitureQuestionData)
     {
         currentFurnitureQuestion = furnitureQuestionData;
@@ -434,7 +445,7 @@ public class QuestionManager : MonoBehaviour
         {
             return ProcessSongQuestion(isYes);
         }
-        else if (currentFurnitureQuestion != null) // 추가
+        else if (currentFurnitureQuestion != null)
         {
             return ProcessFurnitureQuestion(isYes);
         }
@@ -560,7 +571,6 @@ public class QuestionManager : MonoBehaviour
         return true;
     }
     
-    // 추가: Furniture 질문 처리
     private bool ProcessFurnitureQuestion(bool isYes)
     {
         if (currentFurnitureQuestion == null) return true;
@@ -591,16 +601,137 @@ public class QuestionManager : MonoBehaviour
     
     private void HandleTimeUp()
     {
-        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        if (isPlayingEnding)
+        {
+            return;
+        }
         
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+    
         if (waitingForPlayerInput)
         {
             waitingForPlayerInput = false;
-        }
-        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null) // 수정
-        {
-            ProcessAnswer(false);
+            if (PlayerController.Instance != null)
+            {
+                PlayerController.Instance.TakeDamage(10);
+            }
+    
+            if (Gauge.Instance != null)
+            {
+                Gauge.Instance.ForceReduceGauge(10);
+            }
+    
             Invoke(nameof(ShowRandomQuestion), 2f);
+        }
+        else if (currentQuestion != null || currentComplexQuestion != null || currentEnvironmentQuestion != null || currentSongQuestion != null || currentFurnitureQuestion != null)
+        {
+            if (PlayerController.Instance != null)
+            {
+                PlayerController.Instance.TakeDamage(10);
+            }
+    
+            if (Gauge.Instance != null)
+            {
+                Gauge.Instance.ForceReduceGauge(10);
+            }
+            Invoke(nameof(ShowRandomQuestion), 2f);
+        }
+    }
+    
+    public void StartEndingSequence(EndingTextBank endingTextBank)
+    {
+        if (endingTextBank == null || endingTextBank.goodEndingTexts == null || endingTextBank.goodEndingTexts.Length == 0)
+        {
+            Debug.LogWarning("EndingTextBank가 비어있습니다. 바로 엔딩 환경 효과를 시작합니다.");
+            if (Gauge.Instance != null)
+            {
+                Gauge.Instance.StartEndingEnvironmentEffect();
+            }
+            return;
+            
+        }
+    
+        isPlayingEnding = true;
+        endingTextIndex = 0;
+        currentEndingTextBank = endingTextBank;
+        currentQuestion = null;
+        currentComplexQuestion = null;
+        currentEnvironmentQuestion = null;
+        currentSongQuestion = null;
+        currentFurnitureQuestion = null;
+        waitingForPlayerInput = false;
+        
+        TypingText.HideScoreTexts(yesScoreText, noScoreText);
+        
+        ShowEndingText();
+    }
+    
+    private void ShowEndingText()
+    {
+        if (currentEndingTextBank == null || endingTextIndex >= currentEndingTextBank.goodEndingTexts.Length)
+        {
+            isPlayingEnding = false;
+            if (Gauge.Instance != null)
+            {
+                Gauge.Instance.StartEndingEnvironmentEffect();
+            }
+            return;
+        }
+
+        string endingText = currentEndingTextBank.goodEndingTexts[endingTextIndex];
+        endingTextIndex++;
+
+        if (typingTween != null && typingTween.IsActive())
+            typingTween.Kill();
+
+        typingTween = TypingText.Type(questionText, endingText, typingSpeed)
+            .OnComplete(() =>
+            {
+                if (endingTextIndex < currentEndingTextBank.goodEndingTexts.Length)
+                {
+                    Invoke(nameof(ShowEndingText), 2f);
+                }
+                else
+                {
+                    isPlayingEnding = false;
+                    Invoke(nameof(StartEndingEnvironmentEffect), 2f);
+                }
+            });
+    }
+    
+    private void StartEndingEnvironmentEffect()
+    {
+        if (Gauge.Instance != null)
+        {
+            Gauge.Instance.StartEndingEnvironmentEffect();
+        }
+    }
+    
+
+    public void CancelAllInvokes()
+    {
+        CancelInvoke();
+        if (typingTween != null && typingTween.IsActive())
+        {
+            typingTween.Kill();
+        }
+    }
+
+    public void SetEndingMode(bool isEnding)
+    {
+        isPlayingEnding = isEnding;
+    
+        if (isEnding)
+        {
+            currentQuestion = null;
+            currentComplexQuestion = null;
+            currentEnvironmentQuestion = null;
+            currentSongQuestion = null;
+            currentFurnitureQuestion = null;
+            
+            waitingForPlayerInput = false;
+        
+            Debug.Log("엔딩 모드 활성화");
         }
     }
 }

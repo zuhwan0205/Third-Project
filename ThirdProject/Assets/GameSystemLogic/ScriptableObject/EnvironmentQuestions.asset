@@ -24,3 +24,14 @@ MonoBehaviour:
     environmentSound: {fileID: 0}
     yesGaugeChange: 50
     noGaugeChange: -20
+  - questionText: "\uBC29\uC548\uC758 \uBB34\uD574\uD55C \uC5F0\uAE30\uB97C \uBFCC\uB9B4\uAEBC\uC5D0\uC694\n\uAD1C\uCC2E\uC73C\uC2E0\uAC00\uC694?"
+    dimSkybox: 0
+    skyIntensityMultiplier: 0.05
+    effectDuration: 30
+    enableFog: 1
+    fogColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+    fogDensity: 0.06
+    playSound: 0
+    environmentSound: {fileID: 0}
+    yesGaugeChange: 50
+    noGaugeChange: -20

@@ -21,7 +21,7 @@ MonoBehaviour:
     monsterList: []
     yesGaugeChange: -10
     noGaugeChange: 10
-  - questionText: "\uBC29\uC5D0 \uD1B5\uC870\uB9BC\uC744 \uC9C0\uAE09\uD569\uB2C8\uAE4C?"
+  - questionText: "\uBC29\uC5D0 \uC74C\uC2DD\uC744 \uB4DC\uB9B4\uAE4C\uC694?"
     type: 1
     positiveRewards:
     - itemPrefab: {fileID: 7338294496797462623, guid: f7dab6e67770d1f4f975ee71f5475e18, type: 3}
@@ -72,3 +72,46 @@ MonoBehaviour:
     monsterList: []
     yesGaugeChange: -10
     noGaugeChange: 10
+  - questionText: "\uD0C4\uC57D\uC774 \uBD80\uC871\uD558\uC2DC\uC8E0?\n\uB79C\uB364\uD55C
+      \uD0C4\uC57D\uC744 \uC81C\uAC00 \uB4DC\uB9B4\uAE4C\uC694?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 3983317682043423766, guid: 431fbce8ccd5eeb4cb69b636d9d9b7f4, type: 3}
+      dropChance: 1
+    monsterList: []
+    yesGaugeChange: -10
+    noGaugeChange: 10
+  - questionText: "\uD0C4\uC57D\uC774 \uBD80\uC871\uD558\uC2DC\uC8E0?\n\uB79C\uB364\uD55C
+      \uD0C4\uC57D\uC744 \uC81C\uAC00 \uB4DC\uB9B4\uAE4C\uC694?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 6622889290998844933, guid: 775de98f8c068444a860d839f70089a3, type: 3}
+      dropChance: 1
+    monsterList: []
+    yesGaugeChange: -10
+    noGaugeChange: 10
+  - questionText: "\uD0C4\uC57D\uC774 \uBD80\uC871\uD558\uC2DC\uC8E0?\n\uB79C\uB364\uD55C
+      \uD0C4\uC57D\uC744 \uC81C\uAC00 \uB4DC\uB9B4\uAE4C\uC694?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 344005791796031628, guid: 9f92062ce8356b14b97e1af0e96fdf6e, type: 3}
+      dropChance: 1
+    monsterList: []
+    yesGaugeChange: -10
+    noGaugeChange: 10
+  - questionText: "\uBC30\uACE0\uD504\uC2E0\uAC00\uC694?\n\uADFC\uB370 \uACF1\uAC8C
+      \uC904 \uC0DD\uAC01\uC740 \uC5C6\uAE34\uD574\uC694\n\uBC29\uC5D0 \uD295\uAE30\uB294
+      \uC74C\uC2DD\uC744 \uB4DC\uB9B4\uAE4C\uC694?"
+    type: 1
+    positiveRewards:
+    - itemPrefab: {fileID: 3591301176408327423, guid: 0cdd084ba2179cf4183dd15d1f5699ea, type: 3}
+      dropChance: 1
+    - itemPrefab: {fileID: 1089620059459943442, guid: 90d8e33506a5fa44587fb552de8b1d83, type: 3}
+      dropChance: 1
+    - itemPrefab: {fileID: 8917142005441174605, guid: f23bc90af91259c48ab038e5691cbb78, type: 3}
+      dropChance: 1
+    - itemPrefab: {fileID: 3363846901382968043, guid: 7a89e2783329a4e478727bda84b4d82e, type: 3}
+      dropChance: 1
+    monsterList: []
+    yesGaugeChange: -15
+    noGaugeChange: 15
