@@ -26,19 +26,22 @@ public class InteractableItem : MonoBehaviour, IInteractable
                 case "권총": 
                     {
                         idx = 2; 
-                        InventoryManager.Instance.InsertNewItem("총알", 10);
+                        for (int i = 0; i < 10; i ++)
+                            InventoryManager.Instance.InsertNewItem("총알");
                         break;
                     }
                 case "샷건": 
                     {
                         idx = 3; 
-                        InventoryManager.Instance.InsertNewItem("샷건총알", 2);
+                        for (int i = 0; i < 2; i ++)
+                            InventoryManager.Instance.InsertNewItem("샷건총알");
                         break;
                     }
                 case "활": 
                     {
                         idx = 4; 
-                        InventoryManager.Instance.InsertNewItem("화살", 2);
+                        for (int i = 0; i < 2; i ++)
+                            InventoryManager.Instance.InsertNewItem("화살");
                         break;
                     }
             }
@@ -50,6 +53,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         }
         if ((itemName == "포션" || itemName == "통조림" || itemName == "총알" || itemName == "화살" || itemName == "샷건총알" || itemName == "화살") && !isInteracting)
         {
+            
             InventoryManager.Instance.InsertNewItem(itemName);
             Destroy(gameObject);
             return;

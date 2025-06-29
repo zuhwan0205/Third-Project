@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Pistol : RangeWeapon
 {
-    
-    void Start()
-    {    
-        reserveAmmo = InventoryManager.Instance.CheckItemCount("총알");
+    void OnEnable()
+    {
+        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, currentAmmo);
     }
 
     #region 공격
@@ -35,7 +34,8 @@ public class Pistol : RangeWeapon
     #region 재장전
     public override void Reload()
     {
-        if (!CanReloading()) return;
+        if (!CanReloading())    
+            {Debug.Log("리러딩 실패"); return;  }
         PlayReload();
 
         return ;
@@ -55,8 +55,9 @@ public class Pistol : RangeWeapon
 
         currentAmmo += toLoad;
         reserveAmmo -= toLoad;
-        InventoryManager.Instance.RemoveItem("총알", toLoad);
-        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, toLoad);
+        for (int i = 0; i < toLoad; i ++)
+            InventoryManager.Instance.RemoveItem("총알");
+        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, currentAmmo);
 
         isReloading = false;
     }

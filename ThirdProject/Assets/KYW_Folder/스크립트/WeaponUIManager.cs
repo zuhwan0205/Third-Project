@@ -45,15 +45,20 @@ public class WeaponUIManager : MonoBehaviour
     }
 
     // 무기 교체 시 호출되는 기본 UI 업데이트 함수
-    public void UpdateWeaponUI(WeaponType weaponType)
-    {
-        // 핵심 로직을 담은 오버로딩 함수를 loadedAmmo = 0 으로 호출
-        UpdateWeaponUI(weaponType, 0);
-    }
+    // public void UpdateWeaponUI(WeaponType weaponType)
+    // {
+    //     // 핵심 로직을 담은 오버로딩 함수를 loadedAmmo = 0 으로 호출
+    //     Debug.Log("1번째");
+    //     UpdateWeaponUI(weaponType, 0);
+    // }
     
     // 장탄수를 포함하여 UI를 업데이트하는 핵심 오버로딩 함수
-    public void UpdateWeaponUI(WeaponType weaponType, int loadedAmmo)
+    public void UpdateWeaponUI(WeaponType weaponType, int loadedAmmo = 0)
     {
+        
+    
+
+        Debug.Log("2번째");
         currentLoadedAmmo = loadedAmmo; // 전달받은 장탄수 저장
         
         // 1. 무기 이미지 업데이트

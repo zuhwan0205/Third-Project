@@ -130,11 +130,11 @@ public class InventoryManager : MonoBehaviour
         //     RemoveItem("권총");
         // }
 
-        // // P키: 모든 아이템 개수 출력
-        // if (Input.GetKeyDown(KeyCode.P))
-        // {
-        //     PrintAllItemCounts();
-        // }
+        // P키: 모든 아이템 개수 출력
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PrintAllItemCounts();
+        }
 
         // // C키: 특정 아이템 개수 확인 (포션 예시)
         // if (Input.GetKeyDown(KeyCode.C))
@@ -158,7 +158,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // 아이템 삭제 함수
-    public void RemoveItem(string itemName, int count = 1)
+    public void RemoveItem(string itemName)
     {
         int itemType = System.Array.IndexOf(itemNames, itemName);
         if (itemType == -1) // 아이템 이름을 찾지 못했을 경우
@@ -174,7 +174,7 @@ public class InventoryManager : MonoBehaviour
                 // 아이템 개수 감소
                 if (itemCounts.ContainsKey(itemName) && itemCounts[itemName] > 0)
                 {
-                    itemCounts[itemName] -= count;
+                    itemCounts[itemName] --;
                     Debug.Log($"{itemName} 삭제됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
@@ -190,7 +190,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // 새로운 아이템 삽입 함수
-    public void InsertNewItem(string itemName, int count = 1)
+    public void InsertNewItem(string itemName)
     {
         int itemType = System.Array.IndexOf(itemNames, itemName);
         if (itemType == -1) // 아이템 이름을 찾지 못했을 경우
@@ -211,13 +211,35 @@ public class InventoryManager : MonoBehaviour
                 // 아이템 개수 증가
                 if (itemCounts.ContainsKey(itemName))
                 {
-                    itemCounts[itemName] += count;
+                    itemCounts[itemName] ++;
                     // Debug.Log($"{itemName} 추가됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
                     if ((itemName == "총알" || itemName == "화살" || itemName == "샷건총알") && WeaponUIManager.Instance != null)
                     {
                         WeaponUIManager.Instance.UpdateAmmoCount();
+                        // 먹었을 때 ReserveAmmo 하나 플러스
+                        // [여기 추가] 현재 무기가 탄약 아이템과 연관된 RangeWeapon이면 reserveAmmo 증가
+                        var weapon = WeaponController.Instance.currentWeapon as RangeWeapon;
+                        if (weapon != null)
+                        {
+                            bool shouldIncrease = false;
+                            switch (itemName)
+                            {
+                                case "총알":
+                                    // 권총일 때만 증가
+                                    shouldIncrease = WeaponController.Instance.currentWeaponType == WeaponType.Pistol;
+                                    break;
+                                case "샷건총알":
+                                    shouldIncrease = WeaponController.Instance.currentWeaponType == WeaponType.Shotgun;
+                                    break;
+                                case "화살":
+                                    shouldIncrease = WeaponController.Instance.currentWeaponType == WeaponType.Bow;
+                                    break;
+                            }
+                            if (shouldIncrease)
+                                weapon.SetReserveAmmo(1);
+                        }
                     }
                 }
                 

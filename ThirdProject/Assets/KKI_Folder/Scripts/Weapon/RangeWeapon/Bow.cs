@@ -5,15 +5,11 @@ public class Bow : RangeWeapon
     public bool bArrow { get; private set;}
     public bool bAim {get; private set;}
 
-    void Start()
-    {
-        reserveAmmo = InventoryManager.Instance.CheckItemCount("화살");
-    }
-
     private void OnEnable()
     {
         animator.SetBool(AnimParams.B_ARROW, bArrow);
         animator.SetBool(AnimParams.B_AIM, bAim);
+        reserveAmmo = InventoryManager.Instance.CheckItemCount("화살");
     }
 
     #region 공격
