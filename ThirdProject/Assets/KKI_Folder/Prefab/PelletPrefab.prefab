@@ -151,5 +151,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolKey: 1
   damage: 15
-  speed: 100
+  speed: 150
   lifeTime: 5
