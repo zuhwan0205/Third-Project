@@ -219,7 +219,6 @@ public class InventoryManager : MonoBehaviour
                     {
                         WeaponUIManager.Instance.UpdateAmmoCount();
                         // 먹었을 때 ReserveAmmo 하나 플러스
-                        // [여기 추가] 현재 무기가 탄약 아이템과 연관된 RangeWeapon이면 reserveAmmo 증가
                         var weapon = WeaponController.Instance.currentWeapon as RangeWeapon;
                         if (weapon != null)
                         {
@@ -238,7 +237,7 @@ public class InventoryManager : MonoBehaviour
                                     break;
                             }
                             if (shouldIncrease)
-                                weapon.SetReserveAmmo(1);
+                                weapon.AddReserveAmmo(1);
                         }
                     }
                 }

@@ -564,6 +564,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   swingSfx: {fileID: 8300000, guid: 8a56866989144d947a2f40e070cc2d70, type: 3}
+  hitSfx: {fileID: 8300000, guid: 4ec7d02599554b441be2a4152acc2b2f, type: 3}
   attackOrigin: {fileID: 3663989086562626874}
 --- !u!1 &1522010889905853033
 GameObject:

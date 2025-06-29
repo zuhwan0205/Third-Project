@@ -24,26 +24,50 @@ public class InteractableItem : MonoBehaviour, IInteractable
                 case "도끼": idx = 0; break;
                 case "칼": idx = 1; break;
                 case "권총": 
+                {
+                    idx = 2; 
+                    int count = 10;
+                    for (int i = 0; i < count; i++)
+                        InventoryManager.Instance.InsertNewItem("총알");
+
+                    // === [여기 추가] ===
+                    if (WeaponController.Instance.currentWeaponType == WeaponType.Pistol)
                     {
-                        idx = 2; 
-                        for (int i = 0; i < 10; i ++)
-                            InventoryManager.Instance.InsertNewItem("총알");
-                        break;
+                        var weapon = WeaponController.Instance.currentWeapon as RangeWeapon;
+                        weapon?.AddReserveAmmo(count);
                     }
+                    break;
+                }
                 case "샷건": 
+                {
+                    idx = 3; 
+                    int count = 2;
+                    for (int i = 0; i < count; i++)
+                        InventoryManager.Instance.InsertNewItem("샷건총알");
+
+                    // === [여기 추가] ===
+                    if (WeaponController.Instance.currentWeaponType == WeaponType.Shotgun)
                     {
-                        idx = 3; 
-                        for (int i = 0; i < 2; i ++)
-                            InventoryManager.Instance.InsertNewItem("샷건총알");
-                        break;
+                        var weapon = WeaponController.Instance.currentWeapon as RangeWeapon;
+                        weapon?.AddReserveAmmo(count);
                     }
+                    break;
+                }
                 case "활": 
+                {
+                    idx = 4; 
+                    int count = 2;
+                    for (int i = 0; i < count; i++)
+                        InventoryManager.Instance.InsertNewItem("화살");
+
+                    // === [여기 추가] ===
+                    if (WeaponController.Instance.currentWeaponType == WeaponType.Bow)
                     {
-                        idx = 4; 
-                        for (int i = 0; i < 2; i ++)
-                            InventoryManager.Instance.InsertNewItem("화살");
-                        break;
+                        var weapon = WeaponController.Instance.currentWeapon as RangeWeapon;
+                        weapon?.AddReserveAmmo(count);
                     }
+                    break;
+                }
             }
             if (idx >= 0 && idx < WeaponController.Instance.ownedWeapons.Length)
                 WeaponController.Instance.ownedWeapons[idx] = true;
