@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class MonsterController : MonoBehaviour
@@ -56,7 +56,7 @@ public class MonsterController : MonoBehaviour
             agent.isStopped = false;
             agent.SetDestination(target.position);
             animator?.SetBool("isWalking", true);
-            PlayLoopingSound(walkClip);
+            PlayLoopingSound(walkClip); 
         }
         else if (distance <= attackStartDistance)
         {
@@ -72,12 +72,12 @@ public class MonsterController : MonoBehaviour
     {
         agent.isStopped = true;
         animator?.SetBool("isWalking", false);
-        StopSound();
+        StopWalkingSound(); 
     }
 
     void Attack()
     {
-        StopMoving();
+        StopMoving(); 
 
         if (Time.time - lastAttackTime >= attackCooldown)
         {
@@ -88,6 +88,8 @@ public class MonsterController : MonoBehaviour
             Vector3 dir = (target.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+            PlayOneShotSound(attackClip); 
         }
     }
 
@@ -120,8 +122,8 @@ public class MonsterController : MonoBehaviour
         animator?.SetTrigger("Hit");
         isHit = true;
 
-        StopSound(); // �ȴ� �Ҹ� �ߴ�
-        PlayOneShotSound(hitClip); // �ǰ� �Ҹ�
+        StopWalkingSound(); 
+        PlayOneShotSound(hitClip);
 
         if (currentHp <= 0)
         {
@@ -140,7 +142,7 @@ public class MonsterController : MonoBehaviour
         StopMoving();
         animator?.SetTrigger("Die");
         PlayOneShotSound(deathClip);
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 4f);
     }
 
     public int GetCurrentHealth()
@@ -148,16 +150,18 @@ public class MonsterController : MonoBehaviour
         return currentHp;
     }
 
-    // �ִϸ��̼� �̺�Ʈ�� ȣ��
+    // 애니메이션 이벤트에서 호출될 수 있음
     public void PlayAttackSound()
     {
-        StopSound();
         PlayOneShotSound(attackClip);
     }
 
     void PlayLoopingSound(AudioClip clip)
     {
         if (clip == null || audioSource == null) return;
+
+        // 걷고 있고, 공격 중이 아닐 때만 루프 재생
+        if (!animator.GetBool("isWalking") || isAttacking) return;
 
         if (audioSource.clip != clip || !audioSource.isPlaying)
         {
@@ -167,19 +171,20 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    void PlayOneShotSound(AudioClip clip)
+    void StopWalkingSound()
     {
-        if (clip == null || audioSource == null);
-        audioSource.PlayOneShot(clip);
-    }
-
-    void StopSound()
-    {
-        if (audioSource != null)
+        if (audioSource != null && audioSource.loop && audioSource.isPlaying)
         {
             audioSource.Stop();
             audioSource.loop = false;
-            audioSource.clip = null;
+            // clip은 유지해도 괜찮음
         }
+    }
+
+    void PlayOneShotSound(AudioClip clip)
+    {
+        if (clip == null || audioSource == null) return;
+
+        audioSource.PlayOneShot(clip);
     }
 }
