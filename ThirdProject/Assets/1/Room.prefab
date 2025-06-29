@@ -325,13 +325,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introTextBank: {fileID: 11400000, guid: 6e07abba60583ac4ebb454c64c910f86, type: 2}
+  endingTextBank: {fileID: 11400000, guid: 0f5088e8150d1704eacd6af84e2961f1, type: 2}
   naturalQuestion: {fileID: 11400000, guid: 42e8caf589f64234981a09ce09d6bd59, type: 2}
   rewardQuestion: {fileID: 11400000, guid: 0bad8fda5006b144ea6b4f32f97ab95a, type: 2}
   monsterQuestion: {fileID: 11400000, guid: ac14aae222d632e4e8a1d832ecee2bfd, type: 2}
   complexQuestion: {fileID: 11400000, guid: e2a36384238278341bfa0af275cda917, type: 2}
   environmentQuestion: {fileID: 11400000, guid: a1582d892b6ed104d888928d57089beb, type: 2}
   songQuestion: {fileID: 11400000, guid: 41b1df9e032f53e47a9fba4bb933656b, type: 2}
-  furnitureQuestion: {fileID: 0}
+  furnitureQuestion: {fileID: 11400000, guid: ea6ec20126d81e64787aa769c72369e9, type: 2}
   questionText: {fileID: 8143977774757949352}
   yesScoreText: {fileID: 8946796920189969474}
   noScoreText: {fileID: 6210057249488484574}
@@ -5065,8 +5066,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaugeSlider: {fileID: 3803889413523593233}
-  maxGauge: 200
+  maxGauge: 500
   currentGauge: 0
+  endingTextBank: {fileID: 11400000, guid: 0f5088e8150d1704eacd6af84e2961f1, type: 2}
 --- !u!1 &7052447994512357611
 GameObject:
   m_ObjectHideFlags: 0
@@ -6033,6 +6035,7 @@ GameObject:
   m_Component:
   - component: {fileID: 875913051300681534}
   - component: {fileID: 6011775552333741794}
+  - component: {fileID: 7297828113422030893}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged
@@ -6080,6 +6083,18 @@ MonoBehaviour:
   pushNoBtn: {fileID: 8283858280788956914}
   pushYesBtn: {fileID: 2413873051750425263}
   pushBtn: {fileID: 1823968974277282029}
+--- !u!114 &7297828113422030893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9164164814133270503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34eea0ee964c4f042a87a02dfdf60209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &32402571620336044
 PrefabInstance:
   m_ObjectHideFlags: 0

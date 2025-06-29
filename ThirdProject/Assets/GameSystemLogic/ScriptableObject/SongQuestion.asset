@@ -27,7 +27,7 @@ MonoBehaviour:
       playChance: 0.2
     - clip: {fileID: 8300000, guid: 90bc940c2434a5a4ebd6ebc230ad7140, type: 3}
       playChance: 0.1
-    volume: 0.5
+    volume: 0.25
     loop: 0
     yesGaugeChange: 0
     noGaugeChange: 0

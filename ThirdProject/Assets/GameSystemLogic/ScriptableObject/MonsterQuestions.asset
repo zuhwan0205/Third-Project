@@ -13,15 +13,57 @@ MonoBehaviour:
   m_Name: MonsterQuestions
   m_EditorClassIdentifier: 
   monsterQuestions:
-  - questionText: "\uBC29\uC5D0 \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uAE4C?"
+  - questionText: "\uBC29\uC5D0 \uD55C\uB2EC \uC9F8 \uAD76\uC740 \uD749\uD3EC\uD55C
+      \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uAE4C?"
     type: 2
     positiveRewards: []
     monsterList:
     - monsterPrefab: {fileID: 4164734482874354975, guid: c1b268cb5f38cb44eb1ceacf6561bd45, type: 3}
-      spawnChance: 0.4
+      spawnChance: 1
+    yesGaugeChange: 20
+    noGaugeChange: -10
+  - questionText: "\uBC29\uC5D0 \uC801\uB2F9\uD55C \uCCB4\uB825\uC758 \uBAAC\uC2A4\uD130\uB97C
+      \uC0DD\uC131\uD569\uB2C8\uAE4C?"
+    type: 2
+    positiveRewards: []
+    monsterList:
     - monsterPrefab: {fileID: 751073748970685381, guid: 1076c09ccd41f2e4ab06df5a5c532127, type: 3}
-      spawnChance: 0.3
-    - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
-      spawnChance: 0.3
+      spawnChance: 1
     yesGaugeChange: 15
     noGaugeChange: -10
+  - questionText: "\uBC29\uC5D0 \uC57D\uD55C \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uAE4C?"
+    type: 2
+    positiveRewards: []
+    monsterList:
+    - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
+      spawnChance: 1
+    yesGaugeChange: 10
+    noGaugeChange: -5
+  - questionText: "\uB54C\uB860 \uB3C4\uBC15\uC774 \uC815\uB2F5\uC77C \uB54C\uAC00
+      \uC788\uC8E0\n\uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uB420 \uC218\uB3C4\uC788\uC2B5\uB2C8\uB2E4.\n\uB2E8,
+      \uC544\uBB34\uAC83\uB3C4 \uC0DD\uC131\uB418\uC9C0 \uC54A\uC744 \uC218\uB3C4\uC788\uC2B5\uB2C8\uB2E4."
+    type: 2
+    positiveRewards: []
+    monsterList:
+    - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
+      spawnChance: 1
+    - monsterPrefab: {fileID: 4164734482874354975, guid: c1b268cb5f38cb44eb1ceacf6561bd45, type: 3}
+      spawnChance: 1
+    - monsterPrefab: {fileID: 751073748970685381, guid: 1076c09ccd41f2e4ab06df5a5c532127, type: 3}
+      spawnChance: 1
+    yesGaugeChange: 60
+    noGaugeChange: 0
+  - questionText: "\uB54C\uB860 \uB3C4\uBC15\uC774 \uC815\uB2F5\uC77C \uB54C\uAC00
+      \uC788\uC8E0\n\uBAA8\uB4E0 \uBAAC\uC2A4\uD130\uB97C \uC0DD\uC131\uB420 \uC218\uB3C4\uC788\uC2B5\uB2C8\uB2E4.\n\uB2E8,
+      \uC544\uBB34\uAC83\uB3C4 \uC0DD\uC131\uB418\uC9C0 \uC54A\uC744 \uC218\uB3C4\uC788\uC2B5\uB2C8\uB2E4."
+    type: 2
+    positiveRewards: []
+    monsterList:
+    - monsterPrefab: {fileID: 5714658911202679944, guid: a92ef83d72491654187db736de89efc9, type: 3}
+      spawnChance: 0
+    - monsterPrefab: {fileID: 4164734482874354975, guid: c1b268cb5f38cb44eb1ceacf6561bd45, type: 3}
+      spawnChance: 0
+    - monsterPrefab: {fileID: 751073748970685381, guid: 1076c09ccd41f2e4ab06df5a5c532127, type: 3}
+      spawnChance: 0
+    yesGaugeChange: 60
+    noGaugeChange: 0

@@ -17,21 +17,74 @@ MonoBehaviour:
     type: 0
     positiveRewards: []
     monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
   - questionText: "\uB2F9\uC2E0\uC740 \uBA54\uC2DC\uB97C \uC88B\uC544\uD569\uB2C8\uAE4C?"
     type: 0
     positiveRewards: []
     monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
   - questionText: "\uB2F9\uC2E0\uC740 \uC0AC\uB78C\uC744 \uC8FD\uC5EC\uBCF8\uC801\uC774
       \uC788\uC2B5\uB2C8\uAE4C?"
     type: 0
     positiveRewards: []
     monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
   - questionText: "\uB2F9\uC2E0\uC740 \uC720\uAC74\uACE4 \uAC15\uC0AC\uB2D8\uC744
       \uC88B\uC544\uD569\uB2C8\uAE4C?"
     type: 0
     positiveRewards: []
     monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
   - questionText: "\uB2F9\uC2E0\uC740 \uBC14\uBCF4\uC785\uB2C8\uAE4C?"
     type: 0
     positiveRewards: []
     monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uD3AD\uADC4\uC740 \uBB34\uB98E\uC774 \uC788\uC744\uAE4C\uC694?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uBB3C\uACE0\uAE30\uB3C4 \uBB3C\uC5D0 \uC816\uC744\uAE4C\uC694?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uD30C\uC778\uC560\uD50C \uD53C\uC790 \uC88B\uC544\uD558\uC2DC\uB098\uC694?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\u314B\u314B\u314B\uC194\uB85C\uC2DC\uC8E0?\n\uC65C \uC5F0\uC560\uB97C
+      \uBABB\uD558\uB294\uC9C0 \uC544\uC2DC\uB098\uC694?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uC81C\uAC00 \uC2EB\uC8E0?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uC774 \uBC84\uD2BC\uC740 YES\uB97C \uB204\uB974\uC9C0 \uC54A\uC73C\uBA74\n\uD070\uC77C\uB0A0\uAC81\uB2C8\uB2E4."
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
+  - questionText: "\uB09C\uC774\uB3C4\uAC00 \uB108\uBB34 \uC27D\uC8E0?"
+    type: 0
+    positiveRewards: []
+    monsterList: []
+    yesGaugeChange: 0
+    noGaugeChange: 0
