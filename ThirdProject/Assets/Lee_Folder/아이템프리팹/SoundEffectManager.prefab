@@ -145,3 +145,4 @@ MonoBehaviour:
   soundEffectClips:
   - {fileID: 8300000, guid: ee078b72bcfb4a64a86d409849e4fe16, type: 3}
   - {fileID: 8300000, guid: b248100a3c877f4459340ddc30dc8b6c, type: 3}
+  - {fileID: 8300000, guid: e0a786b5832263645a3b90ca9b1f1a43, type: 3}

@@ -12,6 +12,7 @@ public class UseItemSpawn : MonoBehaviour
             // 포션이 1개 이상 있을 때만 실행
             if (InventoryManager.Instance.CheckItemCount("포션") > 0)
             {
+                SoundEffectManager.Instance.PlaySound("먹기");
                 SpawnPrefab(fKeyPotionPrefab);
                 InventoryManager.Instance.RemoveItem("포션");
                 PlayerController.Instance.Heal(25);
@@ -27,6 +28,7 @@ public class UseItemSpawn : MonoBehaviour
             // 통조림이 1개 이상 있을 때만 실행
             if (InventoryManager.Instance.CheckItemCount("통조림") > 0)
             {
+                SoundEffectManager.Instance.PlaySound("먹기");
                 SpawnPrefab(gKeyCanPrefab);
                 InventoryManager.Instance.RemoveItem("통조림");
                 PlayerController.Instance.IncreaseHunger(25);

@@ -727,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1174109030147084673
 Transform:
   m_ObjectHideFlags: 0
@@ -784,6 +784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  currentHangry: 0
   walkSpeed: 3
   sprintSpeed: 5
   jumpHeight: 0.8
@@ -792,11 +793,11 @@ MonoBehaviour:
   crouchHeight: 1.5
   standHeight: 3
   crouchSpeed: 2.5
+  playerCamera: {fileID: 0}
   cameraTransform: {fileID: 7488740653728246164}
   mouseSensitivity: 2
   cameraCrouchHeight: 0
   cameraStandHeight: 0
-  healthText: {fileID: 0}
 --- !u!114 &6269386554299032209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,7 +814,6 @@ MonoBehaviour:
   interactMask:
     serializedVersion: 2
     m_Bits: 1048576
-  cursor: {fileID: 1931613796520742177}
   interactionText: {fileID: 2648557717503311615}
 --- !u!114 &7520870213055105694
 MonoBehaviour:
@@ -1935,6 +1935,7 @@ MonoBehaviour:
   shotgunSprite: {fileID: 21300000, guid: 2fdfd357fb6f37049b6e0f1f8697ad9b, type: 3}
   bulletSprite: {fileID: 21300000, guid: b630beaf35e43df4ca0a2f9828f0e911, type: 3}
   arrowSprite: {fileID: 21300000, guid: 4672d713cc55dab4ba7bc6e523b97749, type: 3}
+  shotgunShellSprite: {fileID: 21300000, guid: 087b2a67963372348817c739fa68f97c, type: 3}
 --- !u!1 &8606608984608089296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,6 +2350,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\uD3EC\uD0C81"
       objectReference: {fileID: 0}
+    - target: {fileID: 2354194355551906564, guid: 67e4048c5dc25024c8b54290151a6a39, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2983717619525193838, guid: 67e4048c5dc25024c8b54290151a6a39, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.54618835
@@ -2454,6 +2459,14 @@ PrefabInstance:
     - target: {fileID: 7631990375606020994, guid: 77fe1af47d78ba1469fc8bc8fc7f8c38, type: 3}
       propertyPath: m_Name
       value: FridgeItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7631990375606020994, guid: 77fe1af47d78ba1469fc8bc8fc7f8c38, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7631990375606020994, guid: 77fe1af47d78ba1469fc8bc8fc7f8c38, type: 3}
+      propertyPath: m_TagString
+      value: Furniture
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2719,6 +2732,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BedSmallItem
       objectReference: {fileID: 0}
+    - target: {fileID: 3957401827354905736, guid: d2e3e8b8302e9464a961bc5aaf13c636, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3957401827354905736, guid: d2e3e8b8302e9464a961bc5aaf13c636, type: 3}
+      propertyPath: m_TagString
+      value: Furniture
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2802,6 +2823,14 @@ PrefabInstance:
     - target: {fileID: 3325261934242475867, guid: 357b8c9eec557c2438e3a0d735a7dde0, type: 3}
       propertyPath: m_Name
       value: BedBigItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325261934242475867, guid: 357b8c9eec557c2438e3a0d735a7dde0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3325261934242475867, guid: 357b8c9eec557c2438e3a0d735a7dde0, type: 3}
+      propertyPath: m_TagString
+      value: Furniture
       objectReference: {fileID: 0}
     - target: {fileID: 3902585532326099190, guid: 357b8c9eec557c2438e3a0d735a7dde0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2955,7 +2984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992602035692048404, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992602035692048407, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2975,7 +3004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992602036045932071, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000091552734
+      value: -0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 5992602036222996925, guid: 78a46e7d90be3ca479a7b378b85099fa, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3178,6 +3207,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\uBE44"
       objectReference: {fileID: 0}
+    - target: {fileID: 5886208249091728604, guid: 62892c86c45f7a144b264847c128e500, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3324,6 +3357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\uD3EC\uD0C82"
       objectReference: {fileID: 0}
+    - target: {fileID: 1589146055266714922, guid: acde294a4486fa847bec731f2ed765f1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5587680056741925311, guid: acde294a4486fa847bec731f2ed765f1, type: 3}
       propertyPath: targetPosition
       value: 
@@ -3388,7 +3425,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3236676588588224622, guid: aec5ab34dea845a42bd46c2c8abb4e41, type: 3}
       propertyPath: m_Name
-      value: "\uB808\uC774\uC800"
+      value: Lazer
       objectReference: {fileID: 0}
     - target: {fileID: 8471652955885275257, guid: aec5ab34dea845a42bd46c2c8abb4e41, type: 3}
       propertyPath: m_LocalPosition.x
