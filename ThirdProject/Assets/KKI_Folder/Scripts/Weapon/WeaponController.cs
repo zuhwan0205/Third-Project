@@ -77,7 +77,7 @@ public class WeaponController : MonoBehaviour
         // 탄약이 필요한 무기인지 확인
         bool canAttack = true;
         
-        if (currentWeaponType == WeaponType.Shotgun || currentWeaponType == WeaponType.Pistol)
+        if (currentWeaponType == WeaponType.Pistol)
         {
             // 총알 개수 확인
             if (InventoryManager.Instance.CheckItemCount("총알") > 0)
@@ -89,6 +89,21 @@ public class WeaponController : MonoBehaviour
             else
             {
                 Debug.Log("총알이 부족합니다!");
+                canAttack = false;
+            }
+        }
+        else if (currentWeaponType == WeaponType.Shotgun)
+        {
+            // 샷건 총알 개수 확인
+            if (InventoryManager.Instance.CheckItemCount("샷건총알") > 0)
+            {
+                // 공격 후 샷건 총알 소모
+                currentWeapon.Attack();
+                InventoryManager.Instance.RemoveItem("샷건총알");
+            }
+            else
+            {
+                Debug.Log("샷건 총알이 부족합니다!");
                 canAttack = false;
             }
         }

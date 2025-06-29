@@ -23,6 +23,7 @@ public class WeaponUIManager : MonoBehaviour
     [Header("탄약 스프라이트")]
     [SerializeField] Sprite bulletSprite;
     [SerializeField] Sprite arrowSprite;
+    [SerializeField] Sprite shotgunShellSprite;
 
     void Awake()
     {
@@ -73,12 +74,20 @@ public class WeaponUIManager : MonoBehaviour
         switch (weaponType)
         {
             case WeaponType.Pistol:
-            case WeaponType.Shotgun:
                 // 총알 UI 표시
                 ammoImage.sprite = bulletSprite;
                 ammoImage.color = Color.white;
                 int bulletCount = InventoryManager.Instance.CheckItemCount("총알");
                 ammoCountText.text = bulletCount.ToString();
+                ammoCountText.color = Color.white;
+                break;
+            
+            case WeaponType.Shotgun:
+                // 샷건탄 UI 표시
+                ammoImage.sprite = shotgunShellSprite;
+                ammoImage.color = Color.white;
+                int shellCount = InventoryManager.Instance.CheckItemCount("샷건총알");
+                ammoCountText.text = shellCount.ToString();
                 ammoCountText.color = Color.white;
                 break;
                 
@@ -129,9 +138,13 @@ public class WeaponUIManager : MonoBehaviour
         switch (currentWeapon)
         {
             case WeaponType.Pistol:
-            case WeaponType.Shotgun:
                 int bulletCount = InventoryManager.Instance.CheckItemCount("총알");
                 ammoCountText.text = bulletCount.ToString();
+                break;
+            
+            case WeaponType.Shotgun:
+                int shellCount = InventoryManager.Instance.CheckItemCount("샷건총알");
+                ammoCountText.text = shellCount.ToString();
                 break;
                 
             case WeaponType.Bow:
