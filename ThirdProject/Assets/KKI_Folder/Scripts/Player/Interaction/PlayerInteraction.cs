@@ -5,7 +5,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
     [SerializeField] private LayerMask interactMask;    
-    [SerializeField] private GameObject cursor;
+    private CursorManager cursor;
     public Text interactionText;
 
     private bool bInteract;
@@ -13,9 +13,11 @@ public class PlayerInteraction : MonoBehaviour
     private IInteractable currentInteractable;
     private Animator cursorAnimator;
 
-    void Start()
+    void Awake()
     {
-        cursorAnimator = cursor.GetComponent<Animator>();
+        cursor = FindAnyObjectByType<CursorManager>();
+        cursorAnimator = cursor.gameObject.GetComponent<Animator>();
+        interactionText = CursorManager.Instance.InteractionText;
     }
 
     void Update()
@@ -26,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance, interactMask))
         {   
             currentInteractable = hit.collider.GetComponent<IInteractable>();
-            Debug.Log("오브젝트 : " + hit.collider.gameObject.name);
+            // Debug.Log("오브젝트 : " + hit.collider.gameObject.name);
 
             if (currentInteractable != null)
             {
@@ -48,7 +50,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             bInteract = false;
             currentInteractable = null;
-            //cursorAnimator.SetBool("bZoom", false);
+            cursorAnimator.SetBool("bZoom", false);
             InteractionTextSetting(false);
         }
     }

@@ -205,7 +205,7 @@ public class InventoryManager : MonoBehaviour
                 if (itemCounts.ContainsKey(itemName))
                 {
                     itemCounts[itemName]++;
-                    Debug.Log($"{itemName} 추가됨. 현재 개수: {itemCounts[itemName]}개");
+                    // Debug.Log($"{itemName} 추가됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
                     if ((itemName == "총알" || itemName == "화살") && WeaponUIManager.Instance != null)
