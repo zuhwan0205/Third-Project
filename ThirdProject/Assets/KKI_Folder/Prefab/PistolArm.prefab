@@ -180,8 +180,8 @@ MonoBehaviour:
   initialPosition: {x: -0.13, y: 0, z: 0.05}
   audioSource: {fileID: 0}
   maxAmmo: 10
-  currentAmmo: 10
-  reserveAmmo: 0
+  currentAmmo: 0
+  reserveAmmo: 10
   fireRate: 0.75
   reloadRate: 2.883
   firePoint: {fileID: 2599842759509784679}

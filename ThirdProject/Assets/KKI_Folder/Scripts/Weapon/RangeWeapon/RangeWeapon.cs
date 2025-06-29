@@ -10,11 +10,11 @@ public class WeaponSaveData
 
 public abstract class RangeWeapon : Weapon
 {
-    [SerializeField] protected int maxAmmo;
-    [SerializeField] protected int currentAmmo;
-    [SerializeField] protected int reserveAmmo;
-    [SerializeField] protected float fireRate;
-    [SerializeField] protected float reloadRate;
+    [SerializeField] protected int maxAmmo;     // 최대 장전할 수 있는 총알 수
+    [SerializeField] protected int currentAmmo; // 현재 장전된 총알 수
+    [SerializeField] protected int reserveAmmo; // 인벤토리에 남아있는 총알 수
+    [SerializeField] protected float fireRate; 
+    [SerializeField] protected float reloadRate;  
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected AudioClip fireSfx;
     [SerializeField] protected AudioClip reloadSfx;

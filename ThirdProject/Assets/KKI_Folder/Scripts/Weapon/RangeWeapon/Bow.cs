@@ -5,6 +5,11 @@ public class Bow : RangeWeapon
     public bool bArrow { get; private set;}
     public bool bAim {get; private set;}
 
+    void Start()
+    {
+        reserveAmmo = InventoryManager.Instance.CheckItemCount("화살");
+    }
+
     private void OnEnable()
     {
         animator.SetBool(AnimParams.B_ARROW, bArrow);
@@ -59,6 +64,7 @@ public class Bow : RangeWeapon
         isReloading = false;
         currentAmmo ++;
         reserveAmmo --;
+        InventoryManager.Instance.RemoveItem("화살");
         bArrow = true;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
     }

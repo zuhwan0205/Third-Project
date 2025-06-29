@@ -73,60 +73,62 @@ public class WeaponController : MonoBehaviour
     public void Attack()
     {
         if (currentWeapon == null) return;
+
+        currentWeapon.Attack();
         
         // 탄약이 필요한 무기인지 확인
-        bool canAttack = true;
+        // bool canAttack = true;
         
-        if (currentWeaponType == WeaponType.Pistol)
-        {
-            // 총알 개수 확인
-            if (InventoryManager.Instance.CheckItemCount("총알") > 0)
-            {
-                // 공격 후 총알 소모
-                currentWeapon.Attack();
-                InventoryManager.Instance.RemoveItem("총알");
-            }
-            else
-            {
-                Debug.Log("총알이 부족합니다!");
-                canAttack = false;
-            }
-        }
-        else if (currentWeaponType == WeaponType.Shotgun)
-        {
-            // 샷건 총알 개수 확인
-            if (InventoryManager.Instance.CheckItemCount("샷건총알") > 0)
-            {
-                // 공격 후 샷건 총알 소모
-                currentWeapon.Attack();
-                InventoryManager.Instance.RemoveItem("샷건총알");
-            }
-            else
-            {
-                Debug.Log("샷건 총알이 부족합니다!");
-                canAttack = false;
-            }
-        }
-        else if (currentWeaponType == WeaponType.Bow)
-        {
-            // 화살 개수 확인
-            if (InventoryManager.Instance.CheckItemCount("화살") > 0)
-            {
-                // 공격 후 화살 소모
-                currentWeapon.Attack();
-                InventoryManager.Instance.RemoveItem("화살");
-            }
-            else
-            {
-                Debug.Log("화살이 부족합니다!");
-                canAttack = false;
-            }
-        }
-        else
-        {
-            // 근접 무기 (도끼, 칼)는 탄약 필요 없음
-            currentWeapon.Attack();
-        }
+        // if (currentWeaponType == WeaponType.Pistol)
+        // {
+        //     // 총알 개수 확인
+        //     if (InventoryManager.Instance.CheckItemCount("총알") > 0)
+        //     {
+        //         // 공격 후 총알 소모
+        //         currentWeapon.Attack();
+        //         InventoryManager.Instance.RemoveItem("총알");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("총알이 부족합니다!");
+        //         canAttack = false;
+        //     }
+        // }
+        // else if (currentWeaponType == WeaponType.Shotgun)
+        // {
+        //     // 샷건 총알 개수 확인
+        //     if (InventoryManager.Instance.CheckItemCount("샷건총알") > 0)
+        //     {
+        //         // 공격 후 샷건 총알 소모
+        //         currentWeapon.Attack();
+        //         InventoryManager.Instance.RemoveItem("샷건총알");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("샷건 총알이 부족합니다!");
+        //         canAttack = false;
+        //     }
+        // }
+        // else if (currentWeaponType == WeaponType.Bow)
+        // {
+        //     // 화살 개수 확인
+        //     if (InventoryManager.Instance.CheckItemCount("화살") > 0)
+        //     {
+        //         // 공격 후 화살 소모
+        //         currentWeapon.Attack();
+        //         InventoryManager.Instance.RemoveItem("화살");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("화살이 부족합니다!");
+        //         canAttack = false;
+        //     }
+        // }
+        // else
+        // {
+        //     // 근접 무기 (도끼, 칼)는 탄약 필요 없음
+        //     currentWeapon.Attack();
+        // }
     }
 
     public void Aim()
