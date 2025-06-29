@@ -557,13 +557,14 @@ MonoBehaviour:
   weaponType: 1
   initialPosition: {x: -0.03, y: 0, z: -0.05}
   audioSource: {fileID: 0}
-  damage: 10
+  damage: 20
   attackRate: 1.867
-  attackRange: 10
+  attackRange: 1.75
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4194304
   swingSfx: {fileID: 8300000, guid: 8a56866989144d947a2f40e070cc2d70, type: 3}
+  attackOrigin: {fileID: 3663989086562626874}
 --- !u!1 &1522010889905853033
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +688,8 @@ Transform:
   m_LocalPosition: {x: 0.8020308, y: 0.0011528999, z: 0.1077178}
   m_LocalScale: {x: 99.99999, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3663989086562626874}
   m_Father: {fileID: 1689993622906489493}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2018644511534152864
@@ -1359,6 +1361,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9040479061836503639}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6987396929352143786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3663989086562626874}
+  m_Layer: 0
+  m_Name: Attack Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3663989086562626874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987396929352143786}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.007888, y: -0.01504, z: 0.00645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 112825355160911213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7473260649743605182
 GameObject:
