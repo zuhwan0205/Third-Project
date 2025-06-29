@@ -69,6 +69,11 @@ public class WeaponController : MonoBehaviour
     {
         currentWeapon = _weapon;
         currentWeaponType = _weapon.WeaponType;
+
+        if (_weapon is MeleeWeapon melee)
+            melee.SetAttackTimeToMax();
+        else if (_weapon is RangeWeapon range)
+            range.SetFireReloadTimeToMax();
     }
 
     public void ReturnToPool()

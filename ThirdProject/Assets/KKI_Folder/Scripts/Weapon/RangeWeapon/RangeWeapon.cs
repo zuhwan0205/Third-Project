@@ -21,6 +21,10 @@ public abstract class RangeWeapon : Weapon
         fireTime += Time.deltaTime;
         reloadTime += Time.deltaTime;
     }
+    public void SetFireReloadTimeToMax() {
+        fireTime = fireRate;
+        reloadTime = reloadRate;
+    }
 
     public void AddReserveAmmo(int count)
     {
