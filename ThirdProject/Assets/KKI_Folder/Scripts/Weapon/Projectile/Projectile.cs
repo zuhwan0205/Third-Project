@@ -45,17 +45,15 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Monster"))
+        var target = other.GetComponent<MonsterController>();
+        if (target != null)
         {
-            var target = other.GetComponent<MonsterController>();
-            if (target != null)
-            {
-                target.TakeDamage(damage);
-                Debug.Log("몬스터 데미지 처리!");
-                ReturnToPool();
-                return;
-            }
+            // 데미지 처리
+            target.TakeDamage(damage);
+            Debug.Log("몬스터 데미지 처리!");
         }
+        else
+            Debug.Log("몬스터 안 맞음!");
     
         ReturnToPool();
     }
