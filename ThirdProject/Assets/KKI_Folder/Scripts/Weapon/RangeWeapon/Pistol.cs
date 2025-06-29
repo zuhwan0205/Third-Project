@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Pistol : RangeWeapon
 {
+    
+    void Start()
+    {    
+        reserveAmmo = InventoryManager.Instance.CheckItemCount("총알");
+    }
+
     #region 공격
     public override void Attack()
     {
@@ -48,6 +54,7 @@ public class Pistol : RangeWeapon
 
         currentAmmo += toLoad;
         reserveAmmo -= toLoad;
+        InventoryManager.Instance.RemoveItem("총알", toLoad);
 
         isReloading = false;
     }
