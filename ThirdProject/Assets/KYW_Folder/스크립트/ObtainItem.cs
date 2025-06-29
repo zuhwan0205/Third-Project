@@ -12,6 +12,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
     // 상호작용 시 InventoryManager를 통해 아이템 획득
     public void Interact()
     {
+        SoundEffectManager.Instance.PlaySound("가방넣기");
         // 무기일 경우에만 WeaponController의 ownedWeapons 배열 값 true로 변경
         if ((itemName == "도끼" || itemName == "칼" || itemName == "권총" 
             || itemName == "샷건" || itemName == "활"))
@@ -40,14 +41,17 @@ public class InteractableItem : MonoBehaviour, IInteractable
         }
         if ((itemName == "상자") && !isInteracting)
         {
-            transform.GetComponent<Animation>().Play("ChestOpen");
-            Destroy(gameObject, 5f);
+            transform.GetComponent<Animator>().SetTrigger("ChestOpen");
+            Destroy(gameObject, 2f);
+            return;
+        }
+        if ((itemName == "음식") && !isInteracting)
+        {
+            PlayerController.Instance.Heal(10);
+            Destroy(gameObject);
             return;
         }
 
-
-
-        
         // 큰침대, 작은침대 상호작용: 상호작용바 채우고 체력 회복
         if ((itemName == "큰침대" || itemName == "작은침대") && !isInteracting)
         {
@@ -69,8 +73,6 @@ public class InteractableItem : MonoBehaviour, IInteractable
             PlayerController.Instance.IncreaseHunger(25);
             return;
         }
-
-        
     }
     //여기에 인터렉션 코루틴 추가
     IEnumerator InteractionCoroutine(float second)
