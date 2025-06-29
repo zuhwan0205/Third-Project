@@ -90,6 +90,7 @@ public class PlayerController : MonoBehaviour
         if (ui != null)
         {
             SetPlayerUI(ui);
+            Debug.Log("찾음");
         }
         else
             Debug.LogWarning("GameScene_PlayerUI를 찾지 못함");

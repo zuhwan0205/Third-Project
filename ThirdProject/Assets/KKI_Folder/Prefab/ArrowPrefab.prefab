@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2244862762187021657}
   - component: {fileID: 8390213332975337485}
   - component: {fileID: 3209384340012411424}
-  m_Layer: 21
+  m_Layer: 0
   m_Name: ArrowPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
