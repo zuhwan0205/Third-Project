@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class Shotgun : RangeWeapon
 {
+ 
     [Header("샷건 개인 설정")]
     [SerializeField] private int pelletCount = 6;
     [SerializeField] private float spreadAngle = 8f;
 
     private Coroutine reloadCoroutine;
 
-    void Start()
+    void OnEnable()
     {
         reserveAmmo = InventoryManager.Instance.CheckItemCount("샷건총알");
     }

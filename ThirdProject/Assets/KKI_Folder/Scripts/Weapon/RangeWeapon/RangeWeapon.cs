@@ -1,13 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
-public class WeaponSaveData
-{
-    public int currentAmmo;
-    public int reseverAmmon;
-}
-
 public abstract class RangeWeapon : Weapon
 {
     [SerializeField] protected int maxAmmo;     // 최대 장전할 수 있는 총알 수
@@ -28,6 +21,13 @@ public abstract class RangeWeapon : Weapon
         fireTime += Time.deltaTime;
         reloadTime += Time.deltaTime;
     }
+
+    public void SetReserveAmmo(int count)
+    {
+        reserveAmmo += count;
+    }
+
+    public int CurrentAmmo => currentAmmo;
 
     #region Fire(발사)
     protected virtual void PlayFire() 
@@ -95,11 +95,22 @@ public abstract class RangeWeapon : Weapon
 
     protected bool CanReloading()
     {
-        if (isReloading) return false;
-        if (currentAmmo >= maxAmmo) return false;
-        if (reserveAmmo <= 0) return false;
-        if (reloadRate > reloadTime) return false;
-
+        if (isReloading){
+            Debug.Log("isReloading");
+            return false;
+        } 
+        if (currentAmmo >= maxAmmo) {
+            Debug.Log("currentAmmo >= maxAmmo");
+            return false;
+        }
+        if (reserveAmmo <= 0) {
+            Debug.Log("reserveAmmo = " + reserveAmmo);
+            return false;
+        }
+        if (reloadRate > reloadTime) {
+            Debug.Log("reserveAmmo");
+            return false;
+        }
         return true;
     }
     protected virtual void PlayReload() 
