@@ -32,7 +32,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
             Destroy(gameObject);
             return;
         }
-        if ((itemName == "포션" || itemName == "통조림" || itemName == "총알" || itemName == "화살") && !isInteracting)
+        if ((itemName == "포션" || itemName == "통조림" || itemName == "총알" || itemName == "화살" || itemName == "샷건총알" || itemName == "화살") && !isInteracting)
         {
             InventoryManager.Instance.InsertNewItem(itemName);
             Destroy(gameObject);

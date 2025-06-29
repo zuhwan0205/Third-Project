@@ -29,7 +29,8 @@ public class InventoryManager : MonoBehaviour
         "총알",
         "화살",
         "포션",
-        "통조림"
+        "통조림",
+        "샷건총알",
     };
 
     void Awake()
@@ -87,16 +88,22 @@ public class InventoryManager : MonoBehaviour
 
         // === 디버깅용 키 입력 ===
         
-        // 1키: 포션 추가
+        // F1키: 총알 추가
         if (Input.GetKeyDown(KeyCode.F1))
         {
             InsertNewItem("총알");
         }
 
-        // 2키: 통조림 추가  
+        // F2키: 화살 추가  
         if (Input.GetKeyDown(KeyCode.F2))
         {
             InsertNewItem("화살");
+        }
+
+        // F3키: 샷건총알 추가
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            InsertNewItem("샷건총알");
         }
 
         // // 3키: 권총 추가
@@ -171,7 +178,7 @@ public class InventoryManager : MonoBehaviour
                     Debug.Log($"{itemName} 삭제됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
-                    if ((itemName == "총알" || itemName == "화살") && WeaponUIManager.Instance != null)
+                    if ((itemName == "총알" || itemName == "화살" || itemName == "샷건총알") && WeaponUIManager.Instance != null)
                     {
                         WeaponUIManager.Instance.UpdateAmmoCount();
                     }
@@ -208,7 +215,7 @@ public class InventoryManager : MonoBehaviour
                     // Debug.Log($"{itemName} 추가됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
-                    if ((itemName == "총알" || itemName == "화살") && WeaponUIManager.Instance != null)
+                    if ((itemName == "총알" || itemName == "화살" || itemName == "샷건총알") && WeaponUIManager.Instance != null)
                     {
                         WeaponUIManager.Instance.UpdateAmmoCount();
                     }

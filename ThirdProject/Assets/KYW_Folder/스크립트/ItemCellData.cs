@@ -72,6 +72,11 @@ namespace VariableInventorySystem.Sample
                     Width = 1; Height = 1;
                     ImageAsset = new VariableInventorySystem.StandardAsset("Image/통조림");
                     break;
+                case 9:
+                    Name = "샷건총알";
+                    Width = 1; Height = 1;
+                    ImageAsset = new VariableInventorySystem.StandardAsset("Image/샷건총알");
+                    break;
             }
         }
     }
