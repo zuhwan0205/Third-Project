@@ -5,19 +5,27 @@ public class MonsterController : MonoBehaviour
 {
     [Header("Movement")]
     public float stopDistance = 1.2f;
-    public float attackDistance = 1.2f;
-    public float attackCooldown = 2f;
 
     [Header("Health")]
     public int maxHp = 100;
     public int currentHp = 0;
 
     [Header("Attack")]
-    public int damage = 10; 
+    public int damage = 10;
+    public float attackStartDistance = 2.0f;
+    public float attackDistance = 1.2f;
+    public float attackCooldown = 2f;
+
+    [Header("Audio Clips")]
+    public AudioClip walkClip;
+    public AudioClip attackClip;
+    public AudioClip hitClip;
+    public AudioClip deathClip;
 
     private Transform target;
     private Animator animator;
     private NavMeshAgent agent;
+    private AudioSource audioSource;
     private float lastAttackTime = 0f;
 
     private bool isAttacking = false;
@@ -34,6 +42,7 @@ public class MonsterController : MonoBehaviour
 
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -47,8 +56,9 @@ public class MonsterController : MonoBehaviour
             agent.isStopped = false;
             agent.SetDestination(target.position);
             animator?.SetBool("isWalking", true);
+            PlayLoopingSound(walkClip);
         }
-        else if (distance <= attackDistance)
+        else if (distance <= attackStartDistance)
         {
             Attack();
         }
@@ -62,6 +72,7 @@ public class MonsterController : MonoBehaviour
     {
         agent.isStopped = true;
         animator?.SetBool("isWalking", false);
+        StopSound();
     }
 
     void Attack()
@@ -91,7 +102,7 @@ public class MonsterController : MonoBehaviour
             PlayerController player = target.GetComponent<PlayerController>();
             if (player != null)
             {
-                player.TakeDamage(damage);  
+                player.TakeDamage(damage);
             }
         }
     }
@@ -109,6 +120,9 @@ public class MonsterController : MonoBehaviour
         animator?.SetTrigger("Hit");
         isHit = true;
 
+        StopSound(); // 걷는 소리 중단
+        PlayOneShotSound(hitClip); // 피격 소리
+
         if (currentHp <= 0)
         {
             Die();
@@ -125,11 +139,47 @@ public class MonsterController : MonoBehaviour
         isDead = true;
         StopMoving();
         animator?.SetTrigger("Die");
+        PlayOneShotSound(deathClip);
         Destroy(gameObject, 2f);
     }
 
     public int GetCurrentHealth()
     {
         return currentHp;
+    }
+
+    // 애니메이션 이벤트로 호출
+    public void PlayAttackSound()
+    {
+        StopSound();
+        PlayOneShotSound(attackClip);
+    }
+
+    void PlayLoopingSound(AudioClip clip)
+    {
+        if (clip == null || audioSource == null) return;
+
+        if (audioSource.clip != clip || !audioSource.isPlaying)
+        {
+            audioSource.loop = true;
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
+
+    void PlayOneShotSound(AudioClip clip)
+    {
+        if (clip == null || audioSource == null);
+        audioSource.PlayOneShot(clip);
+    }
+
+    void StopSound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+            audioSource.clip = null;
+        }
     }
 }
