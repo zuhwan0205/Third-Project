@@ -10,7 +10,7 @@ public class Shotgun : RangeWeapon
 
     private Coroutine reloadCoroutine;
 
-    void OnEnable()
+    void Start()
     {
         reserveAmmo = InventoryManager.Instance.CheckItemCount("샷건총알");
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pistol : RangeWeapon
 {
-    void OnEnable()
+    void Start()
     {
         WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, currentAmmo);
     }

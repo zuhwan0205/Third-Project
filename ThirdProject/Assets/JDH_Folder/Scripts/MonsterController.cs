@@ -185,6 +185,6 @@ public class MonsterController : MonoBehaviour
     {
         if (clip == null || audioSource == null) return;
 
-        audioSource.PlayOneShot(clip);
+        audioSource.PlayOneShot(clip, 0.6f);
     }
 }

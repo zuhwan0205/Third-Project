@@ -503,6 +503,7 @@ MonoBehaviour:
   mouseSensitivity: 2
   cameraCrouchHeight: 0
   cameraStandHeight: 0
+  damageSfx: {fileID: 8300000, guid: bd9ed7f4245ab2b4496d32e9d63658f8, type: 3}
 --- !u!114 &5519065253379545307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +520,6 @@ MonoBehaviour:
   interactMask:
     serializedVersion: 2
     m_Bits: 1048640
-  cursor: {fileID: 0}
   interactionText: {fileID: 0}
 --- !u!114 &2030528848918648691
 MonoBehaviour:
