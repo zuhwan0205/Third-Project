@@ -11,7 +11,7 @@ public class Shotgun : RangeWeapon
 
     void Start()
     {
-        reserveAmmo = InventoryManager.Instance.CheckItemCount("샷권총알");
+        reserveAmmo = InventoryManager.Instance.CheckItemCount("샷건총알");
     }
 
     #region 공격
@@ -35,6 +35,7 @@ public class Shotgun : RangeWeapon
             PlayFire();
             FireProjectile(firePoint, pelletCount, spreadAngle, PoolKey.ShotgunPellet);
             EndFire();
+            WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Shotgun, currentAmmo);
         }
         else
         {
@@ -70,6 +71,7 @@ public class Shotgun : RangeWeapon
             currentAmmo++;
             reserveAmmo--;
             InventoryManager.Instance.RemoveItem("샷건총알");
+            WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Shotgun, currentAmmo);
         }
 
         EndReload();

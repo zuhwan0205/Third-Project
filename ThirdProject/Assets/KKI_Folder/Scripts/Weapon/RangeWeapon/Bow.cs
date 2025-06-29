@@ -33,6 +33,7 @@ public class Bow : RangeWeapon
         PlayFire();
         FireProjectile(firePoint, 1, 0f, PoolKey.Arrow);
         EndFire();
+        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Bow, currentAmmo);
     }
 
     protected override void EndFire()
@@ -67,6 +68,7 @@ public class Bow : RangeWeapon
         InventoryManager.Instance.RemoveItem("화살");
         bArrow = true;
         animator.SetBool(AnimParams.B_ARROW, bArrow);
+        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Bow, currentAmmo);
     }
     #endregion
 

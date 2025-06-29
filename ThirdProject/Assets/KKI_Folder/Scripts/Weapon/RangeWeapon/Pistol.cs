@@ -23,6 +23,7 @@ public class Pistol : RangeWeapon
             PlayFire();
             FireProjectile(firePoint, 1, 0f, PoolKey.Bullet);
             EndFire();
+            WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, currentAmmo);
         }
         else
         {
@@ -55,6 +56,7 @@ public class Pistol : RangeWeapon
         currentAmmo += toLoad;
         reserveAmmo -= toLoad;
         InventoryManager.Instance.RemoveItem("총알", toLoad);
+        WeaponUIManager.Instance.UpdateWeaponUI(WeaponType.Pistol, toLoad);
 
         isReloading = false;
     }
