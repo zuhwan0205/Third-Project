@@ -1545,12 +1545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e435e2a0cf576445849b93c99e1893c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 2
+  stopDistance: 3
   maxHp: 120
   currentHp: 0
   damage: 20
-  attackStartDistance: 2
-  attackDistance: 2
+  attackStartDistance: 3
+  attackDistance: 3
   attackCooldown: 2
   walkClip: {fileID: 8300000, guid: d7e62469062ca7e4baf98116f2ec9ce9, type: 3}
   attackClip: {fileID: 8300000, guid: 86a3e21bd45e53a49af5bfba4ee62e21, type: 3}

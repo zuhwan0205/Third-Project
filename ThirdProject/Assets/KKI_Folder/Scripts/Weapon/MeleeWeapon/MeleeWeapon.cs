@@ -20,6 +20,10 @@ public abstract class MeleeWeapon : Weapon
         attackTime += Time.deltaTime;
     }
 
+    public void SetAttackTimeToMax() {
+        attackTime = attackRate;
+    }
+
     protected void PlaySwingAnimation()
     {
         // 애니메이션 재생
