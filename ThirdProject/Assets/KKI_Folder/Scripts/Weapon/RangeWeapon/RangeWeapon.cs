@@ -21,8 +21,12 @@ public abstract class RangeWeapon : Weapon
         fireTime += Time.deltaTime;
         reloadTime += Time.deltaTime;
     }
+    public void SetFireReloadTimeToMax() {
+        fireTime = fireRate;
+        reloadTime = reloadRate;
+    }
 
-    public void SetReserveAmmo(int count)
+    public void AddReserveAmmo(int count)
     {
         reserveAmmo += count;
     }
@@ -95,22 +99,14 @@ public abstract class RangeWeapon : Weapon
 
     protected bool CanReloading()
     {
-        if (isReloading){
-            Debug.Log("isReloading");
-            return false;
-        } 
-        if (currentAmmo >= maxAmmo) {
-            Debug.Log("currentAmmo >= maxAmmo");
-            return false;
-        }
-        if (reserveAmmo <= 0) {
-            Debug.Log("reserveAmmo = " + reserveAmmo);
-            return false;
-        }
-        if (reloadRate > reloadTime) {
-            Debug.Log("reserveAmmo");
-            return false;
-        }
+        if (isReloading) return false;
+    
+        if (currentAmmo >= maxAmmo) return false;
+        
+        if (reserveAmmo <= 0) return false;
+        
+        if (reloadRate > reloadTime) return false;
+        
         return true;
     }
     protected virtual void PlayReload() 

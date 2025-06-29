@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 5274170099270323173}
   - component: {fileID: 1313181730666559671}
   - component: {fileID: 1854206346323049643}
+  - component: {fileID: -9017415354252652582}
   m_Layer: 3
   m_Name: Monster2
   m_TagString: Monster
@@ -263,12 +264,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e435e2a0cf576445849b93c99e1893c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 1.5
-  maxHp: 100
+  stopDistance: 3
+  maxHp: 80
   currentHp: 0
   damage: 10
-  attackStartDistance: 2
-  attackDistance: 2
+  attackStartDistance: 3
+  attackDistance: 3
   attackCooldown: 2
   walkClip: {fileID: 8300000, guid: 6cbf248598f2c62408771012931513c3, type: 3}
   attackClip: {fileID: 8300000, guid: 86a3e21bd45e53a49af5bfba4ee62e21, type: 3}
@@ -293,7 +294,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1.01
   m_Height: 2.0790267
   m_Direction: 1
   m_Center: {x: 0, y: 0.95115733, z: 0}
@@ -307,7 +308,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 10
   m_AngularSpeed: 120
@@ -416,6 +417,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &-9017415354252652582
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751073748970685381}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.0790267
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95115733, z: 0}
 --- !u!1 &956675956479814722
 GameObject:
   m_ObjectHideFlags: 0

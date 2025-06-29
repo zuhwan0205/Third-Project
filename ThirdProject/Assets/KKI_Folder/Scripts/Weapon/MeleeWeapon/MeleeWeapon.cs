@@ -8,6 +8,7 @@ public abstract class MeleeWeapon : Weapon
     [SerializeField] protected float attackRange = 1.5f;        // 공격 반경
     [SerializeField] protected LayerMask enemyLayer;            // 공격 대상 레이어
     [SerializeField] protected AudioClip swingSfx;              // 휘두르는 소리
+    [SerializeField] protected AudioClip hitSfx;                // 히트 소리
 
     [Header("공격 범위 중심 위치")]
     [SerializeField] protected Transform attackOrigin;          // 공격 중심 위치 (ex. 무기 끝 지점)
@@ -17,6 +18,10 @@ public abstract class MeleeWeapon : Weapon
     void Update()
     {
         attackTime += Time.deltaTime;
+    }
+
+    public void SetAttackTimeToMax() {
+        attackTime = attackRate;
     }
 
     protected void PlaySwingAnimation()
@@ -41,6 +46,7 @@ public abstract class MeleeWeapon : Weapon
             if (enemy.TryGetComponent<MonsterController>(out var monster))
             {
                 monster.TakeDamage((int)damage);
+                audioSource.PlayOneShot(hitSfx);
             }
         }
 

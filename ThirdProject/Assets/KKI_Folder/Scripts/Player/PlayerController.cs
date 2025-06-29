@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [Header("UI")]
     private GameScene_PlayerUI playerUI;
     
+    [Header("사운드")]
+    [SerializeField] private AudioClip damageSfx;
     // 캐릭터 스탯
     private float moveSpeed;
     private bool isSprinting = false;
@@ -296,11 +298,19 @@ public class PlayerController : MonoBehaviour
         UpdateHealthUI();
         if (playerUI != null)
             playerUI.SetHealth(currentHealth);
+
+
+        // 사운드 재생
+        AudioSource.PlayClipAtPoint(damageSfx, transform.position);
+
+        // 게임 오버
         if (currentHealth <= 0f)
         {
             DeathExit.Instance.Death();
             Destroy(gameObject);
         }
+
+        
     }
 
     public void Heal(float amount)
