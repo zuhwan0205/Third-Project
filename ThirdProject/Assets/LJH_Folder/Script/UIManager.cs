@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(AudioManager_Main.instance.gameObject);
         }
+        GameModeManager.IsHardMode();
         SceneManager.LoadScene("GameScene");
     }
     

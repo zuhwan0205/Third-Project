@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Gauge : MonoBehaviour
 {
@@ -94,7 +95,7 @@ public class Gauge : MonoBehaviour
 
     private void OnGaugeFull()
     {
-        
+        SceneManager.LoadScene("EndingScene");
     }
 
     private void OnGaugeEmpty()

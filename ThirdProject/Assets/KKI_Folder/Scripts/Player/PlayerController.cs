@@ -298,7 +298,10 @@ public class PlayerController : MonoBehaviour
         if (playerUI != null)
             playerUI.SetHealth(currentHealth);
         if (currentHealth <= 0f)
-            Debug.Log("게임 오버!");
+        {
+            DeathExit.Instance.Death();
+            Destroy(gameObject);
+        }
     }
 
     public void Heal(float amount)
