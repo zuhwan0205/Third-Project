@@ -23,9 +23,24 @@ public class InteractableItem : MonoBehaviour, IInteractable
             {
                 case "도끼": idx = 0; break;
                 case "칼": idx = 1; break;
-                case "권총": idx = 2; break;
-                case "샷건": idx = 3; break;
-                case "활": idx = 4; break;
+                case "권총": 
+                    {
+                        idx = 2; 
+                        InventoryManager.Instance.InsertNewItem("총알", 10);
+                        break;
+                    }
+                case "샷건": 
+                    {
+                        idx = 3; 
+                        InventoryManager.Instance.InsertNewItem("샷건총알", 2);
+                        break;
+                    }
+                case "활": 
+                    {
+                        idx = 4; 
+                        InventoryManager.Instance.InsertNewItem("화살", 2);
+                        break;
+                    }
             }
             if (idx >= 0 && idx < WeaponController.Instance.ownedWeapons.Length)
                 WeaponController.Instance.ownedWeapons[idx] = true;

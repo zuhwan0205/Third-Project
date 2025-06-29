@@ -9,6 +9,11 @@ public class Shotgun : RangeWeapon
 
     private Coroutine reloadCoroutine;
 
+    void Start()
+    {
+        reserveAmmo = InventoryManager.Instance.CheckItemCount("샷권총알");
+    }
+
     #region 공격
     public override void Attack()
     {
@@ -64,6 +69,7 @@ public class Shotgun : RangeWeapon
 
             currentAmmo++;
             reserveAmmo--;
+            InventoryManager.Instance.RemoveItem("샷건총알");
         }
 
         EndReload();

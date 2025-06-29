@@ -158,7 +158,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // 아이템 삭제 함수
-    public void RemoveItem(string itemName)
+    public void RemoveItem(string itemName, int count = 1)
     {
         int itemType = System.Array.IndexOf(itemNames, itemName);
         if (itemType == -1) // 아이템 이름을 찾지 못했을 경우
@@ -174,7 +174,7 @@ public class InventoryManager : MonoBehaviour
                 // 아이템 개수 감소
                 if (itemCounts.ContainsKey(itemName) && itemCounts[itemName] > 0)
                 {
-                    itemCounts[itemName]--;
+                    itemCounts[itemName] -= count;
                     Debug.Log($"{itemName} 삭제됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트
@@ -190,7 +190,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // 새로운 아이템 삽입 함수
-    public void InsertNewItem(string itemName)
+    public void InsertNewItem(string itemName, int count = 1)
     {
         int itemType = System.Array.IndexOf(itemNames, itemName);
         if (itemType == -1) // 아이템 이름을 찾지 못했을 경우
@@ -211,7 +211,7 @@ public class InventoryManager : MonoBehaviour
                 // 아이템 개수 증가
                 if (itemCounts.ContainsKey(itemName))
                 {
-                    itemCounts[itemName]++;
+                    itemCounts[itemName] += count;
                     // Debug.Log($"{itemName} 추가됨. 현재 개수: {itemCounts[itemName]}개");
                     
                     // 탄약이 변경된 경우 UI 업데이트

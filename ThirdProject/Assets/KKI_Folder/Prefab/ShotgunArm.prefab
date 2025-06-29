@@ -1045,8 +1045,8 @@ MonoBehaviour:
   initialPosition: {x: 0.02, y: 0.03, z: 0}
   audioSource: {fileID: 0}
   maxAmmo: 2
-  currentAmmo: 2
-  reserveAmmo: 0
+  currentAmmo: 0
+  reserveAmmo: 2
   fireRate: 1.137
   reloadRate: 1.75
   firePoint: {fileID: 8746159272063502246}
